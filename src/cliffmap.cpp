@@ -58,9 +58,26 @@ void CLiFFMap::readFromXML(const std::string &fileName) {
         location.distributions.push_back(dist);
       }
     }
-    this->locations.push_back(location);
+    this->locations_.push_back(location);
   }
   std::cout << "Read a cliffmap from XML" << std::endl;
+}
+
+CLiFFMapLocation CLiFFMap::at(size_t row, size_t col) const {
+  if (row > rows_ || col > columns_) {
+    std::cout << "WARNING CLiFFMap::at called with out-of-bounds indices. "
+                 "Returning empty CLiFFMapLocation.";
+    return CLiFFMapLocation();
+  }
+
+  return locations_[row * columns_ + col];
+}
+
+CLiFFMapLocation CLiFFMap::operator()(double x, double y) const {
+
+  size_t row = (y - y_min_) / resolution_;
+  size_t col = (x - x_min_) / resolution_;
+  return this->at(row, col);
 }
 } //  namespace
 
@@ -82,6 +99,11 @@ std::ostream &operator<<(std::ostream &out,
 }
 
 std::ostream &operator<<(std::ostream &out, const cliffmap_ros::CLiFFMap &map) {
+
+  out << "XMin: " << map.getXMin() << "\n"
+      << "XMax: " << map.getXMax() << "\n"
+      << "YMin: " << map.getYMin() << "\n"
+      << "YMax: " << map.getYMax() << "\n";
 
   for (const auto &loc : map.getLocations()) {
     out << "Location: " << loc;
