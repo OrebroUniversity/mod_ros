@@ -15,5 +15,7 @@ int main(int argn, char *argv[]) {
   cliffmap_ros::CLiFFMap map(argv[1]);
   std::cout << map;
 
+  map.organizeAsGrid(1.0);
+  std::cout << map(12,12);
   return 0;
 }

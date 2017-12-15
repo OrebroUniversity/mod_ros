@@ -5,6 +5,7 @@
 
 #include <array>
 #include <vector>
+#include <cmath>
 
 namespace cliffmap_ros {
 
@@ -86,6 +87,15 @@ protected:
 
   void readFromXML(const std::string &fileName);
 
+  inline double index2x(size_t col) const {
+    return (((double)col * resolution_) + x_min_);
+  }
+  inline double index2y(size_t row) const {
+    return (((double)row * resolution_) + y_min_);
+  }
+  inline size_t x2index(double x) const { return std::round((x - x_min_) / resolution_); }
+  inline size_t y2index(double y) const { return std::round((y - y_min_) / resolution_); }
+
 public:
   inline CLiFFMap(const std::string &fileName) { readFromXML(fileName); }
 
@@ -95,7 +105,7 @@ public:
    * grid.
    * Use appropriate functions to query the grid.
    */
-  void organizeAsGrid();
+  void organizeAsGrid(double resolution = 0.5);
 
   /**
    * Get the CLiFFMapLocation at (row,col). Need to call organizeAsGrid() first.

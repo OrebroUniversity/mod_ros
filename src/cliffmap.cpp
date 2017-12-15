@@ -75,10 +75,35 @@ CLiFFMapLocation CLiFFMap::at(size_t row, size_t col) const {
 
 CLiFFMapLocation CLiFFMap::operator()(double x, double y) const {
 
-  size_t row = (y - y_min_) / resolution_;
-  size_t col = (x - x_min_) / resolution_;
+  size_t row = y2index(y);
+  size_t col = x2index(x);
   return this->at(row, col);
 }
+
+void CLiFFMap::organizeAsGrid(double resolution) {
+  resolution_ = resolution;
+  std::vector<CLiFFMapLocation> organizedLocations;
+
+  columns_ = ((x_max_ - x_min_) / resolution_) + 1;
+  rows_ = ((y_max_ - y_min_) / resolution_) + 1;
+
+  organizedLocations.resize(rows_ * columns_);
+
+  if(organizedLocations.size() != locations_.size()) {
+    printf("ERROR ORGANIZING CLiFFMap: Error in number of locations.");
+    return;
+  }
+
+  for(const CLiFFMapLocation& location : locations_) {
+    size_t r = y2index(location.position[1]);
+    size_t c = x2index(location.position[0]);
+
+    organizedLocations[r*columns_ + c] = location;
+  }
+  locations_ = organizedLocations;
+  organized_ = true;
+}
+
 } //  namespace
 
 std::ostream &operator<<(std::ostream &out,
