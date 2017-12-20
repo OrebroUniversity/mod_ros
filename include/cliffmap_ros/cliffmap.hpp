@@ -85,7 +85,6 @@ protected:
 
   std::vector<CLiFFMapLocation> locations_;
 
-  void readFromXML(const std::string &fileName);
 
   inline double index2x(size_t col) const {
     return (((double)col * resolution_) + x_min_);
@@ -97,6 +96,7 @@ protected:
   inline size_t y2index(double y) const { return std::round((y - y_min_) / resolution_); }
 
 public:
+  inline CLiFFMap() {}
   inline CLiFFMap(const std::string &fileName) { readFromXML(fileName); }
 
   /**
@@ -114,6 +114,8 @@ public:
   CLiFFMapLocation at(size_t row, size_t col) const;
 
   CLiFFMapLocation operator()(double x, double y) const;
+
+  void readFromXML(const std::string &fileName);
 
   inline bool isOrganized() const { return organized_; }
 
