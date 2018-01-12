@@ -1,11 +1,15 @@
 
 /**
  * Copyright 2017 Chittaranjan Srinivas Swaminathan
+ * Licence: GNU GPL version 3
  */
 
+#pragma once
+
 #include <array>
-#include <vector>
 #include <cmath>
+#include <vector>
+#include <visualization_msgs/MarkerArray.h>
 
 namespace cliffmap_ros {
 
@@ -85,15 +89,18 @@ protected:
 
   std::vector<CLiFFMapLocation> locations_;
 
-
   inline double index2x(size_t col) const {
     return (((double)col * resolution_) + x_min_);
   }
   inline double index2y(size_t row) const {
     return (((double)row * resolution_) + y_min_);
   }
-  inline size_t x2index(double x) const { return std::round((x - x_min_) / resolution_); }
-  inline size_t y2index(double y) const { return std::round((y - y_min_) / resolution_); }
+  inline size_t x2index(double x) const {
+    return std::round((x - x_min_) / resolution_);
+  }
+  inline size_t y2index(double y) const {
+    return std::round((y - y_min_) / resolution_);
+  }
 
 public:
   inline CLiFFMap() {}
@@ -105,11 +112,13 @@ public:
    * grid.
    * Use appropriate functions to query the grid.
    */
-  void organizeAsGrid(double resolution = 0.5);
+  void organizeAsGrid();
 
   /**
    * Get the CLiFFMapLocation at (row,col). Need to call organizeAsGrid() first.
    */
+
+  visualization_msgs::MarkerArray toVisualizationMarkers() const;
 
   CLiFFMapLocation at(size_t row, size_t col) const;
 
@@ -124,10 +133,14 @@ public:
   inline double getXMax() const { return x_max_; }
   inline double getYMax() const { return y_max_; }
   inline double getRadius() const { return radius_; }
+  inline double getResolution() const { return resolution_; }
   inline const std::vector<CLiFFMapLocation> &getLocations() const {
     return locations_;
   }
 };
+
+typedef std::shared_ptr<CLiFFMap> CLiFFMapPtr;
+typedef std::shared_ptr<const CLiFFMap> CLiFFMapConstPtr;
 } // namespace cliffmap_ros
 
 std::ostream &operator<<(std::ostream &, const cliffmap_ros::CLiFFMap &);

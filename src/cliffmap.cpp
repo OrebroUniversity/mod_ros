@@ -1,11 +1,52 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
-
 #include <cliffmap_ros/cliffmap.hpp>
 
 #include <iostream>
 
 namespace cliffmap_ros {
+
+visualization_msgs::MarkerArray CLiFFMap::toVisualizationMarkers() const {
+
+  visualization_msgs::MarkerArray ma;
+  unsigned int id = 0;
+  for (const auto &location : locations_) {
+    const auto &x = location.position[0];
+    const auto &y = location.position[1];
+    for (const auto &distribution : location.distributions) {
+      const auto &speed = distribution.getMeanSpeed();
+      const auto &theta = distribution.getMeanHeading();
+
+      visualization_msgs::Marker m;
+      m.header.frame_id = "map";
+      m.header.stamp = ros::Time::now();
+      m.ns = "cliffmap";
+      m.id = id++;
+      m.type = visualization_msgs::Marker::ARROW;
+      m.action = visualization_msgs::Marker::ADD;
+      m.pose.position.x = x;
+      m.pose.position.y = y;
+      m.pose.position.z = 0.0;
+      m.pose.orientation.x = 0.0;
+      m.pose.orientation.y = 0.0;
+      m.pose.orientation.w = cos(theta / 2.0);
+      m.pose.orientation.z = sin(theta / 2.0);
+      m.lifetime = ros::Duration(0);
+
+      m.color.a = 1.0;
+      m.color.b = 0.35;
+      m.color.r = location.q;
+      m.color.g = 0.35;
+
+      m.scale.x = speed/5.0;
+      m.scale.y = 0.015;
+      m.scale.z = 0.015;
+
+      ma.markers.push_back(m);
+    }
+  }
+  return ma;
+}
 void CLiFFMap::readFromXML(const std::string &fileName) {
 
   using boost::property_tree::ptree;
@@ -21,14 +62,14 @@ void CLiFFMap::readFromXML(const std::string &fileName) {
       this->x_max_ = value.second.get<double>("x_max");
       this->y_max_ = value.second.get<double>("y_max");
       this->radius_ = value.second.get<double>("radious");
-      // this->step_ = value.second.get<int> ("step");
+      this->resolution_ = value.second.get<double>("step");
     }
   }
   for (const auto &vLocation : pTree.get_child("map.locations")) {
     CLiFFMapLocation location;
     location.id = vLocation.second.get<unsigned int>("id");
-    // location.p = vLocation.second.get<unsigned int>("p");
-    // location.q = vLocation.second.get<unsigned int>("q");
+    location.p = vLocation.second.get<double>("p");
+    location.q = vLocation.second.get<double>("q");
 
     for (const auto &vLocProperty : vLocation.second.get_child("")) {
 
@@ -80,28 +121,42 @@ CLiFFMapLocation CLiFFMap::operator()(double x, double y) const {
   return this->at(row, col);
 }
 
-void CLiFFMap::organizeAsGrid(double resolution) {
-  resolution_ = resolution;
+void CLiFFMap::organizeAsGrid() {
   std::vector<CLiFFMapLocation> organizedLocations;
 
-  columns_ = ((x_max_ - x_min_) / resolution_) + 1;
-  rows_ = ((y_max_ - y_min_) / resolution_) + 1;
+  columns_ = round((x_max_ - x_min_) / resolution_) + 1;
+  rows_ = round((y_max_ - y_min_) / resolution_) + 1;
 
   organizedLocations.resize(rows_ * columns_);
 
-  if(organizedLocations.size() != locations_.size()) {
-    printf("ERROR ORGANIZING CLiFFMap: Error in number of locations.");
+  if (organizedLocations.size() != locations_.size()) {
+    printf("ERROR ORGANIZING CLiFFMap: Error in number of locations. We "
+           "thought it was %lu, but it was %lu.",
+           organizedLocations.size(), locations_.size());
     return;
   }
 
-  for(const CLiFFMapLocation& location : locations_) {
+  for (const CLiFFMapLocation &location : locations_) {
     size_t r = y2index(location.position[1]);
     size_t c = x2index(location.position[0]);
 
-    organizedLocations[r*columns_ + c] = location;
+    // printf("\nR: %u, C: %u", r, c);
+    // printf("\n(x,y) = (%lf,%lf)", location.position[0],
+    // location.position[1]);
+
+    organizedLocations[r * columns_ + c] = location;
   }
   locations_ = organizedLocations;
   organized_ = true;
+
+  int qs = 0;
+  for (const auto &loc : locations_) {
+    if (loc.q < 0.5) {
+      qs++;
+    }
+  }
+
+  printf("\n%d locations are less motion locations.", qs);
 }
 
 } //  namespace

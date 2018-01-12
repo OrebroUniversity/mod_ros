@@ -9,6 +9,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
   tf
+  visualization_msgs
 )
 
 find_package(Boost REQUIRED)
@@ -36,7 +37,7 @@ find_package(Boost REQUIRED)
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES cliffmap_ros
-  CATKIN_DEPENDS geometry_msgs roscpp std_msgs tf
+  CATKIN_DEPENDS geometry_msgs roscpp std_msgs tf visualization_msgs
   DEPENDS Boost
 )
 
@@ -53,7 +54,9 @@ include_directories(
 ## Declare a C++ library
 add_library(cliffmap_ros
   src/cliffmap.cpp
-)
+  )
+
+target_link_libraries(cliffmap_ros ${catkin_LIBRARIES})
 
 add_executable(test_xml
   src/test_xml.cpp
