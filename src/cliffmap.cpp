@@ -38,8 +38,8 @@ visualization_msgs::MarkerArray CLiFFMap::toVisualizationMarkers() const {
       m.color.r = location.q;
       m.color.g = 0.35;
 
-      m.scale.x = speed/5.0;
-      m.scale.y = 0.015;
+      m.scale.x = speed / 5.0;
+      m.scale.y = 0.035;
       m.scale.z = 0.015;
 
       ma.markers.push_back(m);
@@ -47,6 +47,7 @@ visualization_msgs::MarkerArray CLiFFMap::toVisualizationMarkers() const {
   }
   return ma;
 }
+
 void CLiFFMap::readFromXML(const std::string &fileName) {
 
   using boost::property_tree::ptree;
@@ -67,7 +68,7 @@ void CLiFFMap::readFromXML(const std::string &fileName) {
   }
   for (const auto &vLocation : pTree.get_child("map.locations")) {
     CLiFFMapLocation location;
-    location.id = vLocation.second.get<unsigned int>("id");
+    location.id = vLocation.second.get<size_t>("id");
     location.p = vLocation.second.get<double>("p");
     location.q = vLocation.second.get<double>("q");
 
@@ -112,6 +113,10 @@ CLiFFMapLocation CLiFFMap::at(size_t row, size_t col) const {
   }
 
   return locations_[row * columns_ + col];
+}
+
+CLiFFMapLocation CLiFFMap::atId(size_t id) const {
+  return locations_[id - (size_t)1];
 }
 
 CLiFFMapLocation CLiFFMap::operator()(double x, double y) const {

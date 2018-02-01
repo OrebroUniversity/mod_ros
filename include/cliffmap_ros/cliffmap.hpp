@@ -11,6 +11,14 @@
 #include <vector>
 #include <visualization_msgs/MarkerArray.h>
 
+#include <boost/config.hpp>
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/dijkstra_shortest_paths.hpp>
+#include <boost/graph/graph_traits.hpp>
+#include <boost/graph/iteration_macros.hpp>
+#include <boost/graph/properties.hpp>
+#include <boost/property_map/property_map.hpp>
+
 namespace cliffmap_ros {
 
 /**
@@ -63,7 +71,7 @@ struct CLiFFMapDistribution {
  *
  */
 struct CLiFFMapLocation {
-  unsigned int id;
+  size_t id;
   std::array<double, 2> position;
   double p;
   double q;
@@ -105,7 +113,6 @@ protected:
 public:
   inline CLiFFMap() {}
   inline CLiFFMap(const std::string &fileName) { readFromXML(fileName); }
-
   /**
    * Calling this function makes the locations accessible as a grid.
    * Hence locations is modified such that it can be accessed as a row major
@@ -121,7 +128,7 @@ public:
   visualization_msgs::MarkerArray toVisualizationMarkers() const;
 
   CLiFFMapLocation at(size_t row, size_t col) const;
-
+  CLiFFMapLocation atId(size_t id) const;
   CLiFFMapLocation operator()(double x, double y) const;
 
   void readFromXML(const std::string &fileName);
@@ -141,6 +148,33 @@ public:
 
 typedef std::shared_ptr<CLiFFMap> CLiFFMapPtr;
 typedef std::shared_ptr<const CLiFFMap> CLiFFMapConstPtr;
+
+class DijkstraGraph {
+
+  typedef double Weight;
+
+  typedef boost::property<boost::edge_weight_t, Weight> WeightProperty;
+  typedef boost::property<boost::vertex_name_t, size_t> NameProperty;
+  typedef boost::adjacency_list<boost::listS, boost::vecS, boost::directedS,
+                                NameProperty, WeightProperty>
+      Graph;
+
+  typedef boost::graph_traits<Graph>::vertex_descriptor Vertex;
+
+  typedef boost::property_map<Graph, boost::vertex_index_t>::type IndexMap;
+  typedef boost::property_map<Graph, boost::vertex_name_t>::type NameMap;
+
+  typedef boost::iterator_property_map<Vertex *, IndexMap, Vertex, Vertex &>
+      PredecessorMap;
+  typedef boost::iterator_property_map<Weight *, IndexMap, Weight, Weight &>
+      DistanceMap;
+
+  Graph graph_;
+
+public:
+  DijkstraGraph(const CLiFFMap &cliffmap);
+  inline ~DijkstraGraph() {}
+};
 } // namespace cliffmap_ros
 
 std::ostream &operator<<(std::ostream &, const cliffmap_ros::CLiFFMap &);
