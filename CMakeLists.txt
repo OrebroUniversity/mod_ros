@@ -54,12 +54,18 @@ include_directories(
 ## Declare a C++ library
 add_library(cliffmap_ros
   src/cliffmap.cpp
-  )
+)
 
 target_link_libraries(cliffmap_ros ${catkin_LIBRARIES})
 
-add_executable(test_xml
-  src/test_xml.cpp
+install(TARGETS cliffmap_ros
+  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
-target_link_libraries(test_xml cliffmap_ros)
 
+install(DIRECTORY include/${PROJECT_NAME}/
+  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+  FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp"
+  PATTERN ".svn" EXCLUDE
+)
