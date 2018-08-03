@@ -1,0 +1,9 @@
+float64 x_min
+float64 x_max
+float64 y_min
+float64 y_max
+float64 radius
+float64 resolution
+float64 rows
+float64 columns
+CLiFFMapLocation[] locations

@@ -10,34 +10,34 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   tf
   visualization_msgs
+  message_generation
 )
 
 find_package(Boost REQUIRED)
 
-## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
-#   Message2.msg
-# )
+add_message_files(
+  FILES
+  CLiFFMapLocation.msg
+  CLiFFMapDistribution.msg
+  CLiFFMap.msg
+)
 
-## Generate services in the 'srv' folder
-# add_service_files(
-#   FILES
-#   Service1.srv
-#   Service2.srv
-# )
+add_service_files(
+  FILES
+  GetCLiFFMap.srv
+)
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   geometry_msgs#   std_msgs
-# )
+generate_messages(
+  DEPENDENCIES
+  geometry_msgs
+  std_msgs
+)
 
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES cliffmap_ros
-  CATKIN_DEPENDS geometry_msgs roscpp std_msgs tf visualization_msgs
+  CATKIN_DEPENDS geometry_msgs roscpp std_msgs tf visualization_msgs message_runtime
   DEPENDS Boost
 )
 
@@ -54,12 +54,12 @@ include_directories(
 ## Declare a C++ library
 add_library(cliffmap_ros
   src/cliffmap.cpp
-  )
+)
 
 target_link_libraries(cliffmap_ros ${catkin_LIBRARIES})
 
-add_executable(test_xml
-  src/test_xml.cpp
+add_executable(cliffmap_server
+  src/cliffmap_server.cpp
 )
-target_link_libraries(test_xml cliffmap_ros)
+target_link_libraries(cliffmap_server cliffmap_ros)
 
