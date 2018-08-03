@@ -1,8 +1,6 @@
 #include <iostream>
 #include <cliffmap_ros/cliffmap.hpp>
 
-
-
 int main(int argn, char *argv[]) {
 
   if (argn < 2) {
@@ -14,6 +12,5 @@ int main(int argn, char *argv[]) {
   std::cout << map;
 
   map.organizeAsGrid();
-  
   return 0;
 }
