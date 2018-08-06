@@ -17,9 +17,9 @@ find_package(Boost REQUIRED)
 
 add_message_files(
   FILES
-  CLiFFMapLocation.msg
-  CLiFFMapDistribution.msg
-  CLiFFMap.msg
+  CLiFFMapLocationMsg.msg
+  CLiFFMapDistributionMsg.msg
+  CLiFFMapMsg.msg
 )
 
 add_service_files(
