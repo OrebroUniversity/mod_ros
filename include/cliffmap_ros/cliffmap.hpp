@@ -19,6 +19,8 @@
 #include <boost/graph/properties.hpp>
 #include <boost/property_map/property_map.hpp>
 
+#include <cliffmap_ros/CLiFFMapMsg.h>
+
 namespace cliffmap_ros {
 
 /**
@@ -79,7 +81,7 @@ struct CLiFFMapLocation {
 };
 
 class CLiFFMap {
-protected:
+public:
   double x_min_;
   double x_max_;
   double y_min_;
@@ -110,7 +112,6 @@ protected:
     return std::round((y - y_min_) / resolution_);
   }
 
-public:
   inline CLiFFMap() {}
   inline CLiFFMap(const std::string &fileName) { readFromXML(fileName); }
   /**
@@ -175,6 +176,18 @@ public:
   DijkstraGraph(const CLiFFMap &cliffmap);
   inline ~DijkstraGraph() {}
 };
+
+CLiFFMap mapFromROSMsg(const CLiFFMapMsg &cliffmap_msg);
+CLiFFMapLocation
+locationFromROSMsg(const CLiFFMapLocationMsg &cliffmap_location_msg);
+CLiFFMapDistribution distributionFromROSMsg(
+    const CLiFFMapDistributionMsg &cliffmap_distribution_msg);
+
+CLiFFMapMsg mapToROSMsg(const CLiFFMap &cliffmap);
+CLiFFMapLocationMsg locationToROSMsg(const CLiFFMapLocation &cliffmap_location);
+CLiFFMapDistributionMsg
+distributionToROSMsg(const CLiFFMapDistribution &cliffmap_distribution);
+
 } // namespace cliffmap_ros
 
 std::ostream &operator<<(std::ostream &, const cliffmap_ros::CLiFFMap &);

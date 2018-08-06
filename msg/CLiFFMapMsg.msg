@@ -6,4 +6,4 @@ float64 radius
 float64 resolution
 float64 rows
 float64 columns
-CLiFFMapLocation[] locations
+CLiFFMapLocationMsg[] locations

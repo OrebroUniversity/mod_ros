@@ -54,7 +54,10 @@ include_directories(
 ## Declare a C++ library
 add_library(cliffmap_ros
   src/cliffmap.cpp
+  src/cliffmap_conversions.cpp
 )
+
+add_dependencies(cliffmap_ros cliffmap_ros_generate_messages_cpp)
 
 target_link_libraries(cliffmap_ros ${catkin_LIBRARIES})
 
