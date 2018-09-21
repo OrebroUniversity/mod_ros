@@ -2,8 +2,8 @@
 Changelog for package cliffmap_ros
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.0.2 (2018-09-21)
+------------------
 * Add missing target
 * Add header to msg
 
