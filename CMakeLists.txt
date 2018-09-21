@@ -66,7 +66,7 @@ add_executable(cliffmap_server
 )
 target_link_libraries(cliffmap_server cliffmap_ros)
 
-install(TARGETS cliffmap_ros
+install(TARGETS cliffmap_ros cliffmap_server
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
