@@ -2,6 +2,11 @@
 Changelog for package cliffmap_ros
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add missing target
+* Add header to msg
+
 0.0.1 (2018-08-27)
 ------------------
 * Add LGPLv3
