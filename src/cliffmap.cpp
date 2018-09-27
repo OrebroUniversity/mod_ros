@@ -69,8 +69,8 @@ void CLiFFMap::readFromXML(const std::string &fileName) {
   for (const auto &vLocation : pTree.get_child("map.locations")) {
     CLiFFMapLocation location;
     location.id = vLocation.second.get<size_t>("id");
-    location.p = vLocation.second.get<double>("p");
-    location.q = vLocation.second.get<double>("q");
+    //location.p = vLocation.second.get<double>("p");
+    //location.q = vLocation.second.get<double>("q");
 
     for (const auto &vLocProperty : vLocation.second.get_child("")) {
 
