@@ -1,8 +1,21 @@
 /*
- * cliffmap_display.cpp
+ *   Copyright (c) Chittaranjan Srinivas Swaminathan
+ *   This file is part of cliffmap_rviz_plugin.
  *
- *  Created on: Mar 1, 2019
- *      Author: ksatyaki
+ *   cliffmap_rviz_plugin is free software: you can redistribute it and/or
+ * modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   cliffmap_rviz_plugin is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with cliffmap_rviz_plugin.  If not, see
+ * <https://www.gnu.org/licenses/>.
  */
 
 #include "cliffmap_display.h"

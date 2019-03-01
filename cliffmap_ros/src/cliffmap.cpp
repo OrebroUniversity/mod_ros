@@ -6,48 +6,6 @@
 
 namespace cliffmap_ros {
 
-visualization_msgs::MarkerArray CLiFFMap::toVisualizationMarkers() const {
-
-  visualization_msgs::MarkerArray ma;
-  unsigned int id = 0;
-  for (const auto &location : locations_) {
-    const auto &x = location.position[0];
-    const auto &y = location.position[1];
-    for (const auto &distribution : location.distributions) {
-      const auto &speed = distribution.getMeanSpeed();
-      const auto &theta = distribution.getMeanHeading();
-
-      visualization_msgs::Marker m;
-      m.header.frame_id = "map";
-      m.header.stamp = ros::Time::now();
-      m.ns = "cliffmap";
-      m.id = id++;
-      m.type = visualization_msgs::Marker::ARROW;
-      m.action = visualization_msgs::Marker::ADD;
-      m.pose.position.x = x;
-      m.pose.position.y = y;
-      m.pose.position.z = 0.0;
-      m.pose.orientation.x = 0.0;
-      m.pose.orientation.y = 0.0;
-      m.pose.orientation.w = cos(theta / 2.0);
-      m.pose.orientation.z = sin(theta / 2.0);
-      m.lifetime = ros::Duration(0);
-
-      m.color.a = 1.0;
-      m.color.b = 0.35;
-      m.color.r = location.q;
-      m.color.g = 0.35;
-
-      m.scale.x = speed / 5.0;
-      m.scale.y = 0.035;
-      m.scale.z = 0.015;
-
-      ma.markers.push_back(m);
-    }
-  }
-  return ma;
-}
-
 void CLiFFMap::readFromXML(const std::string &fileName) {
 
   using boost::property_tree::ptree;

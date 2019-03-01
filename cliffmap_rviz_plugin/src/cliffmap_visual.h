@@ -21,6 +21,7 @@
 #pragma once
 
 #include <array>
+#include <boost/make_shared.hpp>
 
 #include <OGRE/OgreSceneManager.h>
 #include <OGRE/OgreSceneNode.h>
@@ -71,7 +72,7 @@ class CLiFFMapVisual {
   std::vector<float> arrow_speeds_;
 
   // The object implementing the actual arrow shape
-  boost::shared_ptr< std::vector<rviz::Arrow> > cliffmap_arrows_;
+   std::vector<boost::shared_ptr<rviz::Arrow>> cliffmap_arrows_;
 
   // A SceneNode whose pose is set to match the coordinate frame of
   // the Imu message header.

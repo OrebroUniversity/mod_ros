@@ -25,20 +25,17 @@ int main(int argn, char *argv[]) {
 
   ros::NodeHandle nh;
   ros::Publisher cliffmap_pub =
-      nh.advertise<cliffmap_ros::CLiFFMapMsg>("cliffmap", 10);
+      nh.advertise<cliffmap_ros::CLiFFMapMsg>("cliffmap", 10, true);
   ROS_INFO("CLiFFMap will be published when there is a subscriber.");
 
   ros::ServiceServer service_ = nh.advertiseService("get_cliffmap", callback);
 
   cliffmap_ros::CLiFFMap map(argv[1]);
   map.organizeAsGrid();
-
   cliffmap = mapToROSMsg(map);
 
-  while (ros::ok()) {
-    if (cliffmap_pub.getNumSubscribers() > 0)
-      cliffmap_pub.publish(cliffmap);
-    ros::spinOnce();
-  }
+  cliffmap_pub.publish(cliffmap);
+
+  ros::spin();
   return 0;
 }

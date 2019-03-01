@@ -60,8 +60,6 @@ class CLiFFMapDisplay
  private:
   void processMessage(const cliffmap_ros::CLiFFMapMsg::ConstPtr& msg);
 
-  // Storage for the list of visuals.  It is a circular buffer where
-  // data gets popped from the front (oldest) and pushed to the back (newest)
   boost::shared_ptr<CLiFFMapVisual> visual_;
 
   // User-editable property variables.

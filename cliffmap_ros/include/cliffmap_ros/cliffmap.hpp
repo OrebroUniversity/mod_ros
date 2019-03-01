@@ -125,9 +125,6 @@ public:
   /**
    * Get the CLiFFMapLocation at (row,col). Need to call organizeAsGrid() first.
    */
-
-  visualization_msgs::MarkerArray toVisualizationMarkers() const;
-
   CLiFFMapLocation at(size_t row, size_t col) const;
   CLiFFMapLocation atId(size_t id) const;
   CLiFFMapLocation operator()(double x, double y) const;

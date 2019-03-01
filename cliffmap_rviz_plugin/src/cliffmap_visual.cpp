@@ -19,6 +19,7 @@
  */
 
 #include "cliffmap_visual.h"
+#include <ros/console.h>
 
 namespace cliffmap_rviz_plugin {
 
@@ -35,7 +36,7 @@ CLiFFMapVisual::CLiFFMapVisual(Ogre::SceneManager* scene_manager,
   // relative to the RViz fixed frame.
   frame_node_ = parent_node->createChildSceneNode();
 
-  cliffmap_arrows_.reset(new std::vector<rviz::Arrow>());
+  cliffmap_arrows_.clear();
 }
 
 CLiFFMapVisual::~CLiFFMapVisual() {
@@ -56,8 +57,8 @@ void CLiFFMapVisual::setColor(float r, float g, float b, float a) {
   color_[1] = g;
   color_[2] = b;
 
-  for (auto& arrow : *cliffmap_arrows_) {
-    arrow.setColor(color_[0], color_[1], color_[2], color_[3]);
+  for (auto& arrow : cliffmap_arrows_) {
+    arrow->setColor(color_[0], color_[1], color_[2], color_[3]);
   }
 }
 
@@ -65,20 +66,19 @@ void CLiFFMapVisual::setArrowSize(float size_multiplier) {
   size_multiplier_ = size_multiplier;
   if (size_multiplier < 0.0 || size_multiplier > 1.0) return;
 
-  for (size_t i = 0; i < cliffmap_arrows_->size(); i++) {
-    auto& arrow = (*cliffmap_arrows_)[i];
+  for (size_t i = 0; i < cliffmap_arrows_.size(); i++) {
+    auto& arrow = *cliffmap_arrows_[i];
     auto& speed = arrow_speeds_[i];
-
-    Ogre::Vector3 scale(size_multiplier * speed / 5.0, size_multiplier * 0.035,
-                        size_multiplier * 0.015);
-    arrow.setScale(scale);
+    arrow.setScale(Ogre::Vector3(size_multiplier * speed,
+                                 size_multiplier * speed,
+                                 size_multiplier * speed));
   }
 }
 
 void CLiFFMapVisual::setMessage(
     const cliffmap_ros::CLiFFMapMsg::ConstPtr& msg) {
   arrow_speeds_.clear();
-  cliffmap_arrows_->clear();
+  cliffmap_arrows_.clear();
 
   for (const auto& location : msg->locations) {
     const auto& x = location.position[0];
@@ -91,20 +91,30 @@ void CLiFFMapVisual::setMessage(
       const auto& speed = distribution.mean[1];
       const auto& theta = distribution.mean[0];
 
-      cliffmap_arrows_->push_back(rviz::Arrow(scene_manager_, frame_node_));
+      // These are the default parameters to rviz::Arrow()
+      // float shaft_length=1.0f, float shaft_diameter=0.1f,
+      // float head_length=0.3f, float head_diameter=0.2f
+      boost::shared_ptr<rviz::Arrow> this_arrow =
+          boost::make_shared<rviz::Arrow>(scene_manager_, frame_node_, 0.1f,
+                                          0.025f, 0.05f, 0.05f);
+      this_arrow->setPosition(Ogre::Vector3(x, y, 0.1));
+      Ogre::Quaternion q;
+      q.FromAngleAxis(Ogre::Radian(theta), Ogre::Vector3::UNIT_X);
+      this_arrow->setOrientation(q);
+      this_arrow->setColor(color_[0], color_[1], color_[2], color_[3]);
+      //      Ogre::Vector3 scale(size_multiplier_ * speed / 5.0,
+      //                          size_multiplier_ * 0.035, size_multiplier_ *
+      //                          0.015);
+      this_arrow->setScale(Ogre::Vector3(size_multiplier_ * speed,
+                                         size_multiplier_ * speed,
+                                         size_multiplier_ * speed));
+      cliffmap_arrows_.push_back(this_arrow);
       arrow_speeds_.push_back(speed);
-
-      auto& this_arrow = cliffmap_arrows_->back();
-
-      this_arrow.setPosition(Ogre::Vector3(x, y, 0.0));
-      this_arrow.setOrientation(
-          Ogre::Quaternion(cos(theta / 2.0), 0.0, 0.0, sin(theta / 2.0)));
-      this_arrow.setColor(color_[0], color_[1], color_[2], color_[3]);
-      Ogre::Vector3 scale(size_multiplier_ * speed / 5.0,
-                          size_multiplier_ * 0.035, size_multiplier_ * 0.015);
-      this_arrow.setScale(scale);
     }
   }
+
+  ROS_INFO_STREAM("[CLiFFMapVisual]: Received a new CLiFF-map containing "
+                  << cliffmap_arrows_.size() << " distributions in total.");
 }
 
 } /* namespace cliffmap_rviz_plugin */
