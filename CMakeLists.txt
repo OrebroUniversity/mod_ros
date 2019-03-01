@@ -58,13 +58,14 @@ add_library(cliffmap_ros
 )
 
 add_dependencies(cliffmap_ros cliffmap_ros_generate_messages_cpp)
-
 target_link_libraries(cliffmap_ros ${catkin_LIBRARIES})
 
-add_executable(cliffmap_server
-  src/cliffmap_server.cpp
-)
+add_executable(cliffmap_server src/cliffmap_server.cpp)
 target_link_libraries(cliffmap_server cliffmap_ros)
+
+#############
+## Install ##
+#############
 
 install(TARGETS cliffmap_ros cliffmap_server
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
