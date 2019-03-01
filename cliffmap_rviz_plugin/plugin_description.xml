@@ -1,6 +1,6 @@
 <library path="lib/libcliffmap_rviz_plugin">
   <class name="cliffmap_rviz_plugin/CLiFFMap"
-         type="cliffmap_rviz_plugin/CLiFFMapDisplay"
+         type="cliffmap_rviz_plugin::CLiFFMapDisplay"
          base_class_type="rviz::Display">
     <description>
       A simple cliffmap rviz plugin
