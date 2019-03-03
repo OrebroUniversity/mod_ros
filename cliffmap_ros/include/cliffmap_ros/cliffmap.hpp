@@ -9,7 +9,6 @@
 #include <array>
 #include <cmath>
 #include <vector>
-#include <visualization_msgs/MarkerArray.h>
 
 #include <boost/config.hpp>
 #include <boost/graph/adjacency_list.hpp>
@@ -18,6 +17,8 @@
 #include <boost/graph/iteration_macros.hpp>
 #include <boost/graph/properties.hpp>
 #include <boost/property_map/property_map.hpp>
+
+#include <ros/console.h>
 
 #include <cliffmap_ros/CLiFFMapMsg.h>
 
@@ -81,7 +82,7 @@ struct CLiFFMapLocation {
 };
 
 class CLiFFMap {
-public:
+ public:
   double x_min_;
   double x_max_;
   double y_min_;
@@ -113,7 +114,10 @@ public:
   }
 
   inline CLiFFMap() {}
-  inline CLiFFMap(const std::string &fileName) { readFromXML(fileName); }
+  inline CLiFFMap(const std::string &fileName, bool organize = false) {
+    readFromXML(fileName);
+    if (organize) organizeAsGrid();
+  }
   /**
    * Calling this function makes the locations accessible as a grid.
    * Hence locations is modified such that it can be accessed as a row major
@@ -148,7 +152,6 @@ typedef std::shared_ptr<CLiFFMap> CLiFFMapPtr;
 typedef std::shared_ptr<const CLiFFMap> CLiFFMapConstPtr;
 
 class DijkstraGraph {
-
   typedef double Weight;
 
   typedef boost::property<boost::edge_weight_t, Weight> WeightProperty;
@@ -169,23 +172,23 @@ class DijkstraGraph {
 
   Graph graph_;
 
-public:
+ public:
   DijkstraGraph(const CLiFFMap &cliffmap);
   inline ~DijkstraGraph() {}
 };
 
 CLiFFMap mapFromROSMsg(const CLiFFMapMsg &cliffmap_msg);
-CLiFFMapLocation
-locationFromROSMsg(const CLiFFMapLocationMsg &cliffmap_location_msg);
+CLiFFMapLocation locationFromROSMsg(
+    const CLiFFMapLocationMsg &cliffmap_location_msg);
 CLiFFMapDistribution distributionFromROSMsg(
     const CLiFFMapDistributionMsg &cliffmap_distribution_msg);
 
 CLiFFMapMsg mapToROSMsg(const CLiFFMap &cliffmap);
 CLiFFMapLocationMsg locationToROSMsg(const CLiFFMapLocation &cliffmap_location);
-CLiFFMapDistributionMsg
-distributionToROSMsg(const CLiFFMapDistribution &cliffmap_distribution);
+CLiFFMapDistributionMsg distributionToROSMsg(
+    const CLiFFMapDistribution &cliffmap_distribution);
 
-} // namespace cliffmap_ros
+}  // namespace cliffmap_ros
 
 std::ostream &operator<<(std::ostream &, const cliffmap_ros::CLiFFMap &);
 std::ostream &operator<<(std::ostream &,
