@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package>
   <name>cliffmap_rviz_plugin</name>
-  <version>0.0.0</version>
-  <description>The cliffmap_rviz_plugin package</description>
+  <version>0.0.1</version>
+  <description>Provides an RViz plugin for cliffmaps</description>
 
   <maintainer email="chitt@aass.oru.se">Chittaranjan Srinivas Swaminathan</maintainer>
 

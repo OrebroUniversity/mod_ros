@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>cliffmap_ros</name>
-  <version>0.0.2</version>
+  <version>0.0.3</version>
   <description>The cliffmap_ros package</description>
 
-  <maintainer email="chittaranjan.swaminathan@oru.se">Chittaranjan Srinivas Swaminathan</maintainer>
+  <maintainer email="chitt@aass.oru.se">Chittaranjan Srinivas Swaminathan</maintainer>
   <license>LGPLv3</license>
 
   <buildtool_depend>catkin</buildtool_depend>
