@@ -2,8 +2,8 @@
 Changelog for package cliffmap_ros
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.0.4 (2019-03-21)
+------------------
 * Very few minor updates
 * Contributors: Chittaranjan Swaminathan
 
