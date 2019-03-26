@@ -45,10 +45,30 @@ void CLiFFMap::readFromXML(const std::string &fileName) {
   for (const auto &vLocation : pTree.get_child("map.locations")) {
     CLiFFMapLocation location;
     location.id = vLocation.second.get<size_t>("id");
-    location.p = vLocation.second.get<double>("p");
-    location.q = vLocation.second.get<double>("q");
 
     for (const auto &vLocProperty : vLocation.second.get_child("")) {
+      if (vLocProperty.first == "p") try {
+          location.p = vLocation.second.get<double>("p");
+        } catch (std::exception &ex) {
+          ROS_WARN_STREAM_THROTTLE(
+              1.0, "There was an exception trying to get 'p' value from xml: "
+                       << ex.what());
+          location.p = 1.0;
+        }
+      else
+        location.p = 1.0;
+
+      if (vLocProperty.first == "q") try {
+          location.q = vLocation.second.get<double>("q");
+        } catch (std::exception &ex) {
+          ROS_WARN_STREAM_THROTTLE(
+              1.0, "There was an exception trying to get 'q' value from xml: "
+                       << ex.what());
+          location.q = 1.0;
+        }
+      else
+        location.q = 1.0;
+
       if (vLocProperty.first == "pose") {
         location.position[0] = vLocProperty.second.get<double>("x");
         location.position[1] = vLocProperty.second.get<double>("y");
@@ -127,7 +147,7 @@ void CLiFFMap::organizeAsGrid() {
                   << getResolution() << " m/cell.");
 }
 
-}  //  namespace
+}  // namespace cliffmap_ros
 
 std::ostream &operator<<(std::ostream &out,
                          const cliffmap_ros::CLiFFMapDistribution &dist) {

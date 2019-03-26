@@ -63,7 +63,7 @@ void CLiFFMapVisual::setColor(float r, float g, float b, float a) {
 
 void CLiFFMapVisual::setArrowSize(float size_multiplier) {
   size_multiplier_ = size_multiplier;
-  if (size_multiplier < 0.0 || size_multiplier > 1.0) return;
+  if (size_multiplier < 0.0 || size_multiplier > 10.0) return;
 
   for (size_t i = 0; i < cliffmap_arrows_.size(); i++) {
     auto& arrow = *cliffmap_arrows_[i];
@@ -98,8 +98,9 @@ void CLiFFMapVisual::setMessage(
                                           0.025f, 0.05f, 0.05f);
       this_arrow->setPosition(Ogre::Vector3(x, y, 0.1));
       Ogre::Quaternion q;
-      q.FromAngleAxis(Ogre::Radian(theta), Ogre::Vector3::UNIT_X);
-      this_arrow->setOrientation(q);
+      q.FromAngleAxis(Ogre::Radian(theta), Ogre::Vector3::UNIT_Z);
+      this_arrow->setOrientation(
+          q * Ogre::Quaternion(Ogre::Degree(-90), Ogre::Vector3::UNIT_Y));
       this_arrow->setColor(color_[0], color_[1], color_[2], color_[3]);
       //      Ogre::Vector3 scale(size_multiplier_ * speed / 5.0,
       //                          size_multiplier_ * 0.035, size_multiplier_ *
