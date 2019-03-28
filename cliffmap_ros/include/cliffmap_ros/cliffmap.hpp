@@ -32,8 +32,10 @@
 #include <boost/property_map/property_map.hpp>
 
 #include <ros/console.h>
+#include <ros/ros.h>
 
 #include <cliffmap_ros/CLiFFMapMsg.h>
+#include <cliffmap_ros/GetCLiFFMap.h>
 
 namespace cliffmap_ros {
 
@@ -126,7 +128,8 @@ class CLiFFMap {
     return std::round((y - y_min_) / resolution_);
   }
 
-  inline CLiFFMap() {}
+  CLiFFMap(const CLiFFMapMsg& cliffmap_msg);
+
   inline CLiFFMap(const std::string &fileName, bool organize = false) {
     readFromXML(fileName);
     if (organize) organizeAsGrid();
@@ -163,6 +166,15 @@ class CLiFFMap {
 
 typedef std::shared_ptr<CLiFFMap> CLiFFMapPtr;
 typedef std::shared_ptr<const CLiFFMap> CLiFFMapConstPtr;
+
+class CLiFFMapClient {
+  ros::NodeHandle nh;
+  ros::ServiceClient cliffmap_client;
+
+ public:
+  CLiFFMapClient();
+  CLiFFMapMsg get();
+};
 
 class DijkstraGraph {
   typedef double Weight;

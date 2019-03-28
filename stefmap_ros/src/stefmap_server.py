@@ -49,16 +49,16 @@ def handle_GetSTeFMap(req):
 	predicted_probabilities = []
 
 	# Creating the ros msg to has to be returned to client calling
-	STefMap = STeFMapMsg()
+	mSTefMap = STeFMapMsg()
 
-	STefMap.prediction_time = req.prediction_time	
-	STefMap.x_min = req.x_min
-	STefMap.x_max = req.x_max
-	STefMap.y_min = req.y_min
-	STefMap.y_max = req.y_max
-	STefMap.cell_size = req.cell_size
-	STefMap.rows = rows
-	STefMap.columns = columns
+	mSTefMap.prediction_time = req.prediction_time	
+	mSTefMap.x_min = req.x_min
+	mSTefMap.x_max = req.x_max
+	mSTefMap.y_min = req.y_min
+	mSTefMap.y_max = req.y_max
+	mSTefMap.cell_size = req.cell_size
+	mSTefMap.rows = rows
+	mSTefMap.columns = columns
 	
 
 	# iterate through all the cell and get also the bin with the maximum probability and the associated angle
@@ -88,11 +88,11 @@ def handle_GetSTeFMap(req):
 
 			stefmap_cell.best_angle = max_orientation*45
 
-			STefMap.cell.append(stefmap_cell)
+			mSTefMap.cells.append(stefmap_cell)
 			index = index + 1
 
 	print("STeFMap sent!")
-	return STefMap
+	return mSTefMap
 
 if __name__=="__main__":
 

@@ -2,7 +2,7 @@
 
 import sys
 import rospy
-from stefmap_ros.srv import GetSTeFMap
+from stefmap_ros.srv import GetSTeFMapMsg
 
 def add_two_ints_client(x, y):
     rospy.wait_for_service('add_two_ints')

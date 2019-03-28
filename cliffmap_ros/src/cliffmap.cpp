@@ -25,6 +25,22 @@
 
 namespace cliffmap_ros {
 
+CLiFFMap::CLiFFMap(const CLiFFMapMsg &cliffmap_msg) {
+  x_min_ = cliffmap_msg.x_min;
+  x_max_ = cliffmap_msg.x_max;
+  y_min_ = cliffmap_msg.y_min;
+  y_max_ = cliffmap_msg.y_max;
+
+  radius_ = cliffmap_msg.radius;
+  resolution_ = cliffmap_msg.resolution;
+
+  rows_ = cliffmap_msg.rows;
+  columns_ = cliffmap_msg.columns;
+
+  for (const auto &location : cliffmap_msg.locations)
+    locations_.push_back(locationFromROSMsg(location));
+}
+
 void CLiFFMap::readFromXML(const std::string &fileName) {
   using boost::property_tree::ptree;
   ptree pTree;
@@ -99,7 +115,7 @@ void CLiFFMap::readFromXML(const std::string &fileName) {
 }
 
 CLiFFMapLocation CLiFFMap::at(size_t row, size_t col) const {
-  if (row > rows_ || col > columns_) {
+  if (row >= rows_ || col >= columns_) {
     std::cout << "WARNING CLiFFMap::at called with out-of-bounds indices. "
                  "Returning empty CLiFFMapLocation.";
     return CLiFFMapLocation();
@@ -145,6 +161,24 @@ void CLiFFMap::organizeAsGrid() {
 
   ROS_INFO_STREAM("[CLiFFMap] Organized a cliffmap with resolution: "
                   << getResolution() << " m/cell.");
+}
+
+CLiFFMapMsg CLiFFMapClient::get() {
+  GetCLiFFMap msg;
+  if (!cliffmap_client.call(msg)) {
+    ROS_ERROR_STREAM(
+        "Failed to call CLiFF-Map msg. Service call failed. Empty map "
+        "returned.");
+    return CLiFFMapMsg();
+  }
+  ROS_INFO_STREAM("Got a CLiFF-Map msg.");
+  return msg.response.cliffmap;
+}
+
+CLiFFMapClient::CLiFFMapClient() {
+  cliffmap_client = nh.serviceClient<GetCLiFFMap>("get_cliffmap");
+  cliffmap_client.waitForExistence();
+  ROS_INFO_STREAM("Connected to STeF-Map server.");
 }
 
 }  // namespace cliffmap_ros

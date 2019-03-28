@@ -6,4 +6,4 @@ float64 y_max
 float64 cell_size
 int64 rows
 int64 columns
-STeFMapCellMsg[] cell
+STeFMapCellMsg[] cells

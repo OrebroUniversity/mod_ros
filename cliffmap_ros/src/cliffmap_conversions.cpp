@@ -21,21 +21,7 @@
 
 namespace cliffmap_ros {
 CLiFFMap mapFromROSMsg(const CLiFFMapMsg &cliffmap_msg) {
-  CLiFFMap cliffmap;
-
-  cliffmap.x_min_ = cliffmap_msg.x_min;
-  cliffmap.x_max_ = cliffmap_msg.x_max;
-  cliffmap.y_min_ = cliffmap_msg.y_min;
-  cliffmap.y_max_ = cliffmap_msg.y_max;
-
-  cliffmap.radius_ = cliffmap_msg.radius;
-  cliffmap.resolution_ = cliffmap_msg.resolution;
-
-  cliffmap.rows_ = cliffmap_msg.rows;
-  cliffmap.columns_ = cliffmap_msg.columns;
-
-  for (const auto &location : cliffmap_msg.locations)
-    cliffmap.locations_.push_back(locationFromROSMsg(location));
+  CLiFFMap cliffmap(cliffmap_msg);
   return cliffmap;
 }
 
