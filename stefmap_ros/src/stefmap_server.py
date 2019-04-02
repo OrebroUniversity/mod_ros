@@ -9,6 +9,8 @@ from os.path import expanduser
 import time as t
 
 predicted_probabilities = []
+stefmap_pub = None
+
 
 def result_fremen_callback(data):
 	global predicted_probabilities
@@ -31,8 +33,9 @@ def predict_map(timestamp,order):
 
 def handle_GetSTeFMap(req):
 	global predicted_probabilities
+	global stefmap_pub
 
-	predict_map(req.prediction_time,req.order)
+	predict_map(req.header.stamp.to_sec(),req.order)
 
 	rows = int((req.y_max - req.y_min)/req.cell_size)
 	columns = int((req.x_max - req.x_min)/req.cell_size)
@@ -51,7 +54,8 @@ def handle_GetSTeFMap(req):
 	# Creating the ros msg to has to be returned to client calling
 	mSTefMap = STeFMapMsg()
 
-	mSTefMap.prediction_time = req.prediction_time	
+	mSTefMap.header.frame_id = 'map'
+	mSTefMap.header.stamp = req.header.stamp	
 	mSTefMap.x_min = req.x_min
 	mSTefMap.x_max = req.x_max
 	mSTefMap.y_min = req.y_min
@@ -91,14 +95,18 @@ def handle_GetSTeFMap(req):
 			mSTefMap.cells.append(stefmap_cell)
 			index = index + 1
 
+	stefmap_pub.publish(mSTefMap)
 	print("STeFMap sent!")
 	return mSTefMap
 
-if __name__=="__main__":
 
+if __name__ == "__main__":
+    
 	rospy.init_node('get_stefmap_server')
-	rospy.Subscriber('/fremenarray/result',FremenArrayActionResult,result_fremen_callback)
-	stefmap_service = rospy.Service('get_stefmap',GetSTeFMap,handle_GetSTeFMap)
+	rospy.Subscriber('/fremenarray/result', FremenArrayActionResult, result_fremen_callback)
+	stefmap_service = rospy.Service('get_stefmap', GetSTeFMap, handle_GetSTeFMap)
+	
+	stefmap_pub = rospy.Publisher('/stefmap', STeFMapMsg, queue_size=1, latch=True)
 
 	print "Ready to provide STeF-Maps!"
 	rospy.spin()

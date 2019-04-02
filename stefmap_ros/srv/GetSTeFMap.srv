@@ -1,4 +1,4 @@
-int64 prediction_time
+Header header 
 int64 order
 float64 x_min
 float64 x_max

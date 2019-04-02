@@ -26,8 +26,11 @@
 
 #include <ros/console.h>
 #include <ros/ros.h>
+
 #include <stefmap_ros/GetSTeFMap.h>
 #include <stefmap_ros/STeFMapMsg.h>
+
+#include <std_msgs/Header.h>
 
 namespace stefmap_ros {
 
@@ -44,7 +47,7 @@ struct STeFMapCell {
 };
 
 class STeFMap {
-  double prediction_time_;
+  std_msgs::Header header;
   double x_min_;
   double x_max_;
   double y_min_;
@@ -55,7 +58,8 @@ class STeFMap {
   std::vector<STeFMapCellMsg> cells_;
 
  public:
-  inline double getPredictionTime() const { return prediction_time_; }
+  inline double getPredictionTime() const { return header.stamp.toSec(); }
+  inline std::string getFrameId() const { return header.frame_id; }
   inline double getXMin() const { return x_min_; }
   inline double getXMax() const { return x_max_; }
   inline double getYMin() const { return y_min_; }
