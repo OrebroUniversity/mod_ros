@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<package>
+  <name>stefmap_rviz_plugin</name>
+  <version>0.0.4</version>
+  <description>Provides an RViz plugin for stefmaps</description>
+
+  <maintainer email="chitt@aass.oru.se">Chittaranjan Srinivas Swaminathan</maintainer>
+
+  <license>LGPLv3</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>stefmap_ros</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>rviz</build_depend>
+  <build_depend>qtbase5-dev</build_depend>
+
+  <run_depend>libqt5-core</run_depend>
+  <run_depend>libqt5-gui</run_depend>
+  <run_depend>libqt5-widgets</run_depend>
+  <run_depend>stefmap_ros</run_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>rviz</run_depend>
+
+
+  <!-- The export tag contains other, unspecified, tags -->
+  <export>
+    <rviz plugin="${prefix}/plugin_description.xml" />
+  </export>
+</package>
