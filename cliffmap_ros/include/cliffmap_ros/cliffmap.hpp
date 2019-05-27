@@ -148,6 +148,8 @@ class CLiFFMap {
   CLiFFMapLocation at(size_t row, size_t col) const;
   CLiFFMapLocation atId(size_t id) const;
   CLiFFMapLocation operator()(double x, double y) const;
+  double getLikelihood(double x, double y, double heading, double speed) const;
+  double getBestHeading(double x, double y) const;
 
   void readFromXML(const std::string &fileName);
 

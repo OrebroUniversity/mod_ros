@@ -17,6 +17,9 @@
  *   <https://www.gnu.org/licenses/>.
  */
 
+#include <Eigen/Dense>
+#include <cmath>
+
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 #include <cliffmap_ros/cliffmap.hpp>
@@ -134,6 +137,63 @@ CLiFFMapLocation CLiFFMap::operator()(double x, double y) const {
   return this->at(row, col);
 }
 
+double CLiFFMap::getLikelihood(double x, double y, double heading,
+                               double speed) const {
+  CLiFFMapLocation loc = (*this)(x, y);
+
+  Eigen::Vector2d V;
+  V[0] = heading;
+  V[1] = speed;
+
+  double likelihood = 0.0;
+
+  for (const auto &dist : loc.distributions) {
+    Eigen::Matrix2d Sigma;
+    std::array<double, 4> sigma_array = dist.getCovariance();
+    Sigma(0, 0) = sigma_array[0];
+    Sigma(0, 1) = sigma_array[1];
+    Sigma(1, 0) = sigma_array[2];
+    Sigma(1, 1) = sigma_array[3];
+
+    Eigen::Vector2d myu;
+    myu[0] = atan2(sin(dist.getMeanHeading()), cos(dist.getMeanHeading()));
+    myu[1] = dist.getMeanSpeed();
+
+    double mahalanobis_sq = (V - myu).transpose() * Sigma.inverse() * (V - myu);
+
+    likelihood += (1 / (2 * M_PI)) * (1 / sqrt(Sigma.determinant())) *
+                  exp(-0.5 * mahalanobis_sq) * dist.getMixingFactor();
+  }
+  return likelihood;
+}
+
+double CLiFFMap::getBestHeading(double x, double y) const {
+  CLiFFMapLocation loc = (*this)(x, y);
+
+  double best_likelihood = 0.0;
+  double best_heading = 0.0;
+  for (const auto &dist : loc.distributions) {
+    Eigen::Matrix2d Sigma;
+    std::array<double, 4> sigma_array = dist.getCovariance();
+    Sigma(0, 0) = sigma_array[0];
+    Sigma(0, 1) = sigma_array[1];
+    Sigma(1, 0) = sigma_array[2];
+    Sigma(1, 1) = sigma_array[3];
+
+    Eigen::Vector2d myu;
+    myu[0] = atan2(sin(dist.getMeanHeading()), cos(dist.getMeanHeading()));
+    myu[1] = dist.getMeanSpeed();
+
+    double likelihood = (1 / (2 * M_PI)) * (1 / sqrt(Sigma.determinant())) * dist.getMixingFactor();
+    if(likelihood > best_likelihood) {
+      best_likelihood = likelihood;
+      best_heading = myu[0];
+    }
+  }
+  return best_heading;
+
+}
+
 void CLiFFMap::organizeAsGrid() {
   std::vector<CLiFFMapLocation> organizedLocations;
 
@@ -178,7 +238,7 @@ CLiFFMapMsg CLiFFMapClient::get() {
 CLiFFMapClient::CLiFFMapClient() {
   cliffmap_client = nh.serviceClient<GetCLiFFMap>("get_cliffmap");
   cliffmap_client.waitForExistence();
-  ROS_INFO_STREAM("Connected to STeF-Map server.");
+  ROS_INFO_STREAM("Connected to CLiFF-Map server.");
 }
 
 }  // namespace cliffmap_ros

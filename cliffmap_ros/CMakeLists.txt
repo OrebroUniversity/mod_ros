@@ -15,6 +15,8 @@ find_package(catkin REQUIRED COMPONENTS
 
 find_package(Boost REQUIRED)
 
+find_package(Eigen3 REQUIRED)
+
 add_message_files(
   FILES
   CLiFFMapLocationMsg.msg
@@ -38,7 +40,7 @@ catkin_package(
   INCLUDE_DIRS include
   LIBRARIES cliffmap_ros
   CATKIN_DEPENDS geometry_msgs roscpp std_msgs tf message_runtime
-  DEPENDS Boost
+  DEPENDS Boost Eigen3
 )
 
 ###########
@@ -47,6 +49,7 @@ catkin_package(
 
 include_directories(
   include
+  ${EIGEN3_INCLUDE_DIRS}
   ${catkin_INCLUDE_DIRS}
   ${Boost_INCLUDE_DIRS}
 )
@@ -61,7 +64,10 @@ add_dependencies(cliffmap_ros cliffmap_ros_generate_messages_cpp)
 target_link_libraries(cliffmap_ros ${catkin_LIBRARIES})
 
 add_executable(cliffmap_server src/cliffmap_server.cpp)
-target_link_libraries(cliffmap_server cliffmap_ros)
+target_link_libraries(cliffmap_server cliffmap_ros ${catkin_LIBRARIES})
+
+add_executable(test_cliffmap src/tests/test_cliffmap.cpp)
+target_link_libraries(test_cliffmap cliffmap_ros ${catkin_LIBRARIES})
 
 #############
 ## Install ##
