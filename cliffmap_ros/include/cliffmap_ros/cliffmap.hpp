@@ -175,6 +175,7 @@ class CLiFFMapClient {
 
  public:
   CLiFFMapClient();
+  
   CLiFFMapMsg get();
 };
 

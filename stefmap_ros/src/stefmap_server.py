@@ -44,9 +44,9 @@ def handle_GetSTeFMap(req):
 
 
 	while len(predicted_probabilities) == 0:
-		print len(predicted_probabilities)
-		print("waiting...")
-		t.sleep(0.1) 
+		#print len(predicted_probabilities)
+		rospy.logwarn_throttle(60, "[STeFMapServer]: Waiting for FreMEn services...")
+		t.sleep(1) 
 
 	prob_matrix[:,:,:] = np.reshape(predicted_probabilities,(rows,columns,8))
 	predicted_probabilities = []
