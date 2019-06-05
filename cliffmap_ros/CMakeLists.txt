@@ -66,9 +66,6 @@ target_link_libraries(cliffmap_ros ${catkin_LIBRARIES})
 add_executable(cliffmap_server src/cliffmap_server.cpp)
 target_link_libraries(cliffmap_server cliffmap_ros ${catkin_LIBRARIES})
 
-add_executable(test_cliffmap src/tests/test_cliffmap.cpp)
-target_link_libraries(test_cliffmap cliffmap_ros ${catkin_LIBRARIES})
-
 #############
 ## Install ##
 #############
