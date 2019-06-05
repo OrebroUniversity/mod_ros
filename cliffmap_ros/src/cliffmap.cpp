@@ -235,8 +235,8 @@ CLiFFMapMsg CLiFFMapClient::get() {
   return msg.response.cliffmap;
 }
 
-CLiFFMapClient::CLiFFMapClient() {
-  cliffmap_client = nh.serviceClient<GetCLiFFMap>("get_cliffmap");
+CLiFFMapClient::CLiFFMapClient(const std::string& service_name) {
+  cliffmap_client = nh.serviceClient<GetCLiFFMap>(service_name);
   cliffmap_client.waitForExistence();
   ROS_INFO_STREAM("Connected to CLiFF-Map server.");
 }

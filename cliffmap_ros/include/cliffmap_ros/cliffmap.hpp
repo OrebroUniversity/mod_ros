@@ -174,7 +174,7 @@ class CLiFFMapClient {
   ros::ServiceClient cliffmap_client;
 
  public:
-  CLiFFMapClient();
+  CLiFFMapClient(const std::string& service_name = "/get_cliffmap");
   
   CLiFFMapMsg get();
 };
