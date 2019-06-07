@@ -2,8 +2,8 @@
 Changelog for package pedsim_scenarios
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.0.5 (2019-06-07)
+------------------
 
 * Remove dependencies for pedsim_scenarios
 * Contributors: Chittaranjan Srinivas Swaminathan, Chittaranjan Swaminathan
