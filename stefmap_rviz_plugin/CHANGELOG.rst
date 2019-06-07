@@ -2,6 +2,9 @@
 Changelog for package stefmap_rviz_plugin
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.0.6 (2019-06-07)
 ------------------
 
