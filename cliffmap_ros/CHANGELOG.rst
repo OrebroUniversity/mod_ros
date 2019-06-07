@@ -2,6 +2,11 @@
 Changelog for package cliffmap_ros
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add eigen to package.xml
+* Contributors: Chittaranjan Swaminathan
+
 0.0.4 (2019-03-21)
 ------------------
 * Very few minor updates

@@ -2,6 +2,9 @@
 Changelog for package stefmap_ros
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.0.5 (2019-06-07)
 ------------------
 * STeF-map ROS is now part of MoD ROS package.
