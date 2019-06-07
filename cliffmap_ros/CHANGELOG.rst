@@ -2,8 +2,8 @@
 Changelog for package cliffmap_ros
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.0.7 (2019-06-07)
+------------------
 * Add parameters for topic, service and frame names
 * Contributors: Chittaranjan Swaminathan
 
