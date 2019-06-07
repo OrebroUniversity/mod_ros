@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>stefmap_ros</name>
-  <version>0.0.5</version>
+  <version>0.0.6</version>
   <description>The stefmap_ros package</description>
 
   <maintainer email="smolinamellado@lincoln.ac.uk">sergi</maintainer>
