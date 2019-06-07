@@ -42,14 +42,26 @@ int main(int argn, char *argv[]) {
     return -1;
   }
 
-  ros::NodeHandle nh;
+  ros::NodeHandle nh("~");
+  ros::NodeHandle nh_;
+
+  std::string cliffmap_topic_name = "/cliffmap";
+  std::string cliffmap_service_name = "/get_cliffmap";
+  std::string cliffmap_frame_id = "map";
+
+  nh.getParam("topic_name", cliffmap_topic_name);
+  nh.getParam("service_name", cliffmap_service_name);
+  nh.getParam("frame_id", cliffmap_frame_id);
+
   ros::Publisher cliffmap_pub =
-      nh.advertise<cliffmap_ros::CLiFFMapMsg>("cliffmap", 10, true);
+      nh_.advertise<cliffmap_ros::CLiFFMapMsg>(cliffmap_topic_name, 10, true);
   ROS_INFO("CLiFFMap will be published when there is a subscriber.");
 
-  ros::ServiceServer service_ = nh.advertiseService("get_cliffmap", callback);
+  ros::ServiceServer service_ = nh_.advertiseService(cliffmap_service_name, callback);
 
-  cliffmap_ros::CLiFFMap map(argv[1]);
+  cliffmap_ros::CLiFFMap map;
+  map.setFrameID(cliffmap_frame_id);
+  map.readFromXML(argv[1]);
   map.organizeAsGrid();
   cliffmap = mapToROSMsg(map);
 

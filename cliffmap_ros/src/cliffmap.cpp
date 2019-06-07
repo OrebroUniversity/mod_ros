@@ -29,6 +29,7 @@
 namespace cliffmap_ros {
 
 CLiFFMap::CLiFFMap(const CLiFFMapMsg &cliffmap_msg) {
+  frame_id_ = cliffmap_msg.header.frame_id;
   x_min_ = cliffmap_msg.x_min;
   x_max_ = cliffmap_msg.x_max;
   y_min_ = cliffmap_msg.y_min;
@@ -115,6 +116,9 @@ void CLiFFMap::readFromXML(const std::string &fileName) {
     this->locations_.push_back(location);
   }
   std::cout << "Read a cliffmap from XML" << std::endl;
+
+  // Frame ID:
+  std::cout << "Frame ID for cliffmap is: " << frame_id_;
 }
 
 CLiFFMapLocation CLiFFMap::at(size_t row, size_t col) const {

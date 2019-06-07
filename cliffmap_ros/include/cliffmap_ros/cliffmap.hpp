@@ -97,7 +97,7 @@ struct CLiFFMapLocation {
 };
 
 class CLiFFMap {
- public:
+public:
   double x_min_;
   double x_max_;
   double y_min_;
@@ -112,6 +112,12 @@ class CLiFFMap {
   // (columns_ - 1) * resolution_ = x_max_ - x_min_
   double columns_;
   bool organized_{false};
+
+  std::string frame_id_{std::string("")};
+
+  inline void setFrameID(const std::string &frame_id) { frame_id_ = frame_id; }
+
+  inline std::string getFrameID() const { return frame_id_; }
 
   std::vector<CLiFFMapLocation> locations_;
 
@@ -128,11 +134,14 @@ class CLiFFMap {
     return std::round((y - y_min_) / resolution_);
   }
 
-  CLiFFMap(const CLiFFMapMsg& cliffmap_msg);
+  CLiFFMap() {}
+
+  CLiFFMap(const CLiFFMapMsg &cliffmap_msg);
 
   inline CLiFFMap(const std::string &fileName, bool organize = false) {
     readFromXML(fileName);
-    if (organize) organizeAsGrid();
+    if (organize)
+      organizeAsGrid();
   }
   /**
    * Calling this function makes the locations accessible as a grid.
@@ -173,9 +182,9 @@ class CLiFFMapClient {
   ros::NodeHandle nh;
   ros::ServiceClient cliffmap_client;
 
- public:
-  CLiFFMapClient(const std::string& service_name = "/get_cliffmap");
-  
+public:
+  CLiFFMapClient(const std::string &service_name = "/get_cliffmap");
+
   CLiFFMapMsg get();
 };
 
@@ -200,23 +209,23 @@ class DijkstraGraph {
 
   Graph graph_;
 
- public:
+public:
   DijkstraGraph(const CLiFFMap &cliffmap);
   inline ~DijkstraGraph() {}
 };
 
 CLiFFMap mapFromROSMsg(const CLiFFMapMsg &cliffmap_msg);
-CLiFFMapLocation locationFromROSMsg(
-    const CLiFFMapLocationMsg &cliffmap_location_msg);
+CLiFFMapLocation
+locationFromROSMsg(const CLiFFMapLocationMsg &cliffmap_location_msg);
 CLiFFMapDistribution distributionFromROSMsg(
     const CLiFFMapDistributionMsg &cliffmap_distribution_msg);
 
 CLiFFMapMsg mapToROSMsg(const CLiFFMap &cliffmap);
 CLiFFMapLocationMsg locationToROSMsg(const CLiFFMapLocation &cliffmap_location);
-CLiFFMapDistributionMsg distributionToROSMsg(
-    const CLiFFMapDistribution &cliffmap_distribution);
+CLiFFMapDistributionMsg
+distributionToROSMsg(const CLiFFMapDistribution &cliffmap_distribution);
 
-}  // namespace cliffmap_ros
+} // namespace cliffmap_ros
 
 std::ostream &operator<<(std::ostream &, const cliffmap_ros::CLiFFMap &);
 std::ostream &operator<<(std::ostream &,

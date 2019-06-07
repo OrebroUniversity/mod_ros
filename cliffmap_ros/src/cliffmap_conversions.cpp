@@ -67,7 +67,7 @@ CLiFFMapDistribution distributionFromROSMsg(
 CLiFFMapMsg mapToROSMsg(const CLiFFMap &cliffmap) {
   CLiFFMapMsg cliffmap_msg;
 
-  cliffmap_msg.header.frame_id = "map";
+  cliffmap_msg.header.frame_id = cliffmap.getFrameID();
   cliffmap_msg.header.stamp = ros::Time::now();
 
   cliffmap_msg.x_min = cliffmap.x_min_;
