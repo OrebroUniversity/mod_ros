@@ -1,8 +1,8 @@
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Changelog for package cliffmap_rviz_plugin
+Changelog for package stefmap_rviz_plugin
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 0.0.4 (2019-03-21)
 ------------------
-* First CLiFFmap RViz Plugin. Also the best.
+* First STeF-map RViz Plugin. Also the best.
 * Contributors: Chittaranjan Swaminathan
