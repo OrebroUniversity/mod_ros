@@ -7,6 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 from sklearn import gaussian_process as gp
+import sys
 
 class trajectory:
     """A set of points which forms a trajectory"""
@@ -106,6 +107,7 @@ class trajectories:
                 self.pathdict.pop(key)
                 isdead = False
             else:
+                print key
                 minlength = min([np.linalg.norm(p1-p2) for p1, p2 in
                                  zip(self.pathdict[key].points, self.pathdict[key].points[1:])])
 
@@ -268,8 +270,8 @@ class trajectories:
         """generates two gaussian proccesses for x and y for each cluster"""
         class struct(NamedTuple):
             """simple struct for the two procesess"""
-            process_x: gp.GaussianProcessRegressor
-            process_y: gp.GaussianProcessRegressor
+            #process_x: gp.GaussianProcessRegressor
+            #process_y: gp.GaussianProcessRegressor
 
         self.normalize_timestamps()
         for cluster, value in clusters.items():
@@ -335,8 +337,8 @@ class trajectories:
         """predicts the future path of observations"""
         class struct(NamedTuple):
             """simple struct for the two procesess"""
-            process_x: gp.GaussianProcessRegressor
-            process_y: gp.GaussianProcessRegressor
+            #process_x: gp.GaussianProcessRegressor
+            #process_y: gp.GaussianProcessRegressor
 
         self.normalize_timestamps()
         for cluster, value in clusters.items():
@@ -831,12 +833,12 @@ def readcsvfile(filename='testfile.csv', numoftrajstoread=0):
 
             else:
                 if not isnewtrajectory:
-                    newtrajectory.add_point([int(row[2]), int(row[3]),float(row[0])])
+                    newtrajectory.add_point([int(float(row[2])), int(float(row[3])),float(row[0])])
 
                 else:
                     key = row[1]
                     newtrajectory = trajectory()
-                    newtrajectory.add_point([int(row[2]), int(row[3]),float(row[0])])
+                    newtrajectory.add_point([int(float(row[2])), int(float(row[3])),float(row[0])])
                     isnewtrajectory = False
 
 def generate_data(M,T, init_points, noise, Number_of_trajs):
@@ -874,48 +876,51 @@ trajs = trajectories()
 """Main calls
 here you can tweak different parameters
 """
-trajstoread = 100
-readcsvfile('testfile.csv', trajstoread)
-trajs.filter_noise(plotit=False)
-#avarage amount of points simple estimate for the interpolation
-#n = sum([len(trajs.pathdict[key].points) for key in trajs.pathdict])/len(trajs.pathdict)
 
-n = 37 #for 100 trajs
-#n = 36 #for 50 trajs
-#n = 23  #for 10 trajs
-#n = 10
+if __name__ == "__main__":
+    fileName = sys.argv[1]
+    trajstoread = 0
+    readcsvfile(fileName, trajstoread)
+    #trajs.filter_noise(plotit=False)
+    #avarage amount of points simple estimate for the interpolation
+    #n = sum([len(trajs.pathdict[key].points) for key in trajs.pathdict])/len(trajs.pathdict)
 
-trajs.interpol_points(int(n))
-#trajs.plot()
-#trajs.plot_in_timespace()
-#trajs.normalize_timestamps()
-#trajs.plot_in_timespace()
+    n = 37 #for 100 trajs
+    #n = 36 #for 50 trajs
+    #n = 23  #for 10 trajs
+    #n = 10
 
-T = n
-K = T #"Hyperparameter"
-M = 13 #number of clusters
+    trajs.interpol_points(int(n))
+    #trajs.plot()
+    #trajs.plot_in_timespace()
+    #trajs.normalize_timestamps()
+    #trajs.plot_in_timespace()
 
-CENTROIDS = trajs.generate_centroids(M, plotit=True, threshold=392000)
-#odels_created = [traj for _, traj in CENTROIDS.items()]
-#init_points = [0, 455, 1050]
-#noise = 10
-#Number_of_trajs = 40
-#generate_data(M,T, init_points, noise, Number_of_trajs)
+    T = n
+    K = T #"Hyperparameter"
+    M = 13 #number of clusters
 
-covariance = 1930
-GMM = GaussianMixtureModel(trajs,K,covariance,M, CENTROIDS)
-GMM.GMM()
+    CENTROIDS = trajs.generate_centroids(M, plotit=True, threshold=392000)
+    #odels_created = [traj for _, traj in CENTROIDS.items()]
+    #init_points = [0, 455, 1050]
+    #noise = 10
+    #Number_of_trajs = 40
+    #generate_data(M,T, init_points, noise, Number_of_trajs)
 
-#K=11 #for 100 trajs
-#K=2 #for 10 trajs
-#trajs.elbow_method_for_k(2, trajstoread-20)
-#26 for 50
-K=M
+    covariance = 1930
+    GMM = GaussianMixtureModel(trajs,K,covariance,M, CENTROIDS)
+    GMM.GMM()
 
-#CLUSTERS = trajs.kmeansclustering(K, 16000, 5, True, centroids=CENTROIDS)[0]
-#CLUSTERS = trajs.kmeansclustering(K, 6500, 5, True)[0]
-#trajs.numofpoints = T
-#trajs.generate_guassian_processes(CLUSTERS, True, plotcov=True, x_noise_bounds=(1e-5, 1.0), y_noise_bounds=(1e-5, 10000.0),
+    #K=11 #for 100 trajs
+    #K=2 #for 10 trajs
+    #trajs.elbow_method_for_k(2, trajstoread-20)
+    #26 for 50
+    K=M
+
+    #CLUSTERS = trajs.kmeansclustering(K, 16000, 5, True, centroids=CENTROIDS)[0]
+    #CLUSTERS = trajs.kmeansclustering(K, 6500, 5, True)[0]
+    #trajs.numofpoints = T
+    #trajs.generate_guassian_processes(CLUSTERS, True, plotcov=True, x_noise_bounds=(1e-5, 1.0), y_noise_bounds=(1e-5, 10000.0),
 #                                  x_lengthscale_bounds=(1.0, 1e5), y_lengthscale_bounds=(1.0, 1e5))
-#trajs.gaussian_process_prediction(clusters=CLUSTERS)
-#trajs.plotproceses_in_xy_plane()
+    #trajs.gaussian_process_prediction(clusters=CLUSTERS)
+    #trajs.plotproceses_in_xy_plane()
