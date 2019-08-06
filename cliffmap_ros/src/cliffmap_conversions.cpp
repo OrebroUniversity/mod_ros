@@ -13,7 +13,7 @@
  *   GNU Lesser General Public License for more details.
  *
  *   You should have received a copy of the GNU Lesser General Public License
- *   along with cliffmap_rviz_plugin.  If not, see
+ *   along with cliffmap_ros.  If not, see
  *   <https://www.gnu.org/licenses/>.
  */
 
