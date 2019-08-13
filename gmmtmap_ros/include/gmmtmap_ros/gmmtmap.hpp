@@ -17,15 +17,25 @@
  *   <https://www.gnu.org/licenses/>.
  */
 
-#include <ros/ros.h>
 #include <gmmtmap_ros/GMMTMapMsg.h>
+#include <ros/ros.h>
 
-#include <vector>
 #include <array>
+#include <vector>
 
 #include <Eigen/Core>
 
+#include <boost/chrono.hpp>
+#include <boost/geometry/geometries/point_xy.hpp>
+#include <boost/geometry/index/rtree.hpp>
+
 namespace gmmtmap_ros {
+
+namespace bg = boost::geometry;
+namespace bgi = boost::geometry::index;
+
+typedef bg::model::d2::point_xy<double> Point2D;
+typedef bg::model::box<Point2D> Box;
 
 struct GMMTMapCluster {
   /// Mixing factor
@@ -34,33 +44,46 @@ struct GMMTMapCluster {
   /// Cluster means
   std::vector<std::array<double, 2>> mean;
 
-  inline GMMTMapCluster() {}
-  inline GMMTMapCluster(double pi, std::vector<std::array<double, 2>> mean) {
+  std::vector<double> heading;
+
+  inline GMMTMapCluster() = default;
+  inline GMMTMapCluster(double pi,
+                        const std::vector<std::array<double, 2>> &mean,
+                        std::vector<double> heading) {
     this->mixing_factor = pi;
     this->mean = mean;
+    this->heading = heading;
   }
 };
 
 class GMMTMap {
- public:
+public:
+  explicit GMMTMap(const gmmtmap_ros::GMMTMapMsg &msg);
+  explicit GMMTMap(const std::string &fileName) { readFromXML(fileName); }
 
-  explicit GMMTMap(const gmmtmap_ros::GMMTMapMsg& msg);
-  explicit GMMTMap(const std::string& fileName) { readFromXML(fileName); }
-
-  void readFromXML(const std::string& fileName);
+  void readFromXML(const std::string &fileName);
   gmmtmap_ros::GMMTMapMsg toROSMsg();
+
+  void computeHeadingAndConstructRTree();
+
+  std::vector<std::pair<Point2D, double>> getNearestNeighbors(double x,
+                                                              double y);
 
   inline int getM() { return M_; }
   inline int getK() { return K_; }
   inline double getStdDev() { return stddev_; }
   inline std::string getFrameID() { return frame_id_; }
 
-  inline void setFrameID(const std::string& frame_id) { this->frame_id_ = frame_id; }
- protected:
+  inline void setFrameID(const std::string &frame_id) {
+    this->frame_id_ = frame_id;
+  }
+
+protected:
   int M_;
   int K_;
   double stddev_;
   std::vector<GMMTMapCluster> clusters_;
+  bgi::rtree<std::pair<Point2D, double>, bgi::quadratic<16>> rtree_;
   std::string frame_id_;
 };
 

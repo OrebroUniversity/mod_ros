@@ -19,8 +19,8 @@
 
 #include <ros/ros.h>
 
-#include <gmmtmap_ros/gmmtmap.hpp>
 #include <gmmtmap_ros/GetGMMTMap.h>
+#include <gmmtmap_ros/gmmtmap.hpp>
 
 gmmtmap_ros::GMMTMapMsg gmmtmap;
 
@@ -30,8 +30,7 @@ bool callback(gmmtmap_ros::GetGMMTMap::Request &req,
   return true;
 }
 
-
-int main(int argn, char* args[]) {
+int main(int argn, char *args[]) {
   ros::init(argn, args, "gmmtmap_server");
 
   ros::NodeHandle nh_private("~");
@@ -49,7 +48,8 @@ int main(int argn, char* args[]) {
       nh.advertise<gmmtmap_ros::GMMTMapMsg>(gmmtmap_topic_name, 10, true);
   ROS_INFO("gmmtmap will be published when there is a subscriber.");
 
-  ros::ServiceServer service_ = nh.advertiseService(gmmtmap_service_name, callback);
+  ros::ServiceServer service_ =
+      nh.advertiseService(gmmtmap_service_name, callback);
 
   gmmtmap_ros::GMMTMap map(args[1]);
   map.setFrameID(gmmtmap_frame_id);
@@ -58,7 +58,14 @@ int main(int argn, char* args[]) {
 
   gmmtmap_pub.publish(gmmtmap);
 
+  ROS_INFO("Called.");
+  auto returned = map.getNearestNeighbors(6, 13);
+
+  std::cout << "Returned Values:" << std::endl;
+  for (const auto &val : returned) {
+    printf("(%lf, %lf),\n", val.first.get<0>(), val.first.get<1>());
+  }
+
   ros::spin();
   return 0;
 }
-

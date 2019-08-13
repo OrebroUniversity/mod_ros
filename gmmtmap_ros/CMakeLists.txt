@@ -12,7 +12,10 @@ find_package(catkin REQUIRED COMPONENTS
    tf
    message_generation)
 
-find_package(Boost REQUIRED)
+find_package(Boost REQUIRED
+   COMPONENTS
+   system
+   chrono)
 
 find_package(Eigen3 REQUIRED)
 
@@ -56,6 +59,9 @@ target_link_libraries(gmmtmap_ros ${catkin_LIBRARIES})
 
 add_executable(gmmtmap_server src/gmmtmap_server.cpp)
 target_link_libraries(gmmtmap_server gmmtmap_ros ${catkin_LIBRARIES})
+
+add_executable(rtree_test src/rtree_test.cpp)
+target_link_libraries(rtree_test ${Boost_LIBRARIES})
 
 #############
 ## Install ##
