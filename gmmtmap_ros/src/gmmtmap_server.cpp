@@ -53,18 +53,8 @@ int main(int argn, char *args[]) {
 
   gmmtmap_ros::GMMTMap map(args[1]);
   map.setFrameID(gmmtmap_frame_id);
-
   gmmtmap = map.toROSMsg();
-
   gmmtmap_pub.publish(gmmtmap);
-
-  ROS_INFO("Called.");
-  auto returned = map.getNearestNeighbors(6, 13);
-
-  std::cout << "Returned Values:" << std::endl;
-  for (const auto &val : returned) {
-    printf("(%lf, %lf),\n", val.first.get<0>(), val.first.get<1>());
-  }
 
   ros::spin();
   return 0;

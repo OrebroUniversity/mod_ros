@@ -29,10 +29,13 @@ GMMTMap::GMMTMap(const gmmtmap_ros::GMMTMapMsg &msg) {
   this->stddev_ = msg.stddev;
   this->frame_id_ = msg.header.frame_id;
 
-  for (auto cluster_msg : msg.clusters) {
+  for (size_t cluster_id = 0; cluster_id < msg.clusters.size(); cluster_id++) {
+
+    auto cluster_msg = msg.clusters[cluster_id];
+
     gmmtmap_ros::GMMTMapCluster cluster;
     cluster.mixing_factor = cluster_msg.mixing_factor;
-    for (auto i = 0; i < cluster_msg.mean.size(); i++) {
+    for (size_t i = 0; i < cluster_msg.mean.size(); i++) {
 
       const auto &point = cluster_msg.mean[i];
       double heading;
@@ -50,7 +53,8 @@ GMMTMap::GMMTMap(const gmmtmap_ros::GMMTMapMsg &msg) {
 
       cluster.heading.push_back(heading);
       cluster.mean.push_back({point.x, point.y});
-      this->rtree_.insert(std::make_pair(Point2D(point.x, point.y), heading));
+      this->rtree_.insert(std::make_pair(
+          Point2D(point.x, point.y), std::array<size_t, 2>({cluster_id, i})));
     }
     this->clusters_.push_back(cluster);
   }
@@ -77,9 +81,8 @@ gmmtmap_ros::GMMTMapMsg GMMTMap::toROSMsg() {
   return msg;
 }
 
-std::vector<std::pair<Point2D, double>> GMMTMap::getNearestNeighbors(double x,
-                                                                     double y) {
-  std::vector<std::pair<Point2D, double>> returned;
+std::vector<TreeValue> GMMTMap::getNearestNeighbors(double x, double y) {
+  std::vector<TreeValue> returned;
   Point2D query_pt(x, y);
   Box query_box(Point2D(query_pt.get<0>() - this->stddev_,
                         query_pt.get<1>() - this->stddev_),
@@ -90,19 +93,40 @@ std::vector<std::pair<Point2D, double>> GMMTMap::getNearestNeighbors(double x,
            query_box.max_corner().get<0>(), query_box.max_corner().get<1>(),
            query_box.min_corner().get<0>(), query_box.min_corner().get<1>());
 
-//  rtree_.query(bgi::satisfies([&](std::pair<Point2D, double> V) {
-//                 return bg::distance(V.first, query_pt) < 20.5;
-//               }),
-//               std::back_inserter(returned));
+  //  rtree_.query(bgi::satisfies([&](TreeValue V) {
+  //                 return bg::distance(V.first, query_pt) < 20.5;
+  //               }),
+  //               std::back_inserter(returned));
 
-  rtree_.query(bgi::within(query_box), std::back_inserter(returned));
+  rtree_.query(bgi::within(query_box) && bgi::satisfies([&](TreeValue V) {
+                 return bg::distance(V.first, query_pt) < this->stddev_;
+               }),
+               std::back_inserter(returned));
+
+  std::sort(returned.begin(), returned.end(), [&](TreeValue a, TreeValue b) {
+    return bg::distance(a.first, query_pt) < bg::distance(b.first, query_pt);
+  });
+
+  std::vector<int> mps;
+  for (auto value = returned.begin(); value != returned.end();) {
+    if (std::find(mps.begin(), mps.end(), value->second[0]) == mps.end()) {
+      mps.push_back(value->second[0]);
+      ++value;
+    }
+    else {
+      value = returned.erase(value);
+    }
+  }
 
   return returned;
 }
 
 void GMMTMap::computeHeadingAndConstructRTree() {
-  for (auto cluster : this->clusters_) {
-    for (auto i = 0; i < cluster.mean.size(); i++) {
+  for (size_t cluster_id = 0; cluster_id < this->clusters_.size();
+       cluster_id++) {
+    auto cluster = this->clusters_[cluster_id];
+
+    for (size_t i = 0; i < cluster.mean.size(); i++) {
 
       const auto &point = cluster.mean[i];
       double heading;
@@ -119,7 +143,8 @@ void GMMTMap::computeHeadingAndConstructRTree() {
       }
 
       cluster.heading.push_back(heading);
-      this->rtree_.insert(std::make_pair(Point2D(point[0], point[1]), heading));
+      this->rtree_.insert(std::make_pair(
+          Point2D(point[0], point[1]), std::array<size_t, 2>({cluster_id, i})));
     }
   }
 }
@@ -145,8 +170,6 @@ void GMMTMap::readFromXML(const std::string &fileName) {
   }
 
   this->computeHeadingAndConstructRTree();
-  ROS_INFO("SIZE OF TREE %ld", this->rtree_.size());
-
   ROS_INFO("Read a GMMT-map with %d clusters each containing %d gaussians",
            this->M_, this->K_);
 }
