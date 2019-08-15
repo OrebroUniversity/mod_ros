@@ -60,7 +60,7 @@ GMMTMap::GMMTMap(const gmmtmap_ros::GMMTMapMsg &msg) {
   }
 }
 
-gmmtmap_ros::GMMTMapMsg GMMTMap::toROSMsg() {
+gmmtmap_ros::GMMTMapMsg GMMTMap::toROSMsg() const {
   GMMTMapMsg msg;
   msg.K = this->K_;
   msg.M = this->M_;
@@ -81,7 +81,7 @@ gmmtmap_ros::GMMTMapMsg GMMTMap::toROSMsg() {
   return msg;
 }
 
-std::vector<TreeValue> GMMTMap::getNearestNeighbors(double x, double y) {
+std::vector<TreeValue> GMMTMap::getNearestNeighbors(double x, double y) const {
   std::vector<TreeValue> returned;
   Point2D query_pt(x, y);
   Box query_box(Point2D(query_pt.get<0>() - this->stddev_,

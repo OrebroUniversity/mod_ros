@@ -90,7 +90,7 @@ public:
    * \brief Convert this GMMTMap object to a ROS message.
    * \return The converted ROS message.
    */
-  gmmtmap_ros::GMMTMapMsg toROSMsg();
+  gmmtmap_ros::GMMTMapMsg toROSMsg() const;
 
   /**
    * \brief Prepares the Boost RTree and computes all headings as well.
@@ -107,31 +107,35 @@ public:
    * \return Closest points with their cluster_id
    * and 'k'.
    */
-  std::vector<TreeValue> getNearestNeighbors(double x, double y);
+  std::vector<TreeValue> getNearestNeighbors(double x, double y) const;
+
+  inline std::vector<TreeValue> operator()(double x, double y) const {
+    this->getNearestNeighbors(x, y);
+  };
 
   /**
    * \brief Get the number of motion patterns in this GMMT-map.
    * \return The number of motion patterns.
    */
-  inline int getM() { return M_; }
+  inline int getM() const { return M_; }
 
   /**
    * \brief Get the number of Gaussians in each motion pattern.
    * \return The number of Gaussians.
    */
-  inline int getK() { return K_; }
+  inline int getK() const { return K_; }
 
   /**
    * \brief Get the standard deviation of each Gaussian.
    * \return The standard deviation.
    */
-  inline double getStdDev() { return stddev_; }
+  inline double getStdDev() const { return stddev_; }
 
   /**
    * \brief Get the Frame ID used in ROS messages.
    * \return ROS message header.frame_id.
    */
-  inline std::string getFrameID() { return frame_id_; }
+  inline std::string getFrameID() const { return frame_id_; }
 
   /**
    * \brief Set the frame ID in ROS message.

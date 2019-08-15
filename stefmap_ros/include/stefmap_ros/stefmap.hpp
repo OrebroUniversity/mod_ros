@@ -20,8 +20,8 @@
 
 #pragma once
 
-#include <stdint.h>
 #include <array>
+#include <stdint.h>
 #include <vector>
 
 #include <ros/console.h>
@@ -43,7 +43,7 @@ struct STeFMapCell {
   std::array<double, 8> probabilities;
 
   STeFMapCell();
-  STeFMapCell(const STeFMapCellMsg& cell_msg);
+  STeFMapCell(const STeFMapCellMsg &cell_msg);
 };
 
 class STeFMap {
@@ -57,7 +57,7 @@ class STeFMap {
   size_t columns_;
   std::vector<STeFMapCellMsg> cells_;
 
- public:
+public:
   inline double getPredictionTime() const { return header.stamp.toSec(); }
   inline std::string getFrameId() const { return header.frame_id; }
   inline double getXMin() const { return x_min_; }
@@ -82,7 +82,7 @@ class STeFMap {
   STeFMapCell at(size_t row, size_t col) const;
   STeFMapCell operator()(double x, double y) const;
 
-  STeFMap(const STeFMapMsg& stefmap_msg);
+  STeFMap(const STeFMapMsg &stefmap_msg);
 
   virtual ~STeFMap() {}
 };
@@ -97,5 +97,8 @@ public:
   STeFMapMsg get(double prediction_time, int order, double x_min, double x_max,
                  double y_min, double y_max, double cell_size);
 };
+
+typedef std::shared_ptr<STeFMap> STeFMapPtr;
+typedef std::shared_ptr<const STeFMap> STeFMapConstPtr;
 
 } /* namespace stefmap_ros */
