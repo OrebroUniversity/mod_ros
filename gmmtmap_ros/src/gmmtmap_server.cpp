@@ -50,7 +50,7 @@ int main(int argn, char *args[]) {
 
   ros::ServiceServer service_ =
       nh.advertiseService(gmmtmap_service_name, callback);
-
+  
   gmmtmap_ros::GMMTMap map(args[1]);
   map.setFrameID(gmmtmap_frame_id);
   gmmtmap = map.toROSMsg();
