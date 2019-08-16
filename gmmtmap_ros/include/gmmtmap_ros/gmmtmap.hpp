@@ -17,8 +17,11 @@
  *   <https://www.gnu.org/licenses/>.
  */
 
-#include <gmmtmap_ros/GMMTMapMsg.h>
 #include <ros/ros.h>
+#include <ros/console.h>
+
+#include <gmmtmap_ros/GMMTMapMsg.h>
+#include <gmmtmap_ros/GetGMMTMap.h>
 
 #include <array>
 #include <vector>
@@ -168,5 +171,15 @@ protected:
 
 typedef std::shared_ptr<GMMTMap> GMMTMapPtr;
 typedef std::shared_ptr<const GMMTMap> GMMTMapConstPtr;
+
+class GMMTMapClient {
+  ros::NodeHandle nh;
+  ros::ServiceClient gmmtmap_client;
+
+public:
+  GMMTMapClient(const std::string& service_name = "get_gmmtmap");
+
+  GMMTMapMsg get();
+};
 
 }

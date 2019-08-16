@@ -174,4 +174,21 @@ void GMMTMap::readFromXML(const std::string &fileName) {
            this->M_, this->K_);
 }
 
+GMMTMapClient::GMMTMapClient(const std::string &service_name) {
+  gmmtmap_client = nh.serviceClient<GetGMMTMap>(service_name);
+  gmmtmap_client.waitForExistence();
+  ROS_INFO_STREAM("Connected to GMMT-map server");
+}
+
+GMMTMapMsg GMMTMapClient::get() {
+  GetGMMTMap msg;
+  if (!gmmtmap_client.call(msg)) {
+    ROS_ERROR_STREAM("Failed to call GMMT-map server. Service call failed. "
+                     "Empty map returned.");
+    return GMMTMapMsg();
+  }
+  ROS_INFO_STREAM("Got a GMMT-map from server.");
+  return msg.response.gmmtmap;
+}
+
 }
