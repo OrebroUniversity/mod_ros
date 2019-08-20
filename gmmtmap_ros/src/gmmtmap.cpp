@@ -89,15 +89,6 @@ std::vector<TreeValue> GMMTMap::getNearestNeighbors(double x, double y) const {
                 Point2D(query_pt.get<0>() + this->stddev_,
                         query_pt.get<1>() + this->stddev_));
 
-  ROS_INFO("Query box is: (%lf, %lf), (%lf, %lf)",
-           query_box.max_corner().get<0>(), query_box.max_corner().get<1>(),
-           query_box.min_corner().get<0>(), query_box.min_corner().get<1>());
-
-  //  rtree_.query(bgi::satisfies([&](TreeValue V) {
-  //                 return bg::distance(V.first, query_pt) < 20.5;
-  //               }),
-  //               std::back_inserter(returned));
-
   rtree_.query(bgi::within(query_box) && bgi::satisfies([&](TreeValue V) {
                  return bg::distance(V.first, query_pt) < this->stddev_;
                }),

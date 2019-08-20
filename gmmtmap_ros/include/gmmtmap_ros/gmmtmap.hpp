@@ -17,6 +17,8 @@
  *   <https://www.gnu.org/licenses/>.
  */
 
+#pragma once
+
 #include <ros/ros.h>
 #include <ros/console.h>
 
@@ -75,7 +77,7 @@ public:
    * \brief Constructor converts a ROS Message directly to a GMMTMap object.
    * \param msg The ROS message to convert.
    */
-  explicit GMMTMap(const gmmtmap_ros::GMMTMapMsg &msg);
+  GMMTMap(const gmmtmap_ros::GMMTMapMsg &msg);
 
   /**
    * \brief Constructor that reads a GMMTMap from an xml file.
@@ -113,7 +115,7 @@ public:
   std::vector<TreeValue> getNearestNeighbors(double x, double y) const;
 
   inline std::vector<TreeValue> operator()(double x, double y) const {
-    this->getNearestNeighbors(x, y);
+    return this->getNearestNeighbors(x, y);
   };
 
   /**
