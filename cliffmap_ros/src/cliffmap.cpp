@@ -75,8 +75,6 @@ void CLiFFMap::readFromXML(const std::string &fileName) {
                        << ex.what());
           location.p = 1.0;
         }
-      else
-        location.p = 1.0;
 
       if (vLocProperty.first == "q") try {
           location.q = vLocation.second.get<double>("q");
@@ -86,8 +84,6 @@ void CLiFFMap::readFromXML(const std::string &fileName) {
                        << ex.what());
           location.q = 1.0;
         }
-      else
-        location.q = 1.0;
 
       if (vLocProperty.first == "pose") {
         location.position[0] = vLocProperty.second.get<double>("x");
