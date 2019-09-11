@@ -17,7 +17,7 @@
  *   <https://www.gnu.org/licenses/>.
  */
 
-#include "cliffmap_visual.h"
+#include "gmmtmap_visual.h"
 #include <ros/console.h>
 
 namespace gmmtmap_rviz_plugin {

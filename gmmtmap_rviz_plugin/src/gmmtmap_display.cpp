@@ -17,7 +17,7 @@
  *   <https://www.gnu.org/licenses/>.
  */
 
-#include "cliffmap_display.h"
+#include "gmmtmap_display.h"
 
 namespace gmmtmap_rviz_plugin {
 
