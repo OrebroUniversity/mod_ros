@@ -32,7 +32,7 @@
 #include <rviz/visualization_manager.h>
 #include <tf/transform_listener.h>
 
-#include "cliffmap_visual.h"
+#include "gmmtmap_visual.h"
 #include <gmmtmap_ros/GMMTMapMsg.h>
 
 #endif
