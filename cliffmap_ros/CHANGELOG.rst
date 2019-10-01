@@ -2,6 +2,10 @@
 Changelog for package cliffmap_ros
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Bug fixes. CLiFF-map p and q values were not read properly before.
+
 0.0.7 (2019-06-07)
 ------------------
 * Add parameters for topic, service and frame names
