@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>pedsim_scenarios</name>
-  <version>0.0.7</version>
+  <version>1.0.0</version>
   <description>Some simulation scenarios for pedsim</description>
   <maintainer email="chitt@aass.oru.se">Chittaranjan Swaminathan</maintainer>
   <license>LGPLv3</license>

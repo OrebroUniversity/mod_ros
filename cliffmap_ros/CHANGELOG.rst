@@ -2,8 +2,8 @@
 Changelog for package cliffmap_ros
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.0 (2019-10-02)
+------------------
 * Bug fixes. CLiFF-map p and q values were not read properly before.
 
 0.0.7 (2019-06-07)
