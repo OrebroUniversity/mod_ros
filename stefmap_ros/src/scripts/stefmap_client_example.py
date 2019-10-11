@@ -2,26 +2,18 @@
 
 import sys
 import rospy
-from stefmap_ros.srv import GetSTeFMapMsg
-
-def add_two_ints_client(x, y):
-    rospy.wait_for_service('add_two_ints')
-    try:
-        add_two_ints = rospy.ServiceProxy('add_two_ints', AddTwoInts)
-        resp1 = add_two_ints(x, y)
-        return resp1.sum
-    except rospy.ServiceException, e:
-        print "Service call failed: %s"%e
+from stefmap_ros.srv import GetSTeFMap
+from std_msgs.msg import Header
 
 
 if __name__ == "__main__":
-    prediction_time = 1352265000
-    order = 2
-    x_min = -45
-    x_max = 55
-    y_min = -35
-    y_max = 30
+    prediction_time = 0
+    x_min = -10 # meters
+    x_max = 60   # meters
+    y_min = -10 # meters
+    y_max = 50 # meters
     cell_size = 1
+    order = 1
 
     print "Requesting STeF-Map with the following parameters:\n"
     print "  Time to predict: %s"%(prediction_time)
@@ -33,11 +25,17 @@ if __name__ == "__main__":
     print "  Cell size:%s"%(cell_size)
 
     rospy.wait_for_service('get_stefmap')
-    try:
-        get_stefmap = rospy.ServiceProxy('get_stefmap', GetSTeFMap)
-        stefmap = get_stefmap(prediction_time,order,x_min,x_max,y_min,y_max,cell_size)
-        print stefmap 
     
-    except rospy.ServiceException, e:
-        print "Service call failed: %s"%e 
+    while 1==1:
+        try:
+            prediction_time = prediction_time + 1800
+            get_stefmap = rospy.ServiceProxy('get_stefmap', GetSTeFMap)
+            h = Header()
+            h.stamp.secs = prediction_time
+            h.frame_id = 'map2'
+            stefmap = get_stefmap(h,order,x_min,x_max,y_min,y_max,cell_size)
+            rospy.sleep(0.2)
+        
+        except rospy.ServiceException, e:
+            print "Service call failed: %s"%e 
 

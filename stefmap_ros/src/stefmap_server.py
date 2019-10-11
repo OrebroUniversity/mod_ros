@@ -46,8 +46,8 @@ def handle_GetSTeFMap(req):
 	# Creating the ros msg to has to be returned to client calling
 	mSTefMap = STeFMapMsg()
 
-	mSTefMap.header.frame_id = 'map'
-	mSTefMap.header.stamp = req.header.stamp	
+	mSTefMap.header.frame_id = req.header.frame_id
+	#mSTefMap.header.stamp = 0	
 	mSTefMap.x_min = req.x_min
 	mSTefMap.x_max = req.x_max
 	mSTefMap.y_min = req.y_min

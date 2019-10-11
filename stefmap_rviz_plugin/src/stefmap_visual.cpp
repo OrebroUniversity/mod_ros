@@ -56,9 +56,9 @@ void STeFMapVisual::setColor(float r, float g, float b, float a) {
   color_[1] = g;
   color_[2] = b;
 
-  for (auto& arrow : stefmap_arrows_) {
-    arrow->setColor(color_[0], color_[1], color_[2], color_[3]);
-  }
+  //for (auto& arrow : stefmap_arrows_) {
+  //  arrow->setColor(color_[0], color_[1], color_[2], color_[3]);
+  //}
 }
 
 void STeFMapVisual::setArrowSize(float size_multiplier) {
@@ -104,11 +104,19 @@ void STeFMapVisual::setMessage(const stefmap_ros::STeFMapMsg::ConstPtr& msg) {
       this_arrow->setPosition(Ogre::Vector3(x, y, 0.1));
       Ogre::Quaternion q;
       q.FromAngleAxis(Ogre::Degree(theta), Ogre::Vector3::UNIT_Z);
-      this_arrow->setOrientation(
-          q * Ogre::Quaternion(Ogre::Degree(-90), Ogre::Vector3::UNIT_Y));
-      this_arrow->setColor(color_[0], color_[1], color_[2], color_[3]);
+      this_arrow->setOrientation( q * Ogre::Quaternion(Ogre::Degree(-90), Ogre::Vector3::UNIT_Y));
+      if (theta == 0)   this_arrow->setColor( 0   , 0    , 1   , 1 ); 
+      if (theta == 45)  this_arrow->setColor( 0.4 , 0.2  , 0   , 1 ); 
+      if (theta == 90)  this_arrow->setColor( 1   , 0    , 0   , 1 );
+      if (theta == 135) this_arrow->setColor( 1   , 0.65 , 0   , 1 );
+      if (theta == 180) this_arrow->setColor( 0   , 1    , 0   , 1 );
+      if (theta == 225) this_arrow->setColor( 0   , 1    , 1   , 1 );
+      if (theta == 270) this_arrow->setColor( 1   , 0.4  , 1   , 1 );
+      if (theta == 315) this_arrow->setColor( 1   , 0.4  , 1   , 1 );
+      if (theta == 360) this_arrow->setColor( 0.6 , 0    , 0.6 , 1 );
+
       this_arrow->setScale(
-          Ogre::Vector3(size_multiplier_, size_multiplier_, size_multiplier_));
+          Ogre::Vector3(1.5, 1.5, 1.5));
       stefmap_arrows_.push_back(this_arrow);
     }
 //  }
