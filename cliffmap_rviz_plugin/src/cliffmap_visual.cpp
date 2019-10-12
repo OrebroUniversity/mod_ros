@@ -56,9 +56,9 @@ void CLiFFMapVisual::setColor(float r, float g, float b, float a) {
   color_[1] = g;
   color_[2] = b;
 
-  for (auto& arrow : cliffmap_arrows_) {
-    arrow->setColor(color_[0], color_[1], color_[2], color_[3]);
-  }
+  //for (auto& arrow : cliffmap_arrows_) {
+  //  arrow->setColor(color_[0], color_[1], color_[2], color_[3]);
+  //}
 }
 
 void CLiFFMapVisual::setArrowSize(float size_multiplier) {
@@ -101,7 +101,22 @@ void CLiFFMapVisual::setMessage(
       q.FromAngleAxis(Ogre::Radian(theta), Ogre::Vector3::UNIT_Z);
       this_arrow->setOrientation(
           q * Ogre::Quaternion(Ogre::Degree(-90), Ogre::Vector3::UNIT_Y));
-      this_arrow->setColor(color_[0], color_[1], color_[2], color_[3]);
+      float theta2;
+      if (theta < 0) {
+        theta2 = theta + 2*3.1415;
+      } else
+        theta2 = theta;
+
+      //this_arrow->setColor(color_[0], color_[1], color_[2], color_[3]);
+      if      (theta2 > 5.89 || theta2 <= 0.39 ){ this_arrow->setColor( 0   , 0    , 1   , 1 ); }
+      else if (theta2 > 0.39 && theta2 <= 1.18 ){ this_arrow->setColor( 0.4 , 0.2  , 0   , 1 ); }
+      else if (theta2 > 1.18 && theta2 <= 1.96 ){ this_arrow->setColor( 1   , 0    , 0   , 1 ); }
+      else if (theta2 > 1.96 && theta2 <= 2.75 ){ this_arrow->setColor( 1   , 0.65 , 0   , 1 ); }
+      else if (theta2 > 2.75 && theta2 <= 3.53 ){ this_arrow->setColor( 0   , 1    , 0   , 1 ); }
+      else if (theta2 > 3.53 && theta2 <= 4.32 ){ this_arrow->setColor( 0   , 1    , 1   , 1 ); }
+      else if (theta2 > 4.32 && theta2 <= 5.10 ){ this_arrow->setColor( 1   , 0.4  , 1   , 1 ); }
+      else if (theta2 > 5.10 && theta2 <= 5.89 ){ this_arrow->setColor( 0.6 , 0    , 0.6 , 1 ); }
+
       //      Ogre::Vector3 scale(size_multiplier_ * speed / 5.0,
       //                          size_multiplier_ * 0.035, size_multiplier_ *
       //                          0.015);
