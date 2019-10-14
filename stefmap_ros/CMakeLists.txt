@@ -9,6 +9,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   message_generation
   std_msgs
+  dynamic_reconfigure
 )
 
 ## Generate messages in the 'msg' folder
@@ -31,6 +32,10 @@ generate_messages(
    std_msgs
  )
 
+ generate_dynamic_reconfigure_options(
+  cfg/stefmapclient.cfg
+)
+
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES stefmap_ros
@@ -47,8 +52,9 @@ add_dependencies(stefmap_ros stefmap_ros_generate_messages_cpp)
 target_link_libraries(stefmap_ros ${catkin_LIBRARIES})
 
 add_executable(test_stefmap src/test_stefmap.cpp)
-add_dependencies(test_stefmap stefmap_ros_generate_messages_cpp)
+add_dependencies(test_stefmap stefmap_ros_generate_messages_cpp stefmap_ros_gencfg)
 target_link_libraries(test_stefmap stefmap_ros ${catkin_LIBRARIES})
+
 
 install(TARGETS stefmap_ros
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
