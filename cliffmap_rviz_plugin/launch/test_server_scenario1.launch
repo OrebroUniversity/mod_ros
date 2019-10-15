@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
-	<node pkg = "tf" type = "static_transform_publisher" name="map_to_map2" 
-		args="-45 -29 0 0.25 0 0 /cliffmap_frame /map 100" />
+	<node pkg = "tf" type = "static_transform_publisher" name="map_to_cliffmap" 
+		args="0 0 0 0 0 0 /cliffmap_frame /map 100" />
 
   <node name="cliffmap_server" type="cliffmap_server" pkg="cliffmap_ros" 
   	    args="$(find cliffmap_rviz_plugin)/cliffmaps/scenario1_matched_only.xml" >
@@ -10,7 +10,7 @@
 
   <node name="rviz" type="rviz" pkg="rviz" />
 
-  <node pkg="map_server" type="map_server" name="mapserver" args="$(find stefmap_ros)/maps/orkla_map_lasertop.yaml">
+  <node pkg="map_server" type="map_server" name="mapserver" args="$(find stefmap_ros)/maps/orkla-MS3.yaml">
   	<param name="frame_id" value="/cliffmap_frame"/>
   </node>
 

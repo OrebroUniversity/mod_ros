@@ -3,7 +3,7 @@
 
 	<param name="/stefmap_client/start_predictions" value="false"/>
 
-	<node pkg = "tf" type = "static_transform_publisher" name="map_to_map2" args="-45 -29 0 0.25 0 0 /map /stefmap_frame 100" />
+	<node pkg = "tf" type = "static_transform_publisher" name="map_to_stefmap" args="0 0 0 0 0 0 /map /stefmap_frame 100" />
 
 	<node pkg= "fremenarray" type = "fremenarray" name="fremenarray" />
 
@@ -13,7 +13,7 @@
 
 	<node pkg="rviz" type="rviz" name="rviz" />
 
-	<node pkg="map_server" type="map_server" name="mapserver" args="$(find stefmap_ros)/maps/orkla_map_lasertop.yaml"/>
+	<node pkg="map_server" type="map_server" name="mapserver" args="$(find stefmap_ros)/maps/orkla-MS3.yaml"/>
 
 	<node pkg="rqt_reconfigure" type="rqt_reconfigure" name="rqt_reconfigure"/>
 

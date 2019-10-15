@@ -21,7 +21,7 @@ if __name__ == '__main__':
 #	os.system("python ./tools/load_histograms.py "+output_file_name)
 #	print("Done")
 
-	output_file_name = "./../data/orkla_2019_10_14_all_histogram.txt"
+	output_file_name = "./../data/orkla_2019_10_15_scene2_histogram.txt"
 	print("Loading histograms to FreMEn...")
 	os.system("python ./tools/load_histograms.py "+output_file_name)
 	print("Done")

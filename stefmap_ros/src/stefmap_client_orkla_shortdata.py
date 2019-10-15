@@ -14,10 +14,10 @@ def callback(config,level):
 
     if config.start_predictions:
         prediction_time = config.time_16_09_2019*3600 + 1560556800
-        xmin = -5 # meters
-        xmax = 40   # meters
-        ymin = -5 # meters
-        ymax = 40 # meters
+        xmin = -20 # meters
+        xmax = 30   # meters
+        ymin = -20 # meters
+        ymax = 30 # meters
         cell_size = 1 #meters
         order = config.model_order
 

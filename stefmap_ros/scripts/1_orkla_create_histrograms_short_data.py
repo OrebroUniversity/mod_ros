@@ -11,10 +11,10 @@ import numpy as np
 if __name__ == '__main__':
 
 	# Map dimensions and cell size
-	xmin = -5 # meters
-	xmax = 40   # meters
-	ymin = -5 # meters
-	ymax = 40 # meters
+	xmin = -20 # meters
+	xmax = 30   # meters
+	ymin = -20 # meters
+	ymax = 30 # meters
 	cell_size = 1 #meters
 
 	# starting and ending time, time interval.
@@ -40,10 +40,10 @@ if __name__ == '__main__':
 #	os.system("python ./tools/create_flowmap_histograms.py "+input_file_name+" "+ output_file_name+" "+str(xmin)+" "+str(xmax)+" "+str(ymin)+" "+str(ymax)+" "+str(cell_size)+" "+str(t_ini)+" "+str(t_end)+" "+str(time_interval))
 #	print("Done")
 
-	input_file_name =  "./../data/orkla_2019_10_14_all.txt"
-	output_file_name = "./../data/orkla_2019_10_14_all_histogram.txt"
-	t_ini = 1571011200 #14 october 2019
-	t_end = 1571011200 + 86400
+	input_file_name =  "./../data/orkla_2019_10_15_scene2.txt"
+	output_file_name = "./../data/orkla_2019_10_15_scene2_histogram.txt"
+	t_ini = 1571011200 + 86400 #15 october 2019
+	t_end = 1571011200 + 86400 + 86400
 
 	print("Creating flowmap histograms...")
 	os.system("python ./tools/create_flowmap_histograms.py "+input_file_name+" "+ output_file_name+" "+str(xmin)+" "+str(xmax)+" "+str(ymin)+" "+str(ymax)+" "+str(cell_size)+" "+str(t_ini)+" "+str(t_end)+" "+str(time_interval))
