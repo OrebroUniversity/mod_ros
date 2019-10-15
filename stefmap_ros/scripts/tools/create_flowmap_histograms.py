@@ -7,6 +7,7 @@ from std_msgs.msg import String
 from fremenarray.msg import FremenArrayActionGoal,FremenArrayActionResult
 import numpy as np
 import math
+from datetime import datetime
 
 def result_callback(data):
 	print data.result.message
@@ -50,15 +51,15 @@ if __name__ == '__main__':
 		# check people moving to create the histogram
 		for i in range(last_ite,len(input_data)):
 			if (input_data[i,0] >= t_now and input_data[i,0] < (t_now+time_interval-0.0001)):
-				row = int(math.floor((-1/(ymax-(ymax-cell_size)))*input_data[i,3]+(1-(-1/(ymax-(ymax-cell_size)))*ymax)))-1
-				col = int(math.floor((1/((xmin+cell_size)-xmin))*input_data[i,2]+(1-(1/((xmin+cell_size)-xmin))*xmin)))-1   
-				if input_data[i,4] < 0:
-					hist_bin = math.ceil((np.rad2deg(input_data[i,4])+360+22.5)/45) - 1
+				row = int(math.floor((-1/(ymax-(ymax-cell_size)))*input_data[i,3]/1000+(1-(-1/(ymax-(ymax-cell_size)))*ymax)))-1
+				col = int(math.floor((1/((xmin+cell_size)-xmin))*input_data[i,2]/1000+(1-(1/((xmin+cell_size)-xmin))*xmin)))-1   
+				if input_data[i,6] < 0:
+					hist_bin = math.ceil((np.rad2deg(input_data[i,6])+360+22.5)/45) - 1
 					if hist_bin == 8:
 						hist_bin = 0
 					bin_count_matrix[row,col,int(hist_bin)] = bin_count_matrix[row,col,int(hist_bin)] + 1;
 				else:
-					hist_bin = math.ceil((np.rad2deg(input_data[i,4])+22.5)/45) - 1
+					hist_bin = math.ceil((np.rad2deg(input_data[i,6])+22.5)/45) - 1
 					bin_count_matrix[row,col,int(hist_bin)] = bin_count_matrix[row,col,int(hist_bin)] + 1;
 
 			if (input_data[i,0] > (t_now+time_interval-0.0001)):
@@ -92,7 +93,7 @@ if __name__ == '__main__':
 		bin_count_matrix = np.zeros((rows,cols,8))
 
 		# Verbosity
-		print(time.ctime(int(t_now)))
+		print((datetime.utcfromtimestamp(t_now).strftime('%Y-%m-%d %H:%M:%S')))
 
 	ifile.close()
 	ofile.close()

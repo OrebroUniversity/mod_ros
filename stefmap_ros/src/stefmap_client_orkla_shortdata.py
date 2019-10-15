@@ -14,10 +14,10 @@ def callback(config,level):
 
     if config.start_predictions:
         prediction_time = config.time_16_09_2019*3600 + 1560556800
-        xmin = -20 # meters
-        xmax = 60   # meters
+        xmin = -5 # meters
+        xmax = 40   # meters
         ymin = -5 # meters
-        ymax = 65 # meters
+        ymax = 40 # meters
         cell_size = 1 #meters
         order = config.model_order
 
@@ -37,7 +37,7 @@ def callback(config,level):
            get_stefmap = rospy.ServiceProxy('get_stefmap', GetSTeFMap)
            h = Header()
            h.stamp.secs = prediction_time
-           h.frame_id = 'map2'
+           h.frame_id = 'stefmap_frame'
            stefmap = get_stefmap(h,order,xmin,xmax,ymin,ymax,cell_size)
        
         except rospy.ServiceException, e:

@@ -9,15 +9,6 @@ import numpy as np
 
 
 if __name__ == '__main__':
-	# Map dimensions and cell size
-	xmin = -20 # meters
-	xmax = 60   # meters
-	ymin = -5 # meters
-	ymax = 65 # meters
-	cell_size = 1 #meters
-
-	# starting and ending time, time interval.
-	time_interval = 3600 #seconds
 	
 	output_file_name = "./../data/orkla_2019_06_13_histogram.txt"
 	print("Loading histograms to FreMEn...")

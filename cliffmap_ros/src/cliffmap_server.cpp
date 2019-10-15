@@ -47,7 +47,7 @@ int main(int argn, char *argv[]) {
 
   std::string cliffmap_topic_name = "/cliffmap";
   std::string cliffmap_service_name = "/get_cliffmap";
-  std::string cliffmap_frame_id = "map";
+  std::string cliffmap_frame_id = "/map";
 
   nh.getParam("topic_name", cliffmap_topic_name);
   nh.getParam("service_name", cliffmap_service_name);
