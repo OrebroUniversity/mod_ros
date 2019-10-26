@@ -2,7 +2,7 @@
 <launch>
 
   <node name="cliffmap_server" type="cliffmap_server" pkg="cliffmap_ros" 
-  	    args="$(find cliffmap_rviz_plugin)/cliffmaps/scenario1_matched_only.xml" >
+  	    args="$(find cliffmap_rviz_plugin)/cliffmaps/scene1.xml" >
   	    <param name="frame_id" value="map_laser2d"/>
   	</node>
 

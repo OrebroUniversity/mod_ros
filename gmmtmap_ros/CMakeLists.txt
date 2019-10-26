@@ -60,9 +60,6 @@ target_link_libraries(gmmtmap_ros ${catkin_LIBRARIES})
 add_executable(gmmtmap_server src/gmmtmap_server.cpp)
 target_link_libraries(gmmtmap_server gmmtmap_ros ${catkin_LIBRARIES})
 
-add_executable(rtree_test src/rtree_test.cpp)
-target_link_libraries(rtree_test ${Boost_LIBRARIES})
-
 #############
 ## Install ##
 #############

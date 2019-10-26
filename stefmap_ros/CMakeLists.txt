@@ -51,11 +51,6 @@ add_library(stefmap_ros src/stefmap.cpp)
 add_dependencies(stefmap_ros stefmap_ros_generate_messages_cpp)
 target_link_libraries(stefmap_ros ${catkin_LIBRARIES})
 
-add_executable(test_stefmap src/test_stefmap.cpp)
-add_dependencies(test_stefmap stefmap_ros_generate_messages_cpp stefmap_ros_gencfg)
-target_link_libraries(test_stefmap stefmap_ros ${catkin_LIBRARIES})
-
-
 install(TARGETS stefmap_ros
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
