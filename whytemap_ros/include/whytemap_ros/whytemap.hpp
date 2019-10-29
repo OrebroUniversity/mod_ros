@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <whytemap_ros/WHyTeMapMsg.h>
 
 namespace whytemap_ros {
 
@@ -11,6 +12,10 @@ struct WHyTeMapCluster {
   std::vector<double> precision_matrix;
 
   WHyTeMapCluster(long degree);
+
+  WHyTeMapCluster(const WHyTeMapClusterMsg &msg);
+
+  WHyTeMapClusterMsg toROSMsg() const;
 
   /**
    * Get the precision matrix as an Eigen::MatrixXd.
@@ -43,6 +48,21 @@ public:
   ~WHyTeMap() = default;
 
   /**
+   * Create a WHyTeMap object from an xml file.
+   * @param fileName File name of XML file.
+   */
+  inline WHyTeMap(const std::string &fileName) : spatial_dim_(4) {
+    readFromXML(fileName);
+  }
+
+  /**
+   * Create a WHyTeMap object from a WHyTeMap ROS message.
+   */
+  WHyTeMap(const WHyTeMapMsg &msg);
+
+  WHyTeMapMsg toROSMsg() const;
+
+  /**
    * Read a WHyTe-map xml and load it into the data structres.
    * @param fileName The file name for WHyTeMap xml.
    */
@@ -60,6 +80,10 @@ public:
    */
   double getLikelihood(double time, double x, double y, double heading,
                        double speed);
+
+  inline void setFrameID(const std::string &frame_id) {
+    this->frame_id_ = frame_id;
+  }
 
 private:
   /// No of clusters in the WHyTeMap
@@ -80,5 +104,8 @@ private:
 
   /// Clusters in the WHyTeMap
   std::vector<WHyTeMapCluster> clusters_;
+
+  /// ROS frame id;
+  std::string frame_id_;
 };
 }

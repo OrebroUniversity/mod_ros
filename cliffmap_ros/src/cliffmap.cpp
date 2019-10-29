@@ -140,7 +140,6 @@ CLiFFMapLocation CLiFFMap::operator()(double x, double y) const {
 double CLiFFMap::getLikelihood(double x, double y, double heading,
                                double speed) const {
   CLiFFMapLocation loc = (*this)(x, y);
-
   Eigen::Vector2d V;
   V[0] = heading;
   V[1] = speed;

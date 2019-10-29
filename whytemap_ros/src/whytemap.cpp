@@ -18,10 +18,8 @@
  */
 
 #include <cmath>
-#include <stdio.h>
 
 #include <gsl/gsl_cdf.h>
-#include <gsl/gsl_randist.h>
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
@@ -34,6 +32,19 @@ namespace whytemap_ros {
 WHyTeMapCluster::WHyTeMapCluster(long degree) {
   this->centroid.resize(degree);
   this->precision_matrix.resize(degree * degree);
+}
+
+WHyTeMapCluster::WHyTeMapCluster(const whytemap_ros::WHyTeMapClusterMsg &msg) {
+  this->weight = msg.weight;
+  this->centroid = msg.centroid;
+  this->precision_matrix = msg.precision_matrix;
+}
+
+WHyTeMapClusterMsg WHyTeMapCluster::toROSMsg() const {
+  WHyTeMapClusterMsg msg;
+  msg.precision_matrix = this->precision_matrix;
+  msg.centroid = this->centroid;
+  msg.weight = this->weight;
 }
 
 void WHyTeMap::readFromXML(const std::string &fileName) {
@@ -93,6 +104,21 @@ void WHyTeMap::readFromXML(const std::string &fileName) {
     periods_.push_back(
         pTree.get<double>("root.periodicities_values.v_" + std::to_string(i)));
   }
+}
+
+WHyTeMapMsg WHyTeMap::toROSMsg() const {
+  WHyTeMapMsg msg;
+  msg.header.frame_id = this->frame_id_;
+  msg.no_clusters = this->no_clusters_;
+  msg.no_periods = this->no_periods_;
+  msg.spatial_dim = this->spatial_dim_;
+
+  for(const auto& cluster : this->clusters_) {
+    msg.clusters.push_back(cluster.toROSMsg());
+  }
+  msg.periods = this->periods_;
+
+  return msg;
 }
 
 double WHyTeMap::getLikelihood(double time, double x, double y, double heading,
