@@ -61,11 +61,11 @@ add_library(whytemap_ros
   src/whytemap.cpp
 #  src/cliffmap_conversions.cpp
   )
-#add_dependencies(cliffmap_ros cliffmap_ros_generate_messages_cpp)
+add_dependencies(whytemap_ros ${catkin_EXPORTED_TARGETS})
 target_link_libraries(whytemap_ros ${catkin_LIBRARIES} ${GSL_LIBRARIES})
 
-#add_executable(cliffmap_server src/cliffmap_server.cpp)
-#target_link_libraries(cliffmap_server cliffmap_ros ${catkin_LIBRARIES})
+add_executable(whytemap_server src/whytemap_server.cpp)
+target_link_libraries(whytemap_server whytemap_ros ${catkin_LIBRARIES})
 
 #############
 ## Install ##

@@ -24,7 +24,6 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 
-#include <Eigen/Core>
 #include <whytemap_ros/whytemap.hpp>
 
 namespace whytemap_ros {
@@ -45,6 +44,7 @@ WHyTeMapClusterMsg WHyTeMapCluster::toROSMsg() const {
   msg.precision_matrix = this->precision_matrix;
   msg.centroid = this->centroid;
   msg.weight = this->weight;
+  return msg;
 }
 
 void WHyTeMap::readFromXML(const std::string &fileName) {
@@ -70,7 +70,7 @@ void WHyTeMap::readFromXML(const std::string &fileName) {
 
   // Add empty clusters
   for (long i = 0; i < no_clusters_; i++) {
-    WHyTeMapCluster cluster(no_periods_);
+    WHyTeMapCluster cluster(degree_);
     this->clusters_.push_back(cluster);
   }
 
@@ -112,13 +112,23 @@ WHyTeMapMsg WHyTeMap::toROSMsg() const {
   msg.no_clusters = this->no_clusters_;
   msg.no_periods = this->no_periods_;
   msg.spatial_dim = this->spatial_dim_;
-
-  for(const auto& cluster : this->clusters_) {
+  msg.periods = this->periods_;
+  for (const auto &cluster : this->clusters_) {
     msg.clusters.push_back(cluster.toROSMsg());
   }
-  msg.periods = this->periods_;
-
   return msg;
+}
+
+WHyTeMap::WHyTeMap(const WHyTeMapMsg &msg) {
+  this->no_clusters_ = msg.no_clusters;
+  this->no_periods_ = msg.no_periods;
+  this->spatial_dim_ = msg.spatial_dim;
+  this->frame_id_ = msg.header.frame_id;
+  this->periods_ = msg.periods;
+  this->clusters_.clear();
+  for (const auto &cluster : msg.clusters) {
+    this->clusters_.push_back(cluster);
+  }
 }
 
 double WHyTeMap::getLikelihood(double time, double x, double y, double heading,
@@ -183,4 +193,28 @@ double WHyTeMap::getLikelihood(double time, double x, double y, double heading,
   return prob;
 }
 
+} // namespace whytemap_ros
+
+std::ostream &operator<<(std::ostream &out,
+                         const whytemap_ros::WHyTeMapCluster &clus) {
+  out << "\tWHyTeMapCluster: " << std::endl;
+  out << "\t\tWeight: " << clus.weight << std::endl;
+  out << "\t\tCentroid: " << std::endl << clus.getCentroid() << std::endl;
+  out << "\t\tPrecision Matrix: " << std::endl
+      << clus.getPrecisionMatrix() << std::endl;
+}
+
+std::ostream &operator<<(std::ostream &out, const whytemap_ros::WHyTeMap &map) {
+  out << "WHyTeMap: " << std::endl;
+  out << "Periods : " << std::endl;
+  for (const auto period : map.getPeriods()) {
+    out << period;
+    out << ", ";
+  }
+  out << "\b\b" << std::endl;
+  out << "Clusters: " << std::endl;
+  for (const auto cluster : map.getClusters()) {
+    out << cluster;
+  }
+  out << "Spatial Dimenstion: " << map.getSpatialDim() << std::endl;
 }

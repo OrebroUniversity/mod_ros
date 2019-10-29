@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Eigen/Core>
 #include <string>
 #include <vector>
 #include <whytemap_ros/WHyTeMapMsg.h>
@@ -44,16 +45,14 @@ struct WHyTeMapCluster {
 class WHyTeMap {
 
 public:
-  WHyTeMap() : spatial_dim_(4) {}
+  WHyTeMap() {}
   ~WHyTeMap() = default;
 
   /**
    * Create a WHyTeMap object from an xml file.
    * @param fileName File name of XML file.
    */
-  inline WHyTeMap(const std::string &fileName) : spatial_dim_(4) {
-    readFromXML(fileName);
-  }
+  inline WHyTeMap(const std::string &fileName) { readFromXML(fileName); }
 
   /**
    * Create a WHyTeMap object from a WHyTeMap ROS message.
@@ -85,6 +84,13 @@ public:
     this->frame_id_ = frame_id;
   }
 
+  inline std::string getFrameID() const { return frame_id_; }
+  inline std::vector<WHyTeMapCluster> getClusters() const { return clusters_; }
+  inline std::vector<double> getPeriods() const { return periods_; }
+  inline long getNoPeriods() const { return no_periods_; }
+  inline long getNoClusters() const { return no_clusters_; }
+  inline long getSpatialDim() const { return spatial_dim_; }
+
 private:
   /// No of clusters in the WHyTeMap
   long no_clusters_;
@@ -97,7 +103,7 @@ private:
   long degree_;
 
   /// Number of spatial dimensions. It's 4 now. 2D position and 2D velocity
-  const long spatial_dim_;
+  long spatial_dim_{4};
 
   /// Chosen periodicity for hypertime projection
   std::vector<double> periods_;
@@ -108,4 +114,8 @@ private:
   /// ROS frame id;
   std::string frame_id_;
 };
-}
+} // namespace whytemap_ros
+
+std::ostream &operator<<(std::ostream &out,
+                         const whytemap_ros::WHyTeMapCluster &clus);
+std::ostream &operator<<(std::ostream &out, const whytemap_ros::WHyTeMap &map);
