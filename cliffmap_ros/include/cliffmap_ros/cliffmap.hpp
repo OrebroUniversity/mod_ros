@@ -134,7 +134,7 @@ public:
     return std::round((y - y_min_) / resolution_);
   }
 
-  CLiFFMap() {}
+  CLiFFMap() = default;
 
   CLiFFMap(const CLiFFMapMsg &cliffmap_msg);
 
