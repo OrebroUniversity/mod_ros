@@ -19,22 +19,23 @@ find_package(Eigen3 REQUIRED)
 
 find_package(GSL REQUIRED)
 
-#add_message_files(
-#  FILES
-#
-#)
+add_message_files(
+  FILES
+  WHyTeMapClusterMsg.msg
+  WHyTeMapMsg.msg
+)
 
-# add_service_files(
-#   FILES
-#   GetCLiFFMap.srv
-# )
+add_service_files(
+  FILES
+  GetWHyTeMap.srv
+)
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#  DEPENDENCIES
-#  geometry_msgs
-#  std_msgs
-#  )
+generate_messages(
+  DEPENDENCIES
+  geometry_msgs
+  std_msgs
+)
 
 catkin_package(
   INCLUDE_DIRS include

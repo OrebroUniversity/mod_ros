@@ -19,7 +19,8 @@ struct WHyTeMapCluster {
   inline Eigen::MatrixXd getPrecisionMatrix() const {
     std::vector<double> copy_precision_matrix = precision_matrix;
     // We can do this since we know centroid.size() = degree
-    Eigen::MatrixXd copy_precision_matrix_eigen = Eigen::Map<Eigen::MatrixXd>(copy_precision_matrix.data(), centroid.size(), centroid.size());
+    Eigen::MatrixXd copy_precision_matrix_eigen = Eigen::Map<Eigen::MatrixXd>(
+        copy_precision_matrix.data(), centroid.size(), centroid.size());
     return copy_precision_matrix_eigen;
   }
 
@@ -27,11 +28,12 @@ struct WHyTeMapCluster {
    * Get the centroid as an Eigen::VectorXd.
    * @return The centroid as an Eigen Vector.
    */
-   inline Eigen::VectorXd getCentroid() const {
-     std::vector<double> copy_centroid = centroid;
-     Eigen::VectorXd copy_centroid_eigen = Eigen::Map<Eigen::VectorXd>(copy_centroid.data(), centroid.size());
-     return copy_centroid_eigen;
-   }
+  inline Eigen::VectorXd getCentroid() const {
+    std::vector<double> copy_centroid = centroid;
+    Eigen::VectorXd copy_centroid_eigen =
+        Eigen::Map<Eigen::VectorXd>(copy_centroid.data(), centroid.size());
+    return copy_centroid_eigen;
+  }
 };
 
 class WHyTeMap {
