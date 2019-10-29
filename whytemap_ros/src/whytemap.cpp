@@ -26,6 +26,7 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 
+#include <Eigen/Core>
 #include <whytemap_ros/whytemap.hpp>
 
 namespace whytemap_ros {
@@ -112,10 +113,15 @@ double WHyTeMap::getLikelihood(double time, double x, double y, double heading,
   double tmp;        // subtotal during distance calculation
   double prob = 0.0; // "probability" of the occurrence of tested position
 
-  std::vector<double>
-      projection(degree_); // projection of tested vector
-                                                // into warped hypertime space
-  std::vector <double> shifted(degree_); // temporal variable, projection minus centre
+  // std::vector<double> projection(degree_);
+  // std::vector <double> shifted(degree_); //
+
+  // Projection of tested vector into warped hypertime space
+  Eigen::VectorXd projection(degree_);
+
+  // Temporal variable, projection minus centre
+  Eigen::VectorXd shifted = Eigen::VectorXd::Zero(degree_);
+
   /* filling the projection*/
   projection[0] = x;
   projection[1] = y;
@@ -128,24 +134,24 @@ double WHyTeMap::getLikelihood(double time, double x, double y, double heading,
     projection[spatial_dim_ + 2 * id_n_p + 1] =
         sin(time * 2.0 * M_PI / periods_[id_n_p]);
   }
+
   /* calculate mahalanobis distance between projection and every cluster
    * centre*/
   for (int c = 0; c < no_clusters_; c++) {
-    for (int i = 0; i < degree_; i++) {
-      shifted[i] = projection[i] - this->clusters_[c].centroid[i];
-    }
-    distance = 0.0;
-    for (int j = 0; j < degree_; j++) {
-      tmp = 0.0;
-      for (int i = 0; i < degree_; i++) {
-        tmp = tmp + this->clusters_[c].precision_matrix[i * degree_ + j] * shifted[i];
-      }
-      tmp = tmp * shifted[j];
-      distance += tmp;
-    }
+
+    // Eigen for better readability of code.
+    Eigen::MatrixXd precision = this->clusters_[c].getPrecisionMatrix();
+    Eigen::VectorXd centroid = this->clusters_[c].getCentroid();
+
+    // Vectorized
+    shifted = projection - centroid;
+
+    distance = shifted.transpose() * precision * shifted;
+
     /*probability of occurrence from the point of view of every cluster
      * (distribution estimation)*/
-    prob += gsl_cdf_chisq_Q(distance, (double)degree_) * this->clusters_[c].weight;
+    prob +=
+        gsl_cdf_chisq_Q(distance, (double)degree_) * this->clusters_[c].weight;
   }
   /*return sum of particular and weighted probabilities*/
   return prob;
