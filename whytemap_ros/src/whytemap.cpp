@@ -132,7 +132,7 @@ WHyTeMap::WHyTeMap(const WHyTeMapMsg &msg) {
 }
 
 double WHyTeMap::getLikelihood(double time, double x, double y, double heading,
-                               double speed) {
+                               double speed) const {
   /*
   calculates the probability of the occurrence of the tested vector using model
   input:

@@ -78,7 +78,7 @@ public:
    * certain time.
    */
   double getLikelihood(double time, double x, double y, double heading,
-                       double speed);
+                       double speed) const;
 
   inline void setFrameID(const std::string &frame_id) {
     this->frame_id_ = frame_id;
