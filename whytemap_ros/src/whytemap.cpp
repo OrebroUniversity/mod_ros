@@ -193,6 +193,24 @@ double WHyTeMap::getLikelihood(double time, double x, double y, double heading,
   return prob;
 }
 
+WHyTeMapMsg WHyTeMapClient::get() {
+  GetWHyTeMap msg;
+  if (!whytemap_client.call(msg)) {
+    ROS_ERROR_STREAM(
+        "Failed to call WHyTe-Map msg. Service call failed. Empty map "
+        "returned.");
+    return WHyTeMapMsg();
+  }
+  ROS_INFO_STREAM("Got a WHyTe-Map msg.");
+  return msg.response.whytemap;
+}
+
+WHyTeMapClient::WHyTeMapClient(const std::string& service_name) {
+  whytemap_client = nh.serviceClient<GetWHyTeMap>(service_name);
+  whytemap_client.waitForExistence();
+  ROS_INFO_STREAM("Connected to WHyTe-Map server.");
+}
+
 } // namespace whytemap_ros
 
 std::ostream &operator<<(std::ostream &out,

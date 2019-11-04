@@ -1,9 +1,14 @@
 #pragma once
 
 #include <Eigen/Core>
+
 #include <string>
 #include <vector>
+
+#include <ros/ros.h>
 #include <whytemap_ros/WHyTeMapMsg.h>
+#include <whytemap_ros/GetWHyTeMap.h>
+
 
 namespace whytemap_ros {
 
@@ -114,6 +119,17 @@ private:
   /// ROS frame id;
   std::string frame_id_;
 };
+
+class WHyTeMapClient {
+  ros::NodeHandle nh;
+  ros::ServiceClient whytemap_client;
+
+public:
+  WHyTeMapClient(const std::string &service_name = "/get_cliffmap");
+
+  WHyTeMapMsg get();
+};
+
 } // namespace whytemap_ros
 
 std::ostream &operator<<(std::ostream &out,
