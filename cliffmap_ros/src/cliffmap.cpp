@@ -119,8 +119,6 @@ void CLiFFMap::readFromXML(const std::string &fileName) {
 
 CLiFFMapLocation CLiFFMap::at(size_t row, size_t col) const {
   if (row >= rows_ || col >= columns_) {
-    std::cout << "WARNING CLiFFMap::at called with out-of-bounds indices. "
-                 "Returning empty CLiFFMapLocation.";
     return CLiFFMapLocation();
   }
 
