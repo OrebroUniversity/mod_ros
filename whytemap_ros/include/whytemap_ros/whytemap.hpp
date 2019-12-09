@@ -6,9 +6,8 @@
 #include <vector>
 
 #include <ros/ros.h>
-#include <whytemap_ros/WHyTeMapMsg.h>
 #include <whytemap_ros/GetWHyTeMap.h>
-
+#include <whytemap_ros/WHyTeMapMsg.h>
 
 namespace whytemap_ros {
 
@@ -85,6 +84,9 @@ public:
   double getLikelihood(double time, double x, double y, double heading,
                        double speed) const;
 
+  double getCost(double time, double x, double y, double heading,
+                 double speed) const;
+
   inline void setFrameID(const std::string &frame_id) {
     this->frame_id_ = frame_id;
   }
@@ -118,6 +120,8 @@ private:
 
   /// ROS frame id;
   std::string frame_id_;
+
+  static std::vector<std::vector<double>> grid_weights;
 };
 
 class WHyTeMapClient {
@@ -125,7 +129,7 @@ class WHyTeMapClient {
   ros::ServiceClient whytemap_client;
 
 public:
-  WHyTeMapClient(const std::string &service_name = "/get_cliffmap");
+  WHyTeMapClient(const std::string &service_name = "/get_whytemap");
 
   WHyTeMapMsg get();
 };

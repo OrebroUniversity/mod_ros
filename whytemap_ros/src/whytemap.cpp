@@ -119,6 +119,53 @@ WHyTeMapMsg WHyTeMap::toROSMsg() const {
   return msg;
 }
 
+std::vector<std::vector<double>> WHyTeMap::grid_weights = {
+    {0.000000000000000000e+00, 2.479338842975206680e-02,
+     4.628099173553719137e-01, 8.264462809917355601e-01,
+     9.090909090909090606e-01, 8.264462809917355601e-01,
+     4.628099173553719137e-01, 2.479338842975206680e-02,
+     0.000000000000000000e+00},
+    {2.479338842975206680e-02, 7.520661157024793875e-01,
+     1.000000000000000000e+00, 1.000000000000000000e+00,
+     1.000000000000000000e+00, 1.000000000000000000e+00,
+     1.000000000000000000e+00, 7.520661157024793875e-01,
+     2.479338842975206680e-02},
+    {4.628099173553719137e-01, 1.000000000000000000e+00,
+     1.000000000000000000e+00, 1.000000000000000000e+00,
+     1.000000000000000000e+00, 1.000000000000000000e+00,
+     1.000000000000000000e+00, 1.000000000000000000e+00,
+     4.628099173553719137e-01},
+    {8.264462809917355601e-01, 1.000000000000000000e+00,
+     1.000000000000000000e+00, 1.000000000000000000e+00,
+     1.000000000000000000e+00, 1.000000000000000000e+00,
+     1.000000000000000000e+00, 1.000000000000000000e+00,
+     8.264462809917355601e-01},
+    {9.090909090909090606e-01, 1.000000000000000000e+00,
+     1.000000000000000000e+00, 1.000000000000000000e+00,
+     1.000000000000000000e+00, 1.000000000000000000e+00,
+     1.000000000000000000e+00, 1.000000000000000000e+00,
+     9.090909090909090606e-01},
+    {8.264462809917355601e-01, 1.000000000000000000e+00,
+     1.000000000000000000e+00, 1.000000000000000000e+00,
+     1.000000000000000000e+00, 1.000000000000000000e+00,
+     1.000000000000000000e+00, 1.000000000000000000e+00,
+     8.264462809917355601e-01},
+    {4.628099173553719137e-01, 1.000000000000000000e+00,
+     1.000000000000000000e+00, 1.000000000000000000e+00,
+     1.000000000000000000e+00, 1.000000000000000000e+00,
+     1.000000000000000000e+00, 1.000000000000000000e+00,
+     4.628099173553719137e-01},
+    {2.479338842975206680e-02, 7.520661157024793875e-01,
+     1.000000000000000000e+00, 1.000000000000000000e+00,
+     1.000000000000000000e+00, 1.000000000000000000e+00,
+     1.000000000000000000e+00, 7.520661157024793875e-01,
+     2.479338842975206680e-02},
+    {0.000000000000000000e+00, 2.479338842975206680e-02,
+     4.628099173553719137e-01, 8.264462809917355601e-01,
+     9.090909090909090606e-01, 8.264462809917355601e-01,
+     4.628099173553719137e-01, 2.479338842975206680e-02,
+     0.000000000000000000e+00}};
+
 WHyTeMap::WHyTeMap(const WHyTeMapMsg &msg) {
   this->no_clusters_ = msg.no_clusters;
   this->no_periods_ = msg.no_periods;
@@ -129,6 +176,103 @@ WHyTeMap::WHyTeMap(const WHyTeMapMsg &msg) {
   for (const auto &cluster : msg.clusters) {
     this->clusters_.push_back(cluster);
   }
+}
+
+double WHyTeMap::getCost(double time, double x, double y, double heading,
+                         double speed) const {
+  /*
+  calculates the probability of the occurrence of the tested vector using model
+  input:
+      tested vector (time, x, y, heading, speed)
+      model:
+          no_clusters .. number of clusters,
+          no_periods .. number of chosen periodicities to build hypertime,
+          periodicities .. set of the most influencing periodicities,
+          C .. set of cluster centers
+          W .. set of cluster weights
+          PREC .. set of precision matices (inversed covariance matrices)
+  */
+  double distance;   // mahalanobis distance between each C and projection
+  double prob = 0.0; // "probability" of the occurrence of tested position
+
+  // std::vector<double> projection(degree_);
+  // std::vector <double> shifted(degree_); //
+
+  // Projection of tested vector into warped hypertime space
+  Eigen::VectorXd projection(degree_);
+
+  // Temporal variable, projection minus centre
+  Eigen::VectorXd shifted = Eigen::VectorXd::Zero(degree_);
+
+  /* filling the projection*/
+  projection[0] = x;
+  projection[1] = y;
+  double a_x =
+      cos(heading); // x axis of the new first basis vector parallel to heading
+  double a_y =
+      sin(heading); // y axis of the new first basis vector parallel to heading
+  double b_x =
+      -a_y; // x axis of the new second basis vector perpendicular to heading
+  double b_y =
+      a_x; // y axis of the new second basis vector perpendicular to heading
+
+  /* projection of time into 'no_periods_' hypertime circles */
+  for (int id_n_p = 0; id_n_p < no_periods_; id_n_p++) {
+    projection[spatial_dim_ + 2 * id_n_p] =
+        cos(time * 2.0 * M_PI / periods_[id_n_p]);
+    projection[spatial_dim_ + 2 * id_n_p + 1] =
+        sin(time * 2.0 * M_PI / periods_[id_n_p]);
+  }
+
+  /* calculation of probability of the human-robot encounter from different
+     directions with different speeds in new basis; there is 9x9=27 velocities
+     of humans weighted by 'grid_weights' in a way, that corresponds to the
+     circle neighborhood of robot in grid; probabilities gathered at these "27
+     points" represents estimation of integral over the probability function*/
+  double ret = 0.0;
+  for (int i = 0; i < 9; i++) {
+    double cur_x = -2.0 + i * 0.5; // speed of humans in the direction of x
+                                   // coordinate in the new basis
+    for (int j = 0; j < 9; j++) {
+      double cur_y = -2.0 + j * 0.5; // speed of humans in the direction of y
+                                     // coordinate in the new basis
+      projection[2] =
+          a_x * cur_x - b_x * cur_y; // speed of humans in the direction of x
+                                     // coordinate in the default basis
+      projection[3] =
+          a_y * cur_x + b_y * cur_y; // speed of humans in the direction of y
+                                     // coordinate in the default basis
+
+      /* calculate mahalanobis distance between projection and every cluster
+       * centre*/
+      prob = 0.0;
+      for (int c = 0; c < no_clusters_; c++) {
+        // Eigen for better readability of code.
+        Eigen::MatrixXd precision = this->clusters_[c].getPrecisionMatrix();
+        Eigen::VectorXd centroid = this->clusters_[c].getCentroid();
+
+        // Vectorized
+        shifted = projection - centroid;
+        distance = shifted.transpose() * precision * shifted;
+
+        /* probability of occurrence from the point of view of every cluster;
+         * (distribution estimation);
+           sum of particular and weighted probabilities */
+        prob += gsl_cdf_chisq_Q(distance, (double)degree_) *
+                this->clusters_[c].weight;
+      }
+      /*
+      cost raises with the radius around the velocity of the robot;
+      it is weighted by the probability of human velocity;
+      grid_weights transform retangular grid into the "circle neighbourhood".
+      */
+      ret += sqrt(pow(cur_y, 2) + pow(speed - cur_x, 2)) * prob *
+             grid_weights[i][j];
+    }
+  }
+
+  /* return sum of costs, i.e., integral over the human velocity space */
+  return ret;
 }
 
 double WHyTeMap::getLikelihood(double time, double x, double y, double heading,
@@ -205,7 +349,7 @@ WHyTeMapMsg WHyTeMapClient::get() {
   return msg.response.whytemap;
 }
 
-WHyTeMapClient::WHyTeMapClient(const std::string& service_name) {
+WHyTeMapClient::WHyTeMapClient(const std::string &service_name) {
   whytemap_client = nh.serviceClient<GetWHyTeMap>(service_name);
   whytemap_client.waitForExistence();
   ROS_INFO_STREAM("Connected to WHyTe-Map server.");
