@@ -167,11 +167,12 @@ std::vector<std::vector<double>> WHyTeMap::grid_weights = {
      0.000000000000000000e+00}};
 
 WHyTeMap::WHyTeMap(const WHyTeMapMsg &msg) {
+  this->frame_id_ = msg.header.frame_id;
   this->no_clusters_ = msg.no_clusters;
   this->no_periods_ = msg.no_periods;
   this->spatial_dim_ = msg.spatial_dim;
-  this->frame_id_ = msg.header.frame_id;
   this->periods_ = msg.periods;
+  this->degree_ = spatial_dim_ + no_periods_ * 2;
   this->clusters_.clear();
   for (const auto &cluster : msg.clusters) {
     this->clusters_.push_back(cluster);
@@ -215,6 +216,7 @@ double WHyTeMap::getCost(double time, double x, double y, double heading,
       -a_y; // x axis of the new second basis vector perpendicular to heading
   double b_y =
       a_x; // y axis of the new second basis vector perpendicular to heading
+
 
   /* projection of time into 'no_periods_' hypertime circles */
   for (int id_n_p = 0; id_n_p < no_periods_; id_n_p++) {
