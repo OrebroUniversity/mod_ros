@@ -150,6 +150,20 @@ public:
     this->frame_id_ = frame_id;
   }
 
+  /**
+   * \brief Get the mixing factor for a certain cluster index.
+   * @param cluster_id The index of the cluster.
+   * @return The mixing factor for that cluster.
+   */
+  inline double getMixingFactorByClusterID(size_t cluster_id) {
+    if(cluster_id >= this->clusters_.size()){
+      ROS_ERROR("getMixingFactorByClusterID called with cluster_id >= number of clusters.");
+      return 1.0;
+    }
+
+    return this->clusters_[cluster_id].mixing_factor;
+  }
+
 protected:
   /// The number of motion patterns in the GMM Trajectory Map.
   int M_;
