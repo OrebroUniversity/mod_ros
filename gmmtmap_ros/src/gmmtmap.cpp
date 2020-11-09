@@ -113,9 +113,8 @@ std::vector<TreeValue> GMMTMap::getNearestNeighbors(double x, double y) const {
 }
 
 void GMMTMap::computeHeadingAndConstructRTree() {
-  for (size_t cluster_id = 0; cluster_id < this->clusters_.size();
-       cluster_id++) {
-    auto cluster = this->clusters_[cluster_id];
+  for (size_t index = 0; index < this->clusters_.size(); index++) {
+    auto cluster = this->clusters_[index];
 
     for (size_t i = 0; i < cluster.mean.size(); i++) {
 
@@ -135,7 +134,7 @@ void GMMTMap::computeHeadingAndConstructRTree() {
 
       cluster.heading.push_back(heading);
       this->rtree_.insert(std::make_pair(
-          Point2D(point[0], point[1]), std::array<size_t, 2>({cluster_id, i})));
+          Point2D(point[0], point[1]), std::array<size_t, 2>({index, i})));
     }
   }
 }

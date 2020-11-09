@@ -155,13 +155,27 @@ public:
    * @param cluster_id The index of the cluster.
    * @return The mixing factor for that cluster.
    */
-  inline double getMixingFactorByClusterID(size_t cluster_id) {
-    if(cluster_id >= this->clusters_.size()){
-      ROS_ERROR("getMixingFactorByClusterID called with cluster_id >= number of clusters.");
+  inline double getMixingFactorByClusterID(size_t cluster_idx) {
+    if(cluster_idx >= this->clusters_.size()) {
+      ROS_ERROR("getMixingFactorByClusterID() called with cluster_id >= number of clusters.");
       return 1.0;
     }
 
-    return this->clusters_[cluster_id].mixing_factor;
+    return this->clusters_[cluster_idx].mixing_factor;
+  }
+
+  inline double getHeadingAtDist(size_t cluster_idx, size_t mean_idx) {
+    if(cluster_idx >= this->clusters_.size()) {
+      ROS_ERROR("getHeadingAtDist() called with cluster_idx >= number of clusters.");
+      return 0.0;
+    }
+
+    if(mean_idx >= this->clusters_[cluster_idx].heading.size()) {
+      ROS_ERROR("getHeadingAtDist() called with mean_idx >= number of traj-means in cluster.");
+      return 0.0;
+    }
+
+    return this->clusters_[cluster_idx].heading[mean_idx];
   }
 
 protected:

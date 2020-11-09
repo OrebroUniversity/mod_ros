@@ -1,9 +1,9 @@
 <welcome>
 
   <!-- waypoints - define before the agents! -->
-  <waypoint id="E1" x="-5" y="27.5" r="2" />
-  <waypoint id="E2" x="40" y="27.5" r="2" />
-  <waypoint id="E3" x="30" y="-5" r="2" />
+  <waypoint id="E1" x="-2" y="27.5" r="2" />
+  <waypoint id="E2" x="37" y="27.5" r="2" />
+  <waypoint id="E3" x="30" y="-2" r="2" />
 
   <waypoint id="F1" x="11" y="22" r="2" />
   <waypoint id="F2" x="15" y="20" r="2" />
@@ -23,31 +23,26 @@
   <waypoint id="SC2" x="22.5" y="20" r="2" />
   <waypoint id="SC3" x="30" y="20" r="2" />
 
-  <waypoint id="A1" x="5" y="35" r="2" />
-  <waypoint id="A2" x="25" y="35" r="2" />
+  <waypoint id="A1" x="5" y="32" r="2" />
+  <waypoint id="A2" x="25" y="32" r="2" />
 
-  <waypoint id="O1" x="40" y="-5" r="2" />
-  <waypoint id="O2" x="-5" y="-5" r="2" />
-  <waypoint id="O3" x="-5" y="35" r="2" />
-  <waypoint id="O4" x="-5" y="5" r="2" />
-  <waypoint id="O5" x="-5" y="20" r="2" />
+  <waypoint id="O1" x="40" y="-2" r="2" />
+  <waypoint id="O2" x="-5" y="-2" r="2" />
+  <waypoint id="O3" x="-2" y="32" r="2" />
+  <waypoint id="O4" x="-2" y="5" r="2" />
+  <waypoint id="O5" x="-2" y="20" r="2" />
 
 
   <!-- agents -->
   <!-- Teacher/researcher role -->
   <!-- Enters building, goes to office via fika room. Then goes to lecture hall. -->
   <agent x="-5" y="27.5" n="1" dx="1.5" dy="1.0">
-	 <addwaypoint id="E1" />
-	 <addwaypoint id="C10" />
- 	 <addwaypoint id="C11" />
+   <addwaypoint id="E1" />
+   <addwaypoint id="C10" />
+   <addwaypoint id="C11" />
    <addwaypoint id="F2" />
 
    <addwaypoint id="C2" />
-   <addwaypoint id="C3" />
-   <addwaypoint id="T2" />
-   <addwaypoint id="O5" />
-
-   <addwaypoint id="T2" />
    <addwaypoint id="C3" />
    <addwaypoint id="C2" />
    <addwaypoint id="SC1" />
@@ -93,10 +88,12 @@
     <addwaypoint id="O1" />
     <addwaypoint id="O2" />
     <addwaypoint id="O5" />
-    <addwaypoint id="T2" />
-    <addwaypoint id="C3" />
-    <addwaypoint id="C2" />
-    <addwaypoint id="SC1" />
+    <addwaypoint id="E1" />
+    <addwaypoint id="C10" />
+    <addwaypoint id="C11" />
+    <addwaypoint id="C12" />
+    <addwaypoint id="E2" />
+    <addwaypoint id="O1" />
   </agent>
 
   <agent x="30" y="-5" n="3" dx="1.0" dy="1.0">
@@ -105,13 +102,11 @@
     <addwaypoint id="C2" />
     <addwaypoint id="C3" />
     <addwaypoint id="T2" />
-    <addwaypoint id="O5" />
-    <addwaypoint id="O2" />
-    <addwaypoint id="O1" />
+    <addwaypoint id="C10" />
+    <addwaypoint id="C11" />
+    <addwaypoint id="C12" />
     <addwaypoint id="E2" />
-    <addwaypoint id="C13" />
-    <addwaypoint id="SC3" />
-    <addwaypoint id="SC1" />
+    <addwaypoint id="O1" />
   </agent>
 
   <agent x="30" y="-5" n="2" dx="1.0" dy="1.0">
@@ -127,11 +122,6 @@
     <addwaypoint id="C13" />
     <addwaypoint id="SC3" />
     <addwaypoint id="SC1" />
-    <addwaypoint id="C2" />
-    <addwaypoint id="C3" />
-    <addwaypoint id="T1" />
-    <addwaypoint id="O4" />
-    <addwaypoint id="O2" />
   </agent>
 
 
