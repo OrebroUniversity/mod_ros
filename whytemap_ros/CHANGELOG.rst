@@ -2,8 +2,8 @@
 Changelog for package whytemap_ros
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.0.0 (2021-03-25)
+------------------
 * Changes
 * Add new cost function.
 * Add WHyTeMapClient similar to others
