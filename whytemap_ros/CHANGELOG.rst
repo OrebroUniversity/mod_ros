@@ -2,6 +2,11 @@
 Changelog for package whytemap_ros
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Fix GSL dependency on WHyTe
+* Contributors: Chittaranjan Swaminathan
+
 2.0.0 (2021-03-25)
 ------------------
 * Changes
