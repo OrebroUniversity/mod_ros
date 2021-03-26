@@ -70,7 +70,7 @@ STeFMapCell STeFMap::operator()(double x, double y) const {
 
 STeFMapCell STeFMap::at(size_t row, size_t col) const {
   if (row >= rows_ || col >= columns_) {
-    ROS_DEBUG_STREAM(
+    ROS_DEBUG_STREAM_THROTTLE(5,
         "WARNING STeFMap::at called with out-of-bounds indices. Returning "
         "empty STeFMapCell.");
     return STeFMapCell();
