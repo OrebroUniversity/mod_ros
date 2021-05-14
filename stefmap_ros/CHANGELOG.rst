@@ -2,8 +2,8 @@
 Changelog for package stefmap_ros
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+3.1.0 (2021-05-14)
+------------------
 * Changes merged in hard... from Sergi
 * Add new launch files
 * Contributors: Chittaranjan Swaminathan
