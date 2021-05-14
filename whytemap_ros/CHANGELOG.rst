@@ -2,6 +2,9 @@
 Changelog for package whytemap_ros
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 2.1.0 (2021-03-26)
 ------------------
 * Fix GSL dependency on WHyTe

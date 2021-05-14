@@ -2,6 +2,9 @@
 Changelog for package pedsim_scenarios
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 2.1.0 (2021-03-26)
 ------------------
 
