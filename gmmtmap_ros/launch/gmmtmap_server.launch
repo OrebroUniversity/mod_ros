@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="map_file">
+  <arg name="map_file"/>
   <node name="gmmtmap_server" type="gmmtmap_server" pkg="gmmtmap_ros" args="$(arg map_file)">
     <!-- Add additional parameters to gmmtmap_server here. These are:
          1. ~topic_name: the topic name you want to publish the map to.

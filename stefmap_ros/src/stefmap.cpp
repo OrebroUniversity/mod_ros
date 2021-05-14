@@ -70,7 +70,7 @@ STeFMapCell STeFMap::operator()(double x, double y) const {
 
 STeFMapCell STeFMap::at(size_t row, size_t col) const {
   if (row >= rows_ || col >= columns_) {
-    ROS_DEBUG_STREAM_THROTTLE(5,
+    ROS_DEBUG_STREAM(
         "WARNING STeFMap::at called with out-of-bounds indices. Returning "
         "empty STeFMapCell.");
     return STeFMapCell();
@@ -79,17 +79,10 @@ STeFMapCell STeFMap::at(size_t row, size_t col) const {
   return cells_[row * columns_ + col];
 }
 
-STeFMapMsg STeFMapClient::get(double prediction_time, int order, double x_min,
-                              double x_max, double y_min, double y_max,
-                              double cell_size) {
+STeFMapMsg STeFMapClient::get(double prediction_time, int order) {
   GetSTeFMap msg;
-  msg.request.header.stamp = ros::Time(prediction_time);
+  msg.request.prediction_time = prediction_time;
   msg.request.order = order;
-  msg.request.x_min = x_min;
-  msg.request.x_max = x_max;
-  msg.request.y_min = y_min;
-  msg.request.y_max = y_max;
-  msg.request.cell_size = cell_size;
 
   if (!stefmap_client.call(msg)) {
     ROS_ERROR_STREAM(

@@ -94,8 +94,7 @@ class STeFMapClient {
 public:
   STeFMapClient();
 
-  STeFMapMsg get(double prediction_time, int order, double x_min, double x_max,
-                 double y_min, double y_max, double cell_size);
+  STeFMapMsg get(double prediction_time, int order);
 };
 
 typedef std::shared_ptr<STeFMap> STeFMapPtr;
