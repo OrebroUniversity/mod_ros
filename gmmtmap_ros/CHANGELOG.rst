@@ -10,8 +10,8 @@ Changelog for package gmmtmap_ros
 2.1.0 (2021-03-26)
 ------------------
 
-Forthcoming
------------
+3.1.1 (2021-05-17)
+------------------
 * 3.1.0
 * Updated changelogs
 * Changes merged in hard... from Sergi

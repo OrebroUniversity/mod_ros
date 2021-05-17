@@ -8,8 +8,8 @@ Changelog for package stefmap_ros
 * Add new launch files
 * Contributors: Chittaranjan Swaminathan
 
-Forthcoming
------------
+3.1.1 (2021-05-17)
+------------------
 * Backwards compatibility fix
 * 3.1.0
 * Version error fix
