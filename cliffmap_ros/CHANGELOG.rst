@@ -8,6 +8,21 @@ Changelog for package cliffmap_ros
 2.1.0 (2021-03-26)
 ------------------
 
+Forthcoming
+-----------
+* 3.1.0
+* Updated changelogs
+* 3.0.1
+* 3.0.0
+* 2.1.0
+* Updated Changelogs
+* 2.0.0
+* don't print warning
+* Add conversion from msg to data struct and vice versa
+* Changes to WHyTe-map data structures
+* updated cliffmpa launch files and stefmap data and scripts
+* Contributors: Chittaranjan Swaminathan, sergimolina
+
 1.0.0 (2019-10-02)
 ------------------
 * Bug fixes. CLiFF-map p and q values were not read properly before.

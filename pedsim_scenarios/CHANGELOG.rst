@@ -8,6 +8,19 @@ Changelog for package pedsim_scenarios
 2.1.0 (2021-03-26)
 ------------------
 
+Forthcoming
+-----------
+* 3.1.0
+* Updated changelogs
+* 3.0.1
+* 3.0.0
+* 2.1.0
+* Updated Changelogs
+* 2.0.0
+* add stuff to fix gmmt cost function
+* Added warehouse scenario
+* Contributors: Chittaranjan S Srinivas, Chittaranjan Swaminathan
+
 0.0.7 (2019-06-07)
 ------------------
 

@@ -10,6 +10,21 @@ Changelog for package gmmtmap_ros
 2.1.0 (2021-03-26)
 ------------------
 
+Forthcoming
+-----------
+* 3.1.0
+* Updated changelogs
+* Changes merged in hard... from Sergi
+* 3.0.1
+* 3.0.0
+* 2.1.0
+* Updated Changelogs
+* 2.0.0
+* add stuff to fix gmmt cost function
+* Add option to get mixing factor
+* Add WHyTeMap. Code compiles on Ubuntu 18.04
+* Contributors: Chittaranjan S Srinivas, Chittaranjan Swaminathan
+
 1.0.0 (2019-10-02)
 ------------------
 * GMMT-map (Bennewitz et al. - Learning motion patterns of people...)

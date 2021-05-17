@@ -8,6 +8,33 @@ Changelog for package stefmap_ros
 * Add new launch files
 * Contributors: Chittaranjan Swaminathan
 
+Forthcoming
+-----------
+* Backwards compatibility fix
+* 3.1.0
+* Version error fix
+* Updated changelogs
+* Changes merged in hard... from Sergi
+* Add new launch files
+* 3.0.1
+* 3.0.0
+* fix irritating output issue
+* 2.1.0
+* Updated Changelogs
+* 2.0.0
+* Change filemod
+* Add ATC histograms and scripts
+* Changes
+* Add dynamic reconfigure as a dep in package.xml
+* Add WHyTeMap. Code compiles on Ubuntu 18.04
+* added stefmap things
+* added new map
+* updated cliffmpa launch files and stefmap data and scripts
+* modified the stefmap launch node and added a reconfigure to change the time and order of predictions
+* added colors depending on direction. changed stefmap server to take also frame_id and cahnged stefmap client example
+* changes to use actionlib to retrive the probabilities from fremenarray instead of using the topic publishing
+* Contributors: Chittaranjan S Srinivas, Chittaranjan Swaminathan, sergimolina
+
 0.0.7 (2019-06-07)
 ------------------
 
