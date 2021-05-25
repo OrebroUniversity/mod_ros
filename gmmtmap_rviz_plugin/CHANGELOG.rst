@@ -8,6 +8,17 @@ Changelog for package gmmtmap_rviz_plugin
 2.1.0 (2021-03-26)
 ------------------
 
+3.1.1 (2021-05-17)
+------------------
+* 3.1.0
+* Updated changelogs
+* 3.0.1
+* 3.0.0
+* 2.1.0
+* Updated Changelogs
+* 2.0.0
+* Contributors: Chittaranjan Swaminathan
+
 1.0.0 (2019-10-02)
 ------------------
 * Added an rviz plugin for gmmtmaps
