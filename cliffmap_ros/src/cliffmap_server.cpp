@@ -63,7 +63,7 @@ int main(int argn, char *argv[]) {
   map.setFrameID(cliffmap_frame_id);
   map.readFromXML(argv[1]);
   map.organizeAsGrid();
-  cliffmap = mapToROSMsg(map);
+  cliffmap = cliffmap_ros::mapToROSMsg(map);
 
   cliffmap_pub.publish(cliffmap);
 
