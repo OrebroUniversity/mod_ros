@@ -8,6 +8,11 @@ Changelog for package stefmap_rviz_plugin
 2.1.0 (2021-03-26)
 ------------------
 
+Forthcoming
+-----------
+* Merge branch 'master' of https://github.com/ksatyaki/mod_ros
+* Contributors: Chittaranjan Swaminathan
+
 3.1.1 (2021-05-17)
 ------------------
 * 3.1.0
