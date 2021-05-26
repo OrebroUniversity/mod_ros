@@ -208,7 +208,7 @@ class GMMTMapClient {
   ros::ServiceClient gmmtmap_client;
 
 public:
-  GMMTMapClient(const std::string& service_name = "get_gmmtmap");
+  GMMTMapClient(const std::string& service_name = "/get_gmmtmap");
 
   GMMTMapMsg get();
 };

@@ -12,7 +12,7 @@ from datetime import datetime
 
 if __name__ == '__main__':
 
-	if len(sys.argv) == 12:
+	if len(sys.argv) >= 12:
 		input_file_name = sys.argv[1]
 		output_file_name= sys.argv[2]
 		# Map dimensions and cell size
@@ -28,6 +28,13 @@ if __name__ == '__main__':
 		t_end = int(sys.argv[10])   #seconds from 1970
 		time_interval =  int(sys.argv[11])   ##seconds
 
+		if len(sys.argv) == 12:
+			atc = False
+		else:
+			atc = True
+
+		print(num_bins, grid_size)
+
 	else:
 		print "This scripts need 11 parameters: input_file_name, output_file_name,xmin,xmax,ymin,ymax,grid_size,num_bins,t_ini,t_end,time_interval "
 		sys.exit(1)
@@ -41,7 +48,11 @@ if __name__ == '__main__':
 	time_col = 0 
 	x_col = 2
 	y_col = 3
-	theta_col = 4
+	if atc:
+		theta_col = 6
+	else:
+		theta_col = 4
+
 
 	# start the histogram building
 	rows = int((x_max - x_min)/grid_size)
