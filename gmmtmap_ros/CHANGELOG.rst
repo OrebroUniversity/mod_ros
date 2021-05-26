@@ -10,8 +10,8 @@ Changelog for package gmmtmap_ros
 2.1.0 (2021-03-26)
 ------------------
 
-Forthcoming
------------
+3.1.2 (2021-05-26)
+------------------
 * New ATC histograms and fix GMMT client and some stefmap scripts
 * Merge branch 'master' of https://github.com/ksatyaki/mod_ros
 * Contributors: Chittaranjan Swaminathan

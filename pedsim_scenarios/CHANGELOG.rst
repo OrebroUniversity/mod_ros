@@ -8,8 +8,8 @@ Changelog for package pedsim_scenarios
 2.1.0 (2021-03-26)
 ------------------
 
-Forthcoming
------------
+3.1.2 (2021-05-26)
+------------------
 * Merge branch 'master' of https://github.com/ksatyaki/mod_ros
 * Contributors: Chittaranjan Swaminathan
 

@@ -25,8 +25,8 @@ Changelog for package whytemap_ros
 * Add WHyTeMap. Code compiles on Ubuntu 18.04
 * Contributors: Chittaranjan Swaminathan
 
-Forthcoming
------------
+3.1.2 (2021-05-26)
+------------------
 * Merge branch 'master' of https://github.com/ksatyaki/mod_ros
 * Contributors: Chittaranjan Swaminathan
 

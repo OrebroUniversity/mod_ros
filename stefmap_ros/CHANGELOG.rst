@@ -8,8 +8,8 @@ Changelog for package stefmap_ros
 * Add new launch files
 * Contributors: Chittaranjan Swaminathan
 
-Forthcoming
------------
+3.1.2 (2021-05-26)
+------------------
 * Merge branch 'master' of https://github.com/ksatyaki/mod_ros
 * New ATC histograms and fix GMMT client and some stefmap scripts
 * Merge pull request `#2 <https://github.com/ksatyaki/mod_ros/issues/2>`_ from ksatyaki/sergimolina-patch-1
