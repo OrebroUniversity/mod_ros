@@ -92,7 +92,7 @@ class STeFMapClient {
   ros::ServiceClient stefmap_client;
 
 public:
-  STeFMapClient();
+  STeFMapClient(const std::string& service_name = "/get_stefmap");
 
   STeFMapMsg get(double prediction_time, int order);
 
