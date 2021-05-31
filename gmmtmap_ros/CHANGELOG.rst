@@ -31,8 +31,8 @@ Changelog for package gmmtmap_ros
 * Add WHyTeMap. Code compiles on Ubuntu 18.04
 * Contributors: Chittaranjan S Srinivas, Chittaranjan Swaminathan
 
-Forthcoming
------------
+3.1.3 (2021-05-31)
+------------------
 * 3.1.2
 * Changelogs updated
 * New ATC histograms and fix GMMT client and some stefmap scripts

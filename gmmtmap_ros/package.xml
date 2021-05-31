@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>gmmtmap_ros</name>
-  <version>3.1.2</version>
+  <version>3.1.3</version>
   <description>Implementation of GMMT-maps and ros interfaces</description>
 
   <maintainer email="chitt@aass.oru.se">Chittaranjan Swaminathan</maintainer>

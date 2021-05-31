@@ -47,8 +47,8 @@ Changelog for package stefmap_ros
 * changes to use actionlib to retrive the probabilities from fremenarray instead of using the topic publishing
 * Contributors: Chittaranjan S Srinivas, Chittaranjan Swaminathan, sergimolina
 
-Forthcoming
------------
+3.1.3 (2021-05-31)
+------------------
 * Fix stefmap client
 * 3.1.2
 * Changelogs updated

@@ -24,8 +24,8 @@ Changelog for package gmmtmap_rviz_plugin
 * 2.0.0
 * Contributors: Chittaranjan Swaminathan
 
-Forthcoming
------------
+3.1.3 (2021-05-31)
+------------------
 * 3.1.2
 * Changelogs updated
 * Merge branch 'master' of https://github.com/ksatyaki/mod_ros

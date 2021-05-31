@@ -30,8 +30,8 @@ Changelog for package cliffmap_rviz_plugin
 * added color code to cliffmap arrows
 * Contributors: Chittaranjan Swaminathan, sergimolina
 
-Forthcoming
------------
+3.1.3 (2021-05-31)
+------------------
 * 3.1.2
 * Changelogs updated
 * Merge branch 'master' of https://github.com/ksatyaki/mod_ros
