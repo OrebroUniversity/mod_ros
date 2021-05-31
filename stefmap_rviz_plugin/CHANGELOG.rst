@@ -27,6 +27,25 @@ Changelog for package stefmap_rviz_plugin
 * changed rand to degree
 * Contributors: Chittaranjan Swaminathan, Sergi Molina, sergimolina
 
+Forthcoming
+-----------
+* 3.1.2
+* Changelogs updated
+* Merge branch 'master' of https://github.com/ksatyaki/mod_ros
+* 3.1.1
+* Updated changelogs
+* 3.1.0
+* Updated changelogs
+* 3.0.1
+* 3.0.0
+* 2.1.0
+* Updated Changelogs
+* 2.0.0
+* added color code to cliffmap arrows
+* added colors depending on direction. changed stefmap server to take also frame_id and cahnged stefmap client example
+* changed rand to degree
+* Contributors: Chittaranjan S Srinivas, Chittaranjan Swaminathan, Sergi Molina, sergimolina
+
 0.0.7 (2019-06-07)
 ------------------
 
