@@ -15,6 +15,15 @@ Changelog for package pedsim_scenarios
 
 Forthcoming
 -----------
+* Changelogs added
+* Merge branch 'master' of github.com:ksatyaki/mod_ros
+* 3.1.3
+* updated changelog
+* 3.1.2
+* Changelogs updated
+* Merge branch 'master' of https://github.com/ksatyaki/mod_ros
+* Contributors: Chittaranjan S Srinivas, Chittaranjan Swaminathan
+
 * Merge branch 'master' of github.com:ksatyaki/mod_ros
 * 3.1.3
 * updated changelog

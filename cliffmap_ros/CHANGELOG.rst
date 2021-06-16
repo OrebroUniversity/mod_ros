@@ -16,6 +16,23 @@ Changelog for package cliffmap_ros
 
 Forthcoming
 -----------
+* Fuix
+* revert
+* testing final chitt
+* testing
+* testing
+* testing
+* Changelogs added
+* Merge branch 'master' of github.com:ksatyaki/mod_ros
+* intermediate commit
+* 3.1.3
+* updated changelog
+* 3.1.2
+* Changelogs updated
+* Merge branch 'master' of https://github.com/ksatyaki/mod_ros
+* Add back atc data
+* Contributors: Chittaranjan S Srinivas, Chittaranjan Swaminathan
+
 * Merge branch 'master' of github.com:ksatyaki/mod_ros
 * intermediate commit
 * 3.1.3

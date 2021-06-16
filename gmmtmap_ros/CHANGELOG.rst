@@ -18,6 +18,16 @@ Changelog for package gmmtmap_ros
 
 Forthcoming
 -----------
+* Changelogs added
+* Merge branch 'master' of github.com:ksatyaki/mod_ros
+* 3.1.3
+* updated changelog
+* 3.1.2
+* Changelogs updated
+* New ATC histograms and fix GMMT client and some stefmap scripts
+* Merge branch 'master' of https://github.com/ksatyaki/mod_ros
+* Contributors: Chittaranjan S Srinivas, Chittaranjan Swaminathan
+
 * Merge branch 'master' of github.com:ksatyaki/mod_ros
 * 3.1.3
 * updated changelog
