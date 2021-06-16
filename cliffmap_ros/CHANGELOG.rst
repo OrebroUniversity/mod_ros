@@ -14,8 +14,8 @@ Changelog for package cliffmap_ros
 * Add back atc data
 * Contributors: Chittaranjan Swaminathan
 
-Forthcoming
------------
+3.2.0 (2021-06-16)
+------------------
 * Fuix
 * revert
 * testing final chitt

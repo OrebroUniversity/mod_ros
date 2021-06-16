@@ -30,8 +30,8 @@ Changelog for package whytemap_ros
 * Merge branch 'master' of https://github.com/ksatyaki/mod_ros
 * Contributors: Chittaranjan Swaminathan
 
-Forthcoming
------------
+3.2.0 (2021-06-16)
+------------------
 * Changelogs added
 * Merge branch 'master' of github.com:ksatyaki/mod_ros
 * 3.1.3

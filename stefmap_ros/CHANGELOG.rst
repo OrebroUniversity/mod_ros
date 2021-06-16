@@ -20,8 +20,8 @@ Changelog for package stefmap_ros
 * Add back atc data
 * Contributors: Chittaranjan Srinivas Swaminathan, Chittaranjan Swaminathan, Sergi Molina
 
-Forthcoming
------------
+3.2.0 (2021-06-16)
+------------------
 * Changelogs added
 * Merge branch 'master' of github.com:ksatyaki/mod_ros
 * 3.1.3
