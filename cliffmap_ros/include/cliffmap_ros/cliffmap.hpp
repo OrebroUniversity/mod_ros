@@ -136,6 +136,11 @@ public:
 
   CLiFFMap() = default;
 
+  CLiFFMap transformCLiFFMap(Eigen::Vector3d Origin, double Rotation) {
+    CLiFFMap transformedMap();
+
+  }
+
   CLiFFMap(const CLiFFMapMsg &cliffmap_msg);
 
   inline CLiFFMap(const std::string &fileName, bool organize = false) {

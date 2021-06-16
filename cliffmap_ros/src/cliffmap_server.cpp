@@ -18,6 +18,7 @@
  */
 
 #include <ros/ros.h>
+#include <tf/transform_listener.h>
 
 #include <cliffmap_ros/CLiFFMapMsg.h>
 #include <cliffmap_ros/GetCLiFFMap.h>
@@ -36,6 +37,24 @@ bool callback(cliffmap_ros::GetCLiFFMap::Request &req,
 int main(int argn, char *argv[]) {
 
   ros::init(argn, argv, "cliffmap_server");
+
+  tf::TransformListener tf_listener;
+  tf::StampedTransform mod_to_laser2d;
+
+  auto time_now = ros::Time::now();
+
+  try {
+    tf_listener.waitForTransform("/map_laser2d", "/map_mod", time_now,
+                                 ros::Duration(5));
+    tf_listener.lookupTransform("/map_laser2d", "/map_mod", time_now,
+                                mod_to_laser2d);
+  } catch (tf::TransformException &ex) {
+    ROS_ERROR_STREAM("Error getting transform from map_laser2d to map_mod: " << ex.what());
+  }
+
+  ROS_INFO_STREAM("Transform received. Origin: "
+                  << mod_to_laser2d.getOrigin()
+                  << ", Rotation: " << mod_to_laser2d.getRotation());
 
   if (argn < 2) {
     std::cout << "Usage cliffmap_server <file_name>" << std::endl;
@@ -57,12 +76,14 @@ int main(int argn, char *argv[]) {
       nh_.advertise<cliffmap_ros::CLiFFMapMsg>(cliffmap_topic_name, 10, true);
   ROS_INFO("CLiFFMap will be published when there is a subscriber.");
 
-  ros::ServiceServer service_ = nh_.advertiseService(cliffmap_service_name, callback);
+  ros::ServiceServer service_ =
+      nh_.advertiseService(cliffmap_service_name, callback);
 
   cliffmap_ros::CLiFFMap map;
   map.setFrameID(cliffmap_frame_id);
   map.readFromXML(argv[1]);
   map.organizeAsGrid();
+
   cliffmap = cliffmap_ros::mapToROSMsg(map);
 
   cliffmap_pub.publish(cliffmap);
