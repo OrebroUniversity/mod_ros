@@ -245,7 +245,7 @@ CLiFFMap CLiFFMap::transformCLiFFMap(tf::Vector3 Origin, tf::Matrix3x3 Rotation,
     Position.setY(-l.position[1]);
     Position.setZ(0.0);
 
-    auto new_position = Rotation * (Position + Origin);
+    auto new_position = Rotation.transpose() * (Position + Origin);
     double new_theta, bleh, blah;
 
     Rotation.getRPY(bleh, blah, new_theta);
