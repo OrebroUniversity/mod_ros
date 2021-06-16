@@ -20,6 +20,24 @@ Changelog for package stefmap_ros
 * Add back atc data
 * Contributors: Chittaranjan Srinivas Swaminathan, Chittaranjan Swaminathan, Sergi Molina
 
+Forthcoming
+-----------
+* Merge branch 'master' of github.com:ksatyaki/mod_ros
+* 3.1.3
+* updated changelog
+* Fix stefmap client
+* 3.1.2
+* Changelogs updated
+* Merge branch 'master' of https://github.com/ksatyaki/mod_ros
+* New ATC histograms and fix GMMT client and some stefmap scripts
+* Merge pull request `#2 <https://github.com/ksatyaki/mod_ros/issues/2>`_ from ksatyaki/sergimolina-patch-1
+  bug from the parsing function corrected
+* bug from the parsing function corrected
+* Comments
+* Merge branch 'master' of https://github.com/ksatyaki/mod_ros
+* Add back atc data
+* Contributors: Chittaranjan S Srinivas, Chittaranjan Srinivas Swaminathan, Chittaranjan Swaminathan, Sergi Molina
+
 3.1.1 (2021-05-17)
 ------------------
 * Backwards compatibility fix

@@ -33,6 +33,7 @@
 
 #include <ros/console.h>
 #include <ros/ros.h>
+#include <tf/transform_datatypes.h>
 
 #include <cliffmap_ros/CLiFFMapMsg.h>
 #include <cliffmap_ros/GetCLiFFMap.h>
@@ -136,10 +137,13 @@ public:
 
   CLiFFMap() = default;
 
-  CLiFFMap transformCLiFFMap(Eigen::Vector3d Origin, double Rotation) {
-    CLiFFMap transformedMap();
-
-  }
+  /**
+   * Convert a CLiFF-map from one frame to another.
+   * @param Origin The origin of the x, y, yaw frame.
+   * @param Rotation The rotation angle (yaw) of the new frame.
+   * @return A new transformed CLiFF-map.
+   */
+  CLiFFMap transformCLiFFMap(tf::Vector3 Origin, tf::Matrix3x3 Rotation, const std::string& frame_id = "map");
 
   CLiFFMap(const CLiFFMapMsg &cliffmap_msg);
 

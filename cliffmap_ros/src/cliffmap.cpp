@@ -67,7 +67,8 @@ void CLiFFMap::readFromXML(const std::string &fileName) {
     location.id = vLocation.second.get<size_t>("id");
 
     for (const auto &vLocProperty : vLocation.second.get_child("")) {
-      if (vLocProperty.first == "p") try {
+      if (vLocProperty.first == "p")
+        try {
           location.p = vLocation.second.get<double>("p");
         } catch (std::exception &ex) {
           ROS_WARN_STREAM_THROTTLE(
@@ -76,7 +77,8 @@ void CLiFFMap::readFromXML(const std::string &fileName) {
           location.p = 1.0;
         }
 
-      if (vLocProperty.first == "q") try {
+      if (vLocProperty.first == "q")
+        try {
           location.q = vLocation.second.get<double>("q");
         } catch (std::exception &ex) {
           ROS_WARN_STREAM_THROTTLE(
@@ -181,14 +183,14 @@ double CLiFFMap::getBestHeading(double x, double y) const {
     myu[0] = atan2(sin(dist.getMeanHeading()), cos(dist.getMeanHeading()));
     myu[1] = dist.getMeanSpeed();
 
-    double likelihood = (1 / (2 * M_PI)) * (1 / sqrt(Sigma.determinant())) * dist.getMixingFactor();
-    if(likelihood > best_likelihood) {
+    double likelihood = (1 / (2 * M_PI)) * (1 / sqrt(Sigma.determinant())) *
+                        dist.getMixingFactor();
+    if (likelihood > best_likelihood) {
       best_likelihood = likelihood;
       best_heading = myu[0];
     }
   }
   return best_heading;
-
 }
 
 void CLiFFMap::organizeAsGrid() {
@@ -232,13 +234,43 @@ CLiFFMapMsg CLiFFMapClient::get() {
   return msg.response.cliffmap;
 }
 
-CLiFFMapClient::CLiFFMapClient(const std::string& service_name) {
+CLiFFMap CLiFFMap::transformCLiFFMap(tf::Vector3 Origin, tf::Matrix3x3 Rotation, const std::string& frame_id) {
+  CLiFFMap transformedMap;
+  transformedMap.setFrameID(frame_id);
+
+  for(CLiFFMapLocation l : this->locations_) {
+
+    tf::Vector3 Position;
+    Position.setX(l.position[0]);
+    Position.setY(l.position[1]);
+    Position.setZ(0.0);
+
+    auto new_position = Rotation * (Position + Origin);
+    double new_theta, bleh, blah;
+
+    Rotation.getRPY(bleh, blah, new_theta);
+
+    l.position[0] = new_position.getX();
+    l.position[1] = new_position.getY();
+
+    for(auto& dist : l.distributions) {
+      // Only the theta needs be transformed.
+      dist.mean[0] = dist.mean[0] + new_theta;
+    }
+
+    transformedMap.locations_.push_back(l);
+  }
+
+  return transformedMap;
+}
+
+CLiFFMapClient::CLiFFMapClient(const std::string &service_name) {
   cliffmap_client = nh.serviceClient<GetCLiFFMap>(service_name);
   cliffmap_client.waitForExistence();
   ROS_INFO_STREAM("Connected to CLiFF-Map server.");
 }
 
-}  // namespace cliffmap_ros
+} // namespace cliffmap_ros
 
 std::ostream &operator<<(std::ostream &out,
                          const cliffmap_ros::CLiFFMapDistribution &dist) {
@@ -250,7 +282,8 @@ std::ostream &operator<<(std::ostream &out,
 std::ostream &operator<<(std::ostream &out,
                          const cliffmap_ros::CLiFFMapLocation &loc) {
   out << "Position: [" << loc.position[0] << ", " << loc.position[1] << "]\n";
-  for (const auto &dist : loc.distributions) out << "Distribution: " << dist;
+  for (const auto &dist : loc.distributions)
+    out << "Distribution: " << dist;
   return out;
 }
 

@@ -27,6 +27,7 @@
 #include <iostream>
 
 cliffmap_ros::CLiFFMapMsg cliffmap;
+tf::StampedTransform mod_to_laser2d;
 
 bool callback(cliffmap_ros::GetCLiFFMap::Request &req,
               cliffmap_ros::GetCLiFFMap::Response &res) {
@@ -39,22 +40,8 @@ int main(int argn, char *argv[]) {
   ros::init(argn, argv, "cliffmap_server");
 
   tf::TransformListener tf_listener;
-  tf::StampedTransform mod_to_laser2d;
 
   auto time_now = ros::Time::now();
-
-  try {
-    tf_listener.waitForTransform("/map_laser2d", "/map_mod", time_now,
-                                 ros::Duration(5));
-    tf_listener.lookupTransform("/map_laser2d", "/map_mod", time_now,
-                                mod_to_laser2d);
-  } catch (tf::TransformException &ex) {
-    ROS_ERROR_STREAM("Error getting transform from map_laser2d to map_mod: " << ex.what());
-  }
-
-  ROS_INFO_STREAM("Transform received. Origin: "
-                  << mod_to_laser2d.getOrigin()
-                  << ", Rotation: " << mod_to_laser2d.getRotation());
 
   if (argn < 2) {
     std::cout << "Usage cliffmap_server <file_name>" << std::endl;
@@ -66,11 +53,28 @@ int main(int argn, char *argv[]) {
 
   std::string cliffmap_topic_name = "/cliffmap";
   std::string cliffmap_service_name = "/get_cliffmap";
-  std::string cliffmap_frame_id = "/map";
+  std::string cliffmap_frame_id = "/map_mod";
+  std::string map_frame_id = "/map";
 
   nh.getParam("topic_name", cliffmap_topic_name);
   nh.getParam("service_name", cliffmap_service_name);
   nh.getParam("frame_id", cliffmap_frame_id);
+  nh.getParam("map_frame_id", map_frame_id);
+
+  try {
+    tf_listener.waitForTransform(map_frame_id, cliffmap_frame_id, time_now,
+                                 ros::Duration(10));
+    tf_listener.lookupTransform(map_frame_id, cliffmap_frame_id, ros::Time(0),
+                                mod_to_laser2d);
+  } catch (tf::TransformException &ex) {
+    ROS_ERROR_STREAM(
+        "Error getting transform from map_laser2d to map_mod: " << ex.what());
+    mod_to_laser2d.setIdentity();
+  }
+
+  ROS_INFO_STREAM("Transform received. Origin: "
+                  << mod_to_laser2d.getOrigin()
+                  << ", Rotation: " << mod_to_laser2d.getRotation());
 
   ros::Publisher cliffmap_pub =
       nh_.advertise<cliffmap_ros::CLiFFMapMsg>(cliffmap_topic_name, 10, true);
@@ -84,7 +88,8 @@ int main(int argn, char *argv[]) {
   map.readFromXML(argv[1]);
   map.organizeAsGrid();
 
-  cliffmap = cliffmap_ros::mapToROSMsg(map);
+  cliffmap = cliffmap_ros::mapToROSMsg(map.transformCLiFFMap(
+      mod_to_laser2d.getOrigin(), mod_to_laser2d.getBasis(), "map_laser2d"));
 
   cliffmap_pub.publish(cliffmap);
 
