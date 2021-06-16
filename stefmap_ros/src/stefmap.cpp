@@ -94,8 +94,8 @@ STeFMapMsg STeFMapClient::get(double prediction_time, int order) {
   return msg.response.stefmap;
 }
 
-STeFMapClient::STeFMapClient() {
-  stefmap_client = nh.serviceClient<GetSTeFMap>("get_stefmap");
+STeFMapClient::STeFMapClient(const std::string& service_name) {
+  stefmap_client = nh.serviceClient<GetSTeFMap>(service_name);
   stefmap_client.waitForExistence();
   ROS_INFO_STREAM("Connected to STeF-Map server.");
 }
