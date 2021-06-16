@@ -34,6 +34,7 @@
 #include <ros/console.h>
 #include <ros/ros.h>
 #include <tf/transform_datatypes.h>
+#include <tf/transform_listener.h>
 
 #include <cliffmap_ros/CLiFFMapMsg.h>
 #include <cliffmap_ros/GetCLiFFMap.h>
@@ -143,7 +144,7 @@ public:
    * @param Rotation The rotation angle (yaw) of the new frame.
    * @return A new transformed CLiFF-map.
    */
-  CLiFFMap transformCLiFFMap(tf::Vector3 Origin, tf::Matrix3x3 Rotation, const std::string& frame_id = "map");
+  CLiFFMap transformCLiFFMap(tf::StampedTransform& transform, const std::string& frame_id = "map");
 
   CLiFFMap(const CLiFFMapMsg &cliffmap_msg);
 

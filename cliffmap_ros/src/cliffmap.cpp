@@ -234,10 +234,12 @@ CLiFFMapMsg CLiFFMapClient::get() {
   return msg.response.cliffmap;
 }
 
-CLiFFMap CLiFFMap::transformCLiFFMap(tf::Vector3 Origin, tf::Matrix3x3 Rotation, const std::string& frame_id) {
+CLiFFMap CLiFFMap::transformCLiFFMap(tf::StampedTransform& transform, const std::string& frame_id) {
   CLiFFMap transformedMap;
   transformedMap.setFrameID(frame_id);
 
+  auto Rotation = transform.getBasis();
+  auto Origin = transform.getOrigin();
   for(CLiFFMapLocation l : this->locations_) {
 
     tf::Vector3 Position;
@@ -245,7 +247,7 @@ CLiFFMap CLiFFMap::transformCLiFFMap(tf::Vector3 Origin, tf::Matrix3x3 Rotation,
     Position.setY(l.position[1]);
     Position.setZ(0.0);
 
-    auto new_position = Rotation * (Position + Origin);
+    auto new_position = transform * Position;
     double new_theta, bleh, blah;
 
     Rotation.getRPY(bleh, blah, new_theta);

@@ -88,8 +88,7 @@ int main(int argn, char *argv[]) {
   map.readFromXML(argv[1]);
   map.organizeAsGrid();
 
-  cliffmap = cliffmap_ros::mapToROSMsg(map.transformCLiFFMap(
-      mod_to_laser2d.getOrigin(), mod_to_laser2d.getBasis(), "map_laser2d"));
+  cliffmap = cliffmap_ros::mapToROSMsg(map.transformCLiFFMap(mod_to_laser2d, "map_laser2d"));
 
   cliffmap_pub.publish(cliffmap);
 
