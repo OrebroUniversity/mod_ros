@@ -241,8 +241,8 @@ CLiFFMap CLiFFMap::transformCLiFFMap(tf::Vector3 Origin, tf::Matrix3x3 Rotation,
   for(CLiFFMapLocation l : this->locations_) {
 
     tf::Vector3 Position;
-    Position.setX(l.position[0] + l.position[0]);
-    Position.setY(l.position[1] + l.position[1]);
+    Position.setX(l.position[0]);
+    Position.setY(l.position[1]);
     Position.setZ(0.0);
 
     auto new_position = Rotation * (Position + Origin);
