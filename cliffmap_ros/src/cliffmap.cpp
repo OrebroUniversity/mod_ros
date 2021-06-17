@@ -291,6 +291,7 @@ CLiFFMap CLiFFMap::transformCLiFFMap(tf::StampedTransform &transform,
       l_new.distributions.push_back(dist_new);
     }
 
+    ROS_INFO_STREAM_THROTTLE(1,"Pushing new locations... size: " << transformedMap.locations_.size());
     transformedMap.locations_.push_back(l_new);
   }
 
