@@ -215,7 +215,14 @@ void CLiFFMap::organizeAsGrid() {
     size_t r = y2index(location.position[1]);
     size_t c = x2index(location.position[0]);
 
-    organizedLocations[r * columns_ + c] = location;
+    size_t idx = r * columns_ + c;
+    if(idx < organizedLocations.size()) {
+      organizedLocations[r * columns_ + c] = location;
+    }
+    else {
+      ROS_WARN_STREAM_THROTTLE(1, "Some new locations were added while organizing...");
+      organizedLocations.push_back(location);
+    }
   }
   locations_ = organizedLocations;
   organized_ = true;
