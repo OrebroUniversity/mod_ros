@@ -144,7 +144,10 @@ public:
    * @param Rotation The rotation angle (yaw) of the new frame.
    * @return A new transformed CLiFF-map.
    */
-  CLiFFMap transformCLiFFMap(tf::StampedTransform& transform, const std::string& frame_id = "map");
+  CLiFFMap transformCLiFFMap(tf::StampedTransform &transform,
+                             const std::string &frame_id = "map",
+                             double x_max = 0.0, double y_max = 0.0,
+                             double x_min = 0.0, double y_min = 0.0);
 
   CLiFFMap(const CLiFFMapMsg &cliffmap_msg);
 

@@ -56,10 +56,15 @@ int main(int argn, char *argv[]) {
   std::string cliffmap_frame_id = "/map_mod";
   std::string map_frame_id = "/map";
 
+  double x_max = 0.0, y_max = 0.0, x_min = 0.0, y_min = 0.0;
   nh.getParam("topic_name", cliffmap_topic_name);
   nh.getParam("service_name", cliffmap_service_name);
   nh.getParam("frame_id", cliffmap_frame_id);
   nh.getParam("map_frame_id", map_frame_id);
+  nh.getParam("y_max", y_max);
+  nh.getParam("y_min", y_min);
+  nh.getParam("x_max", x_max);
+  nh.getParam("x_min", x_min);
 
   try {
     tf_listener.waitForTransform(map_frame_id, cliffmap_frame_id, time_now,
@@ -88,7 +93,8 @@ int main(int argn, char *argv[]) {
   map.readFromXML(argv[1]);
   map.organizeAsGrid();
 
-  cliffmap = cliffmap_ros::mapToROSMsg(map.transformCLiFFMap(mod_to_laser2d, "map_laser2d"));
+  cliffmap = cliffmap_ros::mapToROSMsg(map.transformCLiFFMap(
+      mod_to_laser2d, "map_laser2d", x_max, y_max, x_min, y_min));
 
   cliffmap_pub.publish(cliffmap);
 

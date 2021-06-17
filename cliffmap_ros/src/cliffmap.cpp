@@ -237,7 +237,8 @@ CLiFFMapMsg CLiFFMapClient::get() {
 }
 
 CLiFFMap CLiFFMap::transformCLiFFMap(tf::StampedTransform &transform,
-                                     const std::string &frame_id) {
+                                     const std::string &frame_id, double x_max,
+                                     double y_max, double x_min, double y_min) {
   CLiFFMap transformedMap;
   transformedMap.setFrameID(frame_id);
   transformedMap.columns_ = this->columns_;
@@ -248,24 +249,33 @@ CLiFFMap CLiFFMap::transformCLiFFMap(tf::StampedTransform &transform,
   auto Rotation = transform.getBasis();
   auto Origin = transform.getOrigin();
 
-  tf::Vector3 MaxValues, MaxValuesTransformed;
-  tf::Vector3 MinValues, MinValuesTransformed;
+  if (x_max == 0.0 && y_max == 0.0 && x_min == 0.0 && y_min == 0.0) {
+    tf::Vector3 MaxValues, MaxValuesTransformed;
+    tf::Vector3 MinValues, MinValuesTransformed;
 
-  MaxValues.setX(this->x_max_);
-  MaxValues.setY(this->y_max_);
-  MaxValues.setZ(0.0);
+    MaxValues.setX(this->x_max_);
+    MaxValues.setY(this->y_max_);
+    MaxValues.setZ(0.0);
 
-  MinValues.setX(this->x_min_);
-  MinValues.setY(this->y_min_);
-  MinValues.setZ(0.0);
+    MinValues.setX(this->x_min_);
+    MinValues.setY(this->y_min_);
+    MinValues.setZ(0.0);
 
-  MaxValuesTransformed = transform * MaxValues;
-  MinValuesTransformed = transform * MinValues;
+    MaxValuesTransformed = transform * MaxValues;
+    MinValuesTransformed = transform * MinValues;
 
-  transformedMap.x_max_ = MaxValuesTransformed.getX();
-  transformedMap.y_max_ = MaxValuesTransformed.getY();
-  transformedMap.x_min_ = MinValuesTransformed.getX();
-  transformedMap.y_min_ = MinValuesTransformed.getY();
+    transformedMap.x_max_ = MaxValuesTransformed.getX();
+    transformedMap.y_max_ = MaxValuesTransformed.getY();
+    transformedMap.x_min_ = MinValuesTransformed.getX();
+    transformedMap.y_min_ = MinValuesTransformed.getY();
+  }
+
+  else {
+    transformedMap.x_max_ = x_max;
+    transformedMap.y_max_ = y_max;
+    transformedMap.x_min_ = x_min;
+    transformedMap.y_min_ = y_min;
+  }
 
   ROS_INFO("OLD (XMax,YMax) and (XMin,YMin): (%0.2lf,%0.2lf), (%0.2lf,%0.2lf)",
            x_max_, y_max_, x_min_, y_min_);
