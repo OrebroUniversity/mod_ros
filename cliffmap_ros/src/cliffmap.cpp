@@ -267,6 +267,9 @@ CLiFFMap CLiFFMap::transformCLiFFMap(tf::StampedTransform &transform,
   transformedMap.x_min_ = MinValuesTransformed.getX();
   transformedMap.y_min_ = MinValuesTransformed.getY();
 
+  ROS_INFO("OLD (XMax,YMax) and (XMin,YMin): (%0.2lf,%0.2lf), (%0.2lf,%0.2lf)",
+           x_max_, y_max_, x_min_, y_min_);
+
   ROS_INFO("New (XMax,YMax) and (XMin,YMin): (%0.2lf,%0.2lf), (%0.2lf,%0.2lf)",
            transformedMap.x_max_, transformedMap.y_max_, transformedMap.x_min_,
            transformedMap.y_min_);

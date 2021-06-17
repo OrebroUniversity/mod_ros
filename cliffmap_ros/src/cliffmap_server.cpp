@@ -63,7 +63,7 @@ int main(int argn, char *argv[]) {
 
   try {
     tf_listener.waitForTransform(map_frame_id, cliffmap_frame_id, time_now,
-                                 ros::Duration(10));
+                                 ros::Duration(5));
     tf_listener.lookupTransform(map_frame_id, cliffmap_frame_id, ros::Time(0),
                                 mod_to_laser2d);
   } catch (tf::TransformException &ex) {
