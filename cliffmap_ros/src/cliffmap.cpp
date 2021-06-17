@@ -202,11 +202,13 @@ void CLiFFMap::organizeAsGrid() {
   organizedLocations.resize(rows_ * columns_);
 
   if (organizedLocations.size() != locations_.size()) {
-    ROS_INFO_STREAM(
+    ROS_WARN_STREAM(
         "[CLiFFMap] Error in number of locations. We thought it was "
         << organizedLocations.size() << ", but it was " << locations_.size()
         << ".");
-    return;
+    if (organizedLocations.size() < locations_.size())
+      return;
+    ROS_INFO_STREAM("Less is more. We have the space. Let's continue... ");
   }
 
   for (const CLiFFMapLocation &location : locations_) {
@@ -234,13 +236,34 @@ CLiFFMapMsg CLiFFMapClient::get() {
   return msg.response.cliffmap;
 }
 
-CLiFFMap CLiFFMap::transformCLiFFMap(tf::StampedTransform& transform, const std::string& frame_id) {
+CLiFFMap CLiFFMap::transformCLiFFMap(tf::StampedTransform &transform,
+                                     const std::string &frame_id) {
   CLiFFMap transformedMap;
   transformedMap.setFrameID(frame_id);
 
   auto Rotation = transform.getBasis();
   auto Origin = transform.getOrigin();
-  for(CLiFFMapLocation l : this->locations_) {
+
+  tf::Vector3 MaxValues, MaxValuesTransformed;
+  tf::Vector3 MinValues, MinValuesTransformed;
+
+  MaxValues.setX(this->x_max_);
+  MaxValues.setY(this->y_max_);
+  MaxValues.setZ(0.0);
+
+  MinValues.setX(this->x_min_);
+  MinValues.setY(this->y_min_);
+  MinValues.setZ(0.0);
+
+  MaxValuesTransformed = transform * MaxValues;
+  MinValuesTransformed = transform * MinValues;
+
+  transformedMap.x_max_ = MaxValuesTransformed.getX();
+  transformedMap.y_max_ = MaxValuesTransformed.getY();
+  transformedMap.x_min_ = MinValuesTransformed.getX();
+  transformedMap.y_min_ = MinValuesTransformed.getY();
+
+  for (CLiFFMapLocation l : this->locations_) {
 
     tf::Vector3 Position;
     Position.setX(l.position[0]);
@@ -255,7 +278,7 @@ CLiFFMap CLiFFMap::transformCLiFFMap(tf::StampedTransform& transform, const std:
     l.position[0] = new_position.getX();
     l.position[1] = new_position.getY();
 
-    for(auto& dist : l.distributions) {
+    for (auto &dist : l.distributions) {
       // Only the theta needs be transformed.
       dist.mean[0] = dist.mean[0] + new_theta;
     }
@@ -263,6 +286,7 @@ CLiFFMap CLiFFMap::transformCLiFFMap(tf::StampedTransform& transform, const std:
     transformedMap.locations_.push_back(l);
   }
 
+  transformedMap.organizeAsGrid();
   return transformedMap;
 }
 
