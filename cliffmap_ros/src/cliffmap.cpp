@@ -263,7 +263,7 @@ CLiFFMap CLiFFMap::transformCLiFFMap(tf::StampedTransform &transform,
   transformedMap.x_min_ = MinValuesTransformed.getX();
   transformedMap.y_min_ = MinValuesTransformed.getY();
 
-  for (CLiFFMapLocation l : this->locations_) {
+  for (const CLiFFMapLocation& l : this->locations_) {
 
     tf::Vector3 Position;
     Position.setX(l.position[0]);
@@ -275,15 +275,23 @@ CLiFFMap CLiFFMap::transformCLiFFMap(tf::StampedTransform &transform,
 
     Rotation.getRPY(bleh, blah, new_theta);
 
-    l.position[0] = new_position.getX();
-    l.position[1] = new_position.getY();
+    CLiFFMapLocation l_new;
 
-    for (auto &dist : l.distributions) {
+    l_new.position[0] = new_position.getX();
+    l_new.position[1] = new_position.getY();
+
+    for (const auto &dist : l.distributions) {
+
+      CLiFFMapDistribution dist_new;
       // Only the theta needs be transformed.
-      dist.mean[0] = dist.mean[0] + new_theta;
+      dist_new.mean[0] = dist.mean[0] + new_theta;
+      dist_new.mean[1] = dist.mean[1];
+      dist_new.mixing_factor = dist.mixing_factor;
+
+      l_new.distributions.push_back(dist_new);
     }
 
-    transformedMap.locations_.push_back(l);
+    transformedMap.locations_.push_back(l_new);
   }
 
   transformedMap.organizeAsGrid();
