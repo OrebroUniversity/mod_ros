@@ -217,7 +217,11 @@ void CLiFFMap::organizeAsGrid() {
 
     size_t idx = r * columns_ + c;
     if(idx < organizedLocations.size()) {
-      organizedLocations[r * columns_ + c] = location;
+      organizedLocations[idx].distributions = location.distributions;
+      organizedLocations[idx].id = location.id;
+      organizedLocations[idx].p = location.p;
+      organizedLocations[idx].q = location.q;
+      organizedLocations[idx].position = location.position;
     }
     else {
       ROS_WARN_STREAM_THROTTLE(1, "Some new locations were added while organizing...");
@@ -307,6 +311,9 @@ CLiFFMap CLiFFMap::transformCLiFFMap(tf::StampedTransform &transform,
 
     l_new.position[0] = new_position.getX();
     l_new.position[1] = new_position.getY();
+    l_new.p = l.p;
+    l_new.q = l.q;
+    l_new.id = l.id;
 
     for (const auto &dist : l.distributions) {
 
