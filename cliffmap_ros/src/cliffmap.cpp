@@ -240,6 +240,10 @@ CLiFFMap CLiFFMap::transformCLiFFMap(tf::StampedTransform &transform,
                                      const std::string &frame_id) {
   CLiFFMap transformedMap;
   transformedMap.setFrameID(frame_id);
+  transformedMap.columns_ = this->columns_;
+  transformedMap.rows_ = this->rows_;
+  transformedMap.resolution_ = this->resolution_;
+  transformedMap.radius_ = this->radius_;
 
   auto Rotation = transform.getBasis();
   auto Origin = transform.getOrigin();
@@ -263,7 +267,11 @@ CLiFFMap CLiFFMap::transformCLiFFMap(tf::StampedTransform &transform,
   transformedMap.x_min_ = MinValuesTransformed.getX();
   transformedMap.y_min_ = MinValuesTransformed.getY();
 
-  for (const CLiFFMapLocation& l : this->locations_) {
+  ROS_INFO("New (XMax,YMax) and (XMin,YMin): (%0.2lf,%0.2lf), (%0.2lf,%0.2lf)",
+           transformedMap.x_max_, transformedMap.y_max_, transformedMap.x_min_,
+           transformedMap.y_min_);
+
+  for (const CLiFFMapLocation &l : this->locations_) {
 
     tf::Vector3 Position;
     Position.setX(l.position[0]);
@@ -291,11 +299,13 @@ CLiFFMap CLiFFMap::transformCLiFFMap(tf::StampedTransform &transform,
       l_new.distributions.push_back(dist_new);
     }
 
-    ROS_INFO_STREAM_THROTTLE(1,"Pushing new locations... size: " << transformedMap.locations_.size());
+    ROS_INFO_STREAM_THROTTLE(1, "Pushing new locations... size: "
+                                    << transformedMap.locations_.size());
     transformedMap.locations_.push_back(l_new);
   }
 
-  ROS_INFO_STREAM_THROTTLE(1,"Pushed all new locations... size: " << transformedMap.locations_.size());
+  ROS_INFO_STREAM_THROTTLE(1, "Pushed all new locations... size: "
+                                  << transformedMap.locations_.size());
   transformedMap.organizeAsGrid();
   return transformedMap;
 }
