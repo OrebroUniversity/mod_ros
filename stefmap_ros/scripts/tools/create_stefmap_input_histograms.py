@@ -50,6 +50,8 @@ if __name__ == '__main__':
 	y_col = 3
 	if atc:
 		theta_col = 6
+		input_data[:,x_col] = np.divide(input_data[:,x_col],1000)
+		input_data[:,y_col] = np.divide(input_data[:,y_col],1000)
 	else:
 		theta_col = 4
 
