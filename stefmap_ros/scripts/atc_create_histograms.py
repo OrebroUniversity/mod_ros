@@ -32,7 +32,7 @@ if __name__ == '__main__':
     print("Creating flowmap histograms for day 1...")
     os.system(
         "python " + stefmap_dir + "/scripts/tools/create_stefmap_input_histograms.py " + input_file_name + " " + output_file_name + " " + str(
-            xmin) + " " + str(xmax) + " " + str(ymin) + " " + str(ymax) + " " + str(cell_size)+" "+str(num_bins) + " 8 " + str(
+            xmin) + " " + str(xmax) + " " + str(ymin) + " " + str(ymax) + " " + str(cell_size)+ " 8 " + str(
             t_ini) + " " + str(t_end) + " " + str(time_interval) + " true")
     print("Done")
 
@@ -44,7 +44,7 @@ if __name__ == '__main__':
     print("Creating flowmap histograms for day 2...")
     os.system(
         "python " + stefmap_dir + "/scripts/tools/create_stefmap_input_histograms.py " + input_file_name + " " + output_file_name + " " + str(
-            xmin) + " " + str(xmax) + " " + str(ymin) + " " + str(ymax) + " " + str(cell_size)+" "+str(num_bins) + " 8 " + str(
+            xmin) + " " + str(xmax) + " " + str(ymin) + " " + str(ymax) + " " + str(cell_size)+ " 8 " + str(
             t_ini) + " " + str(t_end) + " " + str(time_interval) + " true")
     print("Done")
 
@@ -56,7 +56,7 @@ if __name__ == '__main__':
     print("Creating flowmap histograms for day 3...")
     os.system(
         "python " + stefmap_dir + "/scripts/tools/create_stefmap_input_histograms.py " + input_file_name + " " + output_file_name + " " + str(
-            xmin) + " " + str(xmax) + " " + str(ymin) + " " + str(ymax) + " " + str(cell_size)+" "+str(num_bins) + " 8 " + str(
+            xmin) + " " + str(xmax) + " " + str(ymin) + " " + str(ymax) + " " + str(cell_size)+ " 8 " + str(
             t_ini) + " " + str(t_end) + " " + str(time_interval) + " true")
     print("Done")
 
@@ -68,7 +68,7 @@ if __name__ == '__main__':
     print("Creating flowmap histograms for day 4...")
     os.system(
         "python " + stefmap_dir + "/scripts/tools/create_stefmap_input_histograms.py " + input_file_name + " " + output_file_name + " " + str(
-            xmin) + " " + str(xmax) + " " + str(ymin) + " " + str(ymax) + " " + str(cell_size)+" "+str(num_bins) + " 8 " + str(
+            xmin) + " " + str(xmax) + " " + str(ymin) + " " + str(ymax) + " " + str(cell_size)+ " 8 " + str(
             t_ini) + " " + str(
             t_end) + " " + str(time_interval) + " true")
     print("Done")
@@ -81,7 +81,7 @@ if __name__ == '__main__':
     print("Creating flowmap histograms for day 5...")
     os.system(
         "python " + stefmap_dir + "/scripts/tools/create_stefmap_input_histograms.py " + input_file_name + " " + output_file_name + " " + str(
-            xmin) + " " + str(xmax) + " " + str(ymin) + " " + str(ymax) + " " + str(cell_size)+" "+str(num_bins) + " 8 " + str(
+            xmin) + " " + str(xmax) + " " + str(ymin) + " " + str(ymax) + " " + str(cell_size)+ " 8 " + str(
             t_ini) + " " + str(
             t_end) + " " + str(time_interval) + " true")
     print("Done")
@@ -94,7 +94,7 @@ if __name__ == '__main__':
     print("Creating flowmap histograms for day 6...")
     os.system(
         "python " + stefmap_dir + "/scripts/tools/create_stefmap_input_histograms.py " + input_file_name + " " + output_file_name + " " + str(
-            xmin) + " " + str(xmax) + " " + str(ymin) + " " + str(ymax) + " " + str(cell_size)+" "+str(num_bins) + " 8 " + str(
+            xmin) + " " + str(xmax) + " " + str(ymin) + " " + str(ymax) + " " + str(cell_size)+ " 8 " + str(
             t_ini) + " " + str(
             t_end) + " " + str(time_interval) + " true")
     print("Done")

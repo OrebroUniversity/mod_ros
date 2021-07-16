@@ -33,7 +33,9 @@ if __name__ == '__main__':
 		else:
 			atc = True
 
-		print(num_bins, grid_size)
+		print("Check Params")
+		print("t_ini", "t_end", "time_interval", "num_bins", "grid_size")
+		print(t_ini, t_end, time_interval, num_bins, grid_size)
 
 	else:
 		print "This scripts need 11 parameters: input_file_name, output_file_name,xmin,xmax,ymin,ymax,grid_size,num_bins,t_ini,t_end,time_interval "
