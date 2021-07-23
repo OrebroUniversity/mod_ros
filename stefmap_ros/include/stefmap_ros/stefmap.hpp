@@ -58,11 +58,11 @@ public:
 
   inline std::vector<STeFMapCellMsg> getCell() const { return cells_; }
   inline size_t x2index(double x) const {
-    return std::floor((x - x_min_) / cell_size_);
+    return std::floor(size_t((x - x_min_) / cell_size_));
   }
 
   inline size_t y2index(double y) const {
-    return std::floor((y - y_min_) / cell_size_);
+    return std::floor(size_t((y - y_min_) / cell_size_));
   }
 
   bool isOrganized() const;

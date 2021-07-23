@@ -27,11 +27,15 @@ STeFMap::STeFMap(const STeFMapMsg &stefmap_msg)
       x_max_(stefmap_msg.x_max), y_min_(stefmap_msg.y_min),
       y_max_(stefmap_msg.y_max), cell_size_(stefmap_msg.cell_size),
       columns_(stefmap_msg.rows), rows_(stefmap_msg.columns) {
+  this->cells_.resize(this->columns_ * this->rows_);
+  for (const auto &cell : stefmap_msg.cells) {
 
-  for (size_t i = 0; i < stefmap_msg.rows; i++)
-    for (size_t j = 0; j < stefmap_msg.columns; j++) {
-      this->cells_.push_back(stefmap_msg.cells[j * stefmap_msg.rows + i]);
-    }
+    size_t row = y2index(cell.y);
+    size_t col = x2index(cell.x);
+    this->cells_[row * this->columns_ + col] = cell;
+    this->cells_[row * this->columns_ + col].row = row;
+    this->cells_[row * this->columns_ + col].column = col;
+  }
   ROS_INFO_STREAM("Read a STeF-Map with cell size: "
                   << cell_size_ << " m and is "
                   << (isOrganized() ? "organized" : "not organized"));
@@ -41,11 +45,15 @@ bool STeFMap::isOrganized() const {
   for (size_t r = 0; r < this->rows_; r++)
     for (size_t c = 0; c < this->columns_; c++) {
       const auto &cell = at(r, c);
-      if (cell.row != r || cell.column != c)
+      if (cell.row != r || cell.column != c) {
+        ROS_ERROR("Error organizing STeFMap: Indices should have been (%ld, %ld), but are (%ld, %ld)", r, c, cell.row, cell.column);
+        ROS_ERROR_STREAM("CELL: " << cell);
         return false;
+      }
     }
   return true;
 }
+
 STeFMapCellMsg STeFMap::operator()(double x, double y) const {
   size_t row = y2index(y);
   size_t col = x2index(x);
