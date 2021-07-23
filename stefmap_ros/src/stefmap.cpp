@@ -22,58 +22,42 @@
 
 namespace stefmap_ros {
 
-STeFMapCell::STeFMapCell()
-    : row(0),
-      column(0),
-      x(0.0),
-      y(0.0),
-      best_angle(0.0),
-      probabilities({0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}) {}
+STeFMap::STeFMap(const STeFMapMsg &stefmap_msg)
+    : header(stefmap_msg.header), x_min_(stefmap_msg.x_min),
+      x_max_(stefmap_msg.x_max), y_min_(stefmap_msg.y_min),
+      y_max_(stefmap_msg.y_max), cell_size_(stefmap_msg.cell_size),
+      columns_(stefmap_msg.rows), rows_(stefmap_msg.columns) {
 
-STeFMapCell::STeFMapCell(const STeFMapCellMsg& cell_msg) {
-  row = cell_msg.row;
-  column = cell_msg.column;
-  x = cell_msg.x;
-  y = cell_msg.y;
-  best_angle = cell_msg.best_angle;
-  for (size_t i = 0; i < 8; i++) {
-    probabilities[i] = cell_msg.probabilities[i];
-  }
-}
-
-STeFMap::STeFMap(const STeFMapMsg& stefmap_msg)
-    : header(stefmap_msg.header),
-      x_min_(stefmap_msg.x_min),
-      x_max_(stefmap_msg.x_max),
-      y_min_(stefmap_msg.y_min),
-      y_max_(stefmap_msg.y_max),
-      cell_size_(stefmap_msg.cell_size),
-      rows_(stefmap_msg.rows),
-      columns_(stefmap_msg.columns),
-      cells_(stefmap_msg.cells) {
-  ROS_INFO_STREAM("Read a STeF-Map with cell size: " << cell_size_ << " m.");
+  for (size_t i = 0; i < stefmap_msg.rows; i++)
+    for (size_t j = 0; j < stefmap_msg.columns; j++) {
+      this->cells_.push_back(stefmap_msg.cells[j * stefmap_msg.rows + i]);
+    }
+  ROS_INFO_STREAM("Read a STeF-Map with cell size: "
+                  << cell_size_ << " m and is "
+                  << (isOrganized() ? "organized" : "not organized"));
 }
 
 bool STeFMap::isOrganized() const {
   for (size_t r = 0; r < this->rows_; r++)
     for (size_t c = 0; c < this->columns_; c++) {
-      const auto& cell = at(r, c);
-      if (cell.row != r || cell.column != c) return false;
+      const auto &cell = at(r, c);
+      if (cell.row != r || cell.column != c)
+        return false;
     }
   return true;
 }
-STeFMapCell STeFMap::operator()(double x, double y) const {
+STeFMapCellMsg STeFMap::operator()(double x, double y) const {
   size_t row = y2index(y);
   size_t col = x2index(x);
   return this->at(row, col);
 }
 
-STeFMapCell STeFMap::at(size_t row, size_t col) const {
+STeFMapCellMsg STeFMap::at(size_t row, size_t col) const {
   if (row >= rows_ || col >= columns_) {
-    ROS_DEBUG_STREAM(
-        "WARNING STeFMap::at called with out-of-bounds indices. Returning "
-        "empty STeFMapCell.");
-    return STeFMapCell();
+    ROS_DEBUG_STREAM("WARNING STeFMap::at called with out-of-bounds indices: "
+                     << row << " >= " << rows_ << ", " << col
+                     << " >= " << columns_ << ". Returning empty STeFMapCell.");
+    return STeFMapCellMsg();
   }
 
   return cells_[row * columns_ + col];
@@ -94,10 +78,24 @@ STeFMapMsg STeFMapClient::get(double prediction_time, int order) {
   return msg.response.stefmap;
 }
 
-STeFMapClient::STeFMapClient(const std::string& service_name) {
+STeFMapClient::STeFMapClient(const std::string &service_name) {
   stefmap_client = nh.serviceClient<GetSTeFMap>(service_name);
   stefmap_client.waitForExistence();
   ROS_INFO_STREAM("Connected to STeF-Map server.");
 }
 
 } /* namespace stefmap_ros */
+
+std::ostream &operator<<(std::ostream &out,
+                         const stefmap_ros::STeFMap &stefmap) {
+  out << "Cell Size: " << stefmap.getCellSize() << std::endl;
+  out << "Rows, Columns: " << stefmap.getRows() << ", " << stefmap.getColumns()
+      << std::endl;
+  out << "Boundaries: "
+      << "(" << stefmap.getXMin() << ", " << stefmap.getXMax() << ") : "
+      << "(" << stefmap.getYMin() << ", " << stefmap.getYMax() << ")"
+      << std::endl;
+  for (const auto &cell : stefmap.getCell()) {
+    out << "Cells: " << cell;
+  }
+}

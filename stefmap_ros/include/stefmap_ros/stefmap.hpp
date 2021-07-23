@@ -34,18 +34,6 @@
 
 namespace stefmap_ros {
 
-struct STeFMapCell {
-  size_t row;
-  size_t column;
-  double x;
-  double y;
-  double best_angle;
-  std::array<double, 8> probabilities;
-
-  STeFMapCell();
-  STeFMapCell(const STeFMapCellMsg &cell_msg);
-};
-
 class STeFMap {
   std_msgs::Header header;
   double x_min_;
@@ -70,17 +58,17 @@ public:
 
   inline std::vector<STeFMapCellMsg> getCell() const { return cells_; }
   inline size_t x2index(double x) const {
-    return std::round((x - x_min_) / cell_size_);
+    return std::floor((x - x_min_) / cell_size_);
   }
 
   inline size_t y2index(double y) const {
-    return std::round((y - y_min_) / cell_size_);
+    return std::floor((y - y_min_) / cell_size_);
   }
 
   bool isOrganized() const;
 
-  STeFMapCell at(size_t row, size_t col) const;
-  STeFMapCell operator()(double x, double y) const;
+  STeFMapCellMsg at(size_t row, size_t col) const;
+  STeFMapCellMsg operator()(double x, double y) const;
 
   STeFMap(const STeFMapMsg &stefmap_msg);
 
@@ -107,3 +95,6 @@ typedef std::shared_ptr<STeFMap> STeFMapPtr;
 typedef std::shared_ptr<const STeFMap> STeFMapConstPtr;
 
 } /* namespace stefmap_ros */
+
+
+std::ostream &operator<<(std::ostream &, const stefmap_ros::STeFMap &);
