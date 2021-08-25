@@ -32,8 +32,8 @@ class trajectory_generator_node(object):
 		with open(self.stefmap_prediction_filename,"r") as ifile:
 			self.stefmap_prediction = json.load(ifile)
 
-		print self.stefmap_prediction["stefmap"]["x_min"]
-		print self.stefmap_prediction["stefmap"]["x_min"]
+		print(self.stefmap_prediction["stefmap"]["x_min"])
+		print(self.stefmap_prediction["stefmap"]["x_min"])
 
 		self.frame_id = self.stefmap_prediction["stefmap"]["header"]["frame_id"]
 		self.x_min = self.stefmap_prediction["stefmap"]["x_min"]
@@ -116,7 +116,7 @@ class trajectory_generator_node(object):
 			iterations = iterations + 1
 
 		if iterations >=10000:
-			print "no starting cell found"
+			print("no starting cell found")
 			cell_path.append(starting_cell)
 			return cell_path,backwards_cell_path
 
@@ -129,10 +129,10 @@ class trajectory_generator_node(object):
 		# 	iterations = iterations + 1
 
 		# if iterations >=10000:
-		# 	print "no starting cell found"
+		# 	print ("no starting cell found")
 			# return cell_path
 
-		#print "starting cell:", starting_cell
+		#print ("starting cell:", starting_cell)
 		cell_path.append(starting_cell)
 
 
@@ -523,7 +523,7 @@ class trajectory_generator_node(object):
 		while trajectories_generated < self.num_traj_to_generate and not rospy.is_shutdown():
 			self.trajectory_cell_path,self.backwards_cell_path = self.compute_trajectory()
 			full_path = self.backwards_cell_path[::-1]+self.trajectory_cell_path
-			print full_path
+			print(full_path)
 			path_len = len(full_path)
 			if path_len > self.min_traj_length: #save the path 
 				x_path=[]
@@ -541,7 +541,7 @@ class trajectory_generator_node(object):
 				trajectories_generated = trajectories_generated + 1
 
 			else:
-				print "path too short"
+				print("path too short")
 			#self.show_trajectory_rviz()
 			rospy.sleep(0.5)
 

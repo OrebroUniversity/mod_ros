@@ -25,6 +25,6 @@ if __name__ == '__main__':
 
 			update_stefmap = rospy.ServiceProxy('update_stefmap', UpdateSTeFMap)
 			result = update_stefmap(timestamp,states)
-			print result
+			print(result)
 
 			states=[]
