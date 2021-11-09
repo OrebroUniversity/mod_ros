@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 
 import rospy
 import time
@@ -139,7 +139,7 @@ class STeFmap_node_offline(object):
 
 		self.fremenarray_client.send_goal(fremenarray_msg)
 		if not self.fremenarray_client.wait_for_result(rospy.Duration(10.0)):
-			print "Error getting the STeF-Map"
+			print("Error getting the STeF-Map")
 			mSTefMap = STeFMapMsg()
 			return mSTefMap
 		fremenarray_result = self.fremenarray_client.get_result()

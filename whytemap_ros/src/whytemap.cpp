@@ -366,6 +366,8 @@ std::ostream &operator<<(std::ostream &out,
   out << "\t\tCentroid: " << std::endl << clus.getCentroid() << std::endl;
   out << "\t\tPrecision Matrix: " << std::endl
       << clus.getPrecisionMatrix() << std::endl;
+  
+  return out;
 }
 
 std::ostream &operator<<(std::ostream &out, const whytemap_ros::WHyTeMap &map) {
@@ -381,4 +383,6 @@ std::ostream &operator<<(std::ostream &out, const whytemap_ros::WHyTeMap &map) {
     out << cluster;
   }
   out << "Spatial Dimenstion: " << map.getSpatialDim() << std::endl;
+
+  return out;
 }

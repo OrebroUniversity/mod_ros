@@ -106,4 +106,5 @@ std::ostream &operator<<(std::ostream &out,
   for (const auto &cell : stefmap.getCell()) {
     out << "Cells: " << cell;
   }
+  return out;
 }
