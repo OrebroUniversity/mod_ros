@@ -53,7 +53,7 @@ int main(int argn, char *argv[]) {
 
   std::string cliffmap_topic_name = "/cliffmap";
   std::string cliffmap_service_name = "/get_cliffmap";
-  std::string cliffmap_frame_id = "/map_mod";
+  std::string cliffmap_frame_id = "/map";
   std::string map_frame_id = "/map";
 
   double x_max = 0.0, y_max = 0.0, x_min = 0.0, y_min = 0.0;
@@ -73,7 +73,7 @@ int main(int argn, char *argv[]) {
                                 mod_to_laser2d);
   } catch (tf::TransformException &ex) {
     ROS_ERROR_STREAM(
-        "Error getting transform from map_laser2d to map_mod: " << ex.what());
+        "Error getting transform from occ-map frame to MoD-map frame: " << ex.what());
     mod_to_laser2d.setIdentity();
   }
 
@@ -94,7 +94,7 @@ int main(int argn, char *argv[]) {
   map.organizeAsGrid();
 
   cliffmap = cliffmap_ros::mapToROSMsg(map.transformCLiFFMap(
-      mod_to_laser2d, "map_laser2d", x_max, y_max, x_min, y_min));
+      mod_to_laser2d, cliffmap_frame_id, x_max, y_max, x_min, y_min));
 
   cliffmap_pub.publish(cliffmap);
 
