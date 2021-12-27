@@ -94,7 +94,7 @@ int main(int argn, char *argv[]) {
   map.organizeAsGrid();
 
   cliffmap = cliffmap_ros::mapToROSMsg(map.transformCLiFFMap(
-      mod_to_laser2d, cliffmap_frame_id, x_max, y_max, x_min, y_min));
+      mod_to_laser2d, map_frame_id, x_max, y_max, x_min, y_min));
 
   cliffmap_pub.publish(cliffmap);
 
