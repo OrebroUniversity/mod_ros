@@ -36,7 +36,7 @@
   <!-- agents -->
   <!-- Teacher/researcher role -->
   <!-- Enters building, goes to office via fika room. Then goes to lecture hall. -->
-  <agent x="-5" y="27.5" n="1" dx="1.5" dy="1.0">
+  <agent x="-5" y="27.5" n="3" dx="1.5" dy="1.0">
    <addwaypoint id="E1" />
    <addwaypoint id="C10" />
    <addwaypoint id="C11" />
@@ -56,7 +56,7 @@
 
   <!-- Admin role -->
   <!-- Enters building, goes to office via fika room. Then goes to lecture hall. -->
-  <agent x="-5" y="27.5" n="3" dx="1.5" dy="1.0">
+  <agent x="-5" y="27.5" n="5" dx="1.5" dy="1.0">
 	 <addwaypoint id="E1" />
 	 <addwaypoint id="C10" />
  	 <addwaypoint id="A1" />
@@ -96,7 +96,7 @@
     <addwaypoint id="O1" />
   </agent>
 
-  <agent x="30" y="-5" n="3" dx="1.0" dy="1.0">
+  <agent x="30" y="-5" n="5" dx="1.0" dy="1.0">
     <addwaypoint id="E3" />
     <addwaypoint id="SC1" />
     <addwaypoint id="C2" />
@@ -109,7 +109,7 @@
     <addwaypoint id="O1" />
   </agent>
 
-  <agent x="30" y="-5" n="2" dx="1.0" dy="1.0">
+  <agent x="30" y="-5" n="7" dx="1.0" dy="1.0">
     <addwaypoint id="E3" />
     <addwaypoint id="SC1" />
     <addwaypoint id="SC3" />
